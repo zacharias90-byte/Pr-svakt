@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="fo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brennievnisprísir í Føroyum</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#020617;--surface:rgba(15,23,42,0.85);--border:rgba(34,211,238,0.2);--accent:#22d3ee;--text:#e2e8f0;--muted:#94a3b8;--green:#10b981;--amber:#f59e0b;--red:#f43f5e}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:'JetBrains Mono',monospace;overflow-x:hidden}
+.bg-wrap{position:fixed;inset:0;z-index:0;pointer-events:none}
+.bg-grad{position:absolute;inset:0;background:radial-gradient(circle at 20% 20%,rgba(34,211,238,.15),transparent 40%),radial-gradient(circle at 80% 10%,rgba(16,185,129,.12),transparent 35%),linear-gradient(140deg,#020617 20%,#0f172a 60%,#111827 100%)}
+.bg-grid{position:absolute;inset:0;background:linear-gradient(rgba(148,163,184,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(148,163,184,.05) 1px,transparent 1px);background-size:24px 24px}
+.bg-glow1{position:absolute;left:-80px;top:56px;width:288px;height:288px;border-radius:50%;background:rgba(34,211,238,.15);filter:blur(60px)}
+.bg-glow2{position:absolute;right:-96px;bottom:56px;width:320px;height:320px;border-radius:50%;background:rgba(16,185,129,.1);filter:blur(60px)}
+main{position:relative;z-index:10;max-width:1100px;margin:0 auto;padding:32px 16px 60px}
+.page{display:none}.page.active{display:block}
+
+/* HERO */
+.hero{background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:28px;backdrop-filter:blur(16px);box-shadow:0 0 60px rgba(34,211,238,.08);margin-bottom:24px}
+.hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.8rem,5vw,2.8rem);letter-spacing:3px;color:#a5f3fc;text-shadow:0 0 30px rgba(34,211,238,.3)}
+.hero-sub{font-size:.75rem;color:var(--muted);margin-top:6px;letter-spacing:1px}
+.auto-tag{background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.3);color:#6ee7b7;font-size:.65rem;letter-spacing:1.5px;padding:5px 12px;border-radius:20px;white-space:nowrap;align-self:flex-start}
+.legend{display:flex;gap:16px;margin-top:14px;flex-wrap:wrap}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:.68rem;color:var(--muted);letter-spacing:1px}
+.ldot{width:9px;height:9px;border-radius:50%}
+
+/* INTRO */
+.intro-text{margin-bottom:16px;padding:0 4px}
+.intro-text h2{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:3px;color:#a5f3fc;margin-bottom:6px}
+.intro-text p{font-size:.72rem;color:var(--muted);letter-spacing:1px;line-height:1.8}
+
+/* BANNER */
+.cheapest-banner{background:linear-gradient(135deg,rgba(5,46,22,.9),rgba(6,78,59,.8));border:1px solid rgba(16,185,129,.4);border-radius:18px;padding:18px 22px;margin-bottom:20px;display:flex;align-items:center;gap:18px;box-shadow:0 0 30px rgba(16,185,129,.12)}
+.cb-star{font-size:2rem;flex-shrink:0;filter:drop-shadow(0 0 8px rgba(250,204,21,.5))}
+.cb-label{font-size:.62rem;color:#6ee7b7;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px}
+.cb-main{font-size:1.25rem;font-weight:700;color:#fff;letter-spacing:1px}
+.cb-save{font-size:.72rem;color:#6ee7b7;margin-top:4px}
+
+/* BUTTONS */
+.btn-row{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap}
+.btn{flex:1;min-width:140px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 16px;cursor:pointer;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:.78rem;font-weight:600;letter-spacing:1px;transition:all .15s;text-align:left}
+.btn:hover{border-color:var(--accent);background:rgba(34,211,238,.08)}
+.btn.active{border-color:var(--accent);background:rgba(34,211,238,.12);color:var(--accent)}
+.btn-icon{font-size:1.1rem;margin-bottom:4px;display:block}
+.btn-sub{font-size:.6rem;color:var(--muted);font-weight:400;letter-spacing:.5px;margin-top:3px;display:block}
+
+/* PRICE CARDS */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:20px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:20px;backdrop-filter:blur(12px);transition:border-color .2s}
+.card.winner{border-color:rgba(16,185,129,.6);box-shadow:0 0 20px rgba(16,185,129,.08)}
+.card-name{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:3px;color:var(--accent);margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.winner-badge{font-size:.55rem;background:rgba(16,185,129,.2);color:#6ee7b7;border:1px solid rgba(16,185,129,.3);padding:2px 8px;border-radius:10px;letter-spacing:1px;font-weight:600}
+.price-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:.5px solid rgba(148,163,184,.1)}
+.price-row:last-of-type{border:none}
+.pr-label{font-size:.65rem;color:var(--muted);letter-spacing:1px}
+.pr-val{font-size:.85rem;font-weight:700}
+.pr-val.cheap{color:var(--green)}.pr-val.mid{color:var(--amber)}.pr-val.exp{color:var(--red)}.pr-val.na{color:var(--muted);font-weight:400}
+.card-updated{font-size:.58rem;color:var(--muted);margin-top:10px;letter-spacing:.5px}
+
+/* BEREGNER PANEL */
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:24px;margin-bottom:20px;display:none}
+.panel.open{display:block}
+.panel-title{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:3px;color:var(--accent);margin-bottom:18px}
+.calc-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:16px}
+.calc-label{font-size:.6rem;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:5px}
+select,input[type=number]{width:100%;background:rgba(15,23,42,.8);border:1px solid rgba(148,163,184,.2);border-radius:8px;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:.85rem;padding:10px 12px;outline:none;transition:border-color .15s;-webkit-appearance:none}
+select:focus,input:focus{border-color:var(--accent)}
+select option{background:#0f172a}
+
+/* BREAKDOWN */
+.breakdown{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.bc{background:rgba(15,23,42,.6);border:1px solid rgba(148,163,184,.15);border-radius:12px;padding:12px;text-align:center}
+.bc.bc-cheapest{border-color:rgba(16,185,129,.5);background:rgba(16,185,129,.06)}
+.bc-name{font-size:.6rem;color:var(--muted);letter-spacing:1px;margin-bottom:4px;text-transform:uppercase}
+.bc-name.cheapest-label{color:#6ee7b7}
+.bc-price{font-size:.9rem;font-weight:700;margin-bottom:2px}
+.bc-total{font-size:.65rem;color:var(--muted)}
+
+/* RESULT */
+.result-box{background:rgba(15,23,42,.6);border:1px solid rgba(148,163,184,.15);border-radius:12px;padding:18px;text-align:center;margin-bottom:12px}
+.result-main{font-size:1.8rem;font-weight:700;margin-bottom:6px}
+.result-main.save{color:var(--green)}.result-main.waste{color:var(--red)}.result-main.same{color:var(--muted)}
+.result-sub{font-size:.72rem;color:var(--muted);line-height:1.7;letter-spacing:.5px}
+.result-tip{background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.2);border-radius:10px;padding:10px 14px;font-size:.68rem;color:#6ee7b7;line-height:1.7;letter-spacing:.5px}
+
+/* HISTORY PAGE */
+.back-btn{background:transparent;border:1px solid var(--border);border-radius:10px;padding:8px 16px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:.72rem;cursor:pointer;letter-spacing:1px;transition:all .15s;margin-bottom:20px;display:inline-flex;align-items:center;gap:6px}
+.back-btn:hover{border-color:var(--accent);color:var(--accent)}
+.page-title{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:3px;color:#a5f3fc;margin-bottom:6px}
+.page-sub{font-size:.7rem;color:var(--muted);letter-spacing:1px;margin-bottom:20px}
+.fuel-tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.fuel-tab{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:8px 16px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--muted);letter-spacing:1px;transition:all .15s}
+.fuel-tab.active{border-color:var(--accent);color:var(--accent);background:rgba(34,211,238,.08)}
+.chart-box{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:20px;margin-bottom:16px}
+.chart-wrap{height:260px;position:relative}
+.chart-legend{display:flex;gap:16px;margin-top:14px;flex-wrap:wrap}
+.cl-item{display:flex;align-items:center;gap:6px;font-size:.65rem;color:var(--muted);letter-spacing:1px}
+.cl-dot{width:10px;height:10px;border-radius:50%}
+.hist-table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:18px;overflow:hidden;margin-bottom:16px}
+.hist-table{width:100%;border-collapse:collapse;font-size:.72rem}
+.hist-table th{padding:10px 14px;text-align:left;font-size:.6rem;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;border-bottom:1px solid rgba(148,163,184,.1);white-space:nowrap}
+.hist-table td{padding:9px 14px;border-bottom:.5px solid rgba(148,163,184,.06);white-space:nowrap}
+.hist-table tr:last-child td{border:none}
+.hist-table tr:hover td{background:rgba(34,211,238,.03)}
+.td-date{color:var(--muted);font-size:.65rem}
+.td-cheap{color:var(--green);font-weight:700}.td-mid{color:var(--amber);font-weight:700}.td-exp{color:var(--red);font-weight:700}.td-na{color:var(--muted)}
+
+.loading{text-align:center;padding:40px;color:var(--muted);font-size:.75rem;letter-spacing:2px}
+.spinner{width:28px;height:28px;border:2px solid rgba(148,163,184,.2);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 12px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.err-box{background:rgba(244,63,94,.06);border:1px solid rgba(244,63,94,.2);border-radius:12px;padding:14px 18px;color:#fb7185;font-size:.72rem;letter-spacing:1px}
+.last-updated{text-align:center;font-size:.6rem;color:var(--muted);letter-spacing:1.5px;padding:12px 0;text-transform:uppercase}
+@media(max-width:600px){.cards{grid-template-columns:1fr}.btn-row{flex-direction:column}.breakdown{grid-template-columns:repeat(3,1fr)}}
+</style>
+</head>
+<body>
+<div class="bg-wrap">
+  <div class="bg-grad"></div>
+  <div class="bg-grid"></div>
+  <div class="bg-glow1"></div>
+  <div class="bg-glow2"></div>
+</div>
+<main>
+
+  <!-- HOVUDSÍÐA -->
+  <div class="page active" id="page-main">
+    <div class="hero">
+      <div class="hero-top">
+        <div>
+          <h1>Brennievnisprísir í Føroyum</h1>
+          <div class="hero-sub">Dagsprísir fyri gassolju, diesel og bensin</div>
+        </div>
+        <span class="auto-tag">⟳ Dagført sjálvvirkandi</span>
+      </div>
+      <div class="legend">
+        <div class="legend-item"><span class="ldot" style="background:#10b981"></span>Billigastur</div>
+        <div class="legend-item"><span class="ldot" style="background:#f59e0b"></span>Miðjan</div>
+        <div class="legend-item"><span class="ldot" style="background:#f43f5e"></span>Dýrastur</div>
+      </div>
+    </div>
+
+    <div class="intro-text">
+      <h2>Prísvaktin á oljuni í Føroyum</h2>
+      <p>Síggja hvør er bíligast · Rokna teg fram hvat tú kanst spara · Fylgvi prísbroytingum</p>
+    </div>
+
+    <div class="cheapest-banner">
+      <div class="cb-star">★</div>
+      <div>
+        <div class="cb-label">Billigastur í dag</div>
+        <div class="cb-main" id="cb-main">Lesur prísir...</div>
+        <div class="cb-save" id="cb-save"></div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn" id="btn-calc" onclick="toggleCalc()">
+        <span class="btn-icon">⊞</span>
+        Rokna sparingar
+        <span class="btn-sub">Vel firma, slag og litar</span>
+      </button>
+      <button class="btn" onclick="showPage('page-history')">
+        <span class="btn-icon">↗</span>
+        Prísútvíkling
+        <span class="btn-sub">Síggj prísir frá mars</span>
+      </button>
+    </div>
+
+    <!-- BEREGNER -->
+    <div class="panel" id="calc-panel">
+      <div class="panel-title">⊞ Rokna sparingar</div>
+      <div class="calc-row">
+        <div>
+          <div class="calc-label">Slag</div>
+          <select id="c-slag" onchange="calcResult()">
+            <option value="gassoil">Gassolja</option>
+            <option value="diesel">Diesel</option>
+            <option value="bensin">Bensin</option>
+          </select>
+        </div>
+        <div>
+          <div class="calc-label">Litar</div>
+          <input type="number" id="c-litar" value="60" min="1" max="9999" step="1" oninput="calcResult()">
+        </div>
+        <div>
+          <div class="calc-label">Mitt firma</div>
+          <select id="c-firma" onchange="calcResult()">
+            <option>Thomsen</option>
+            <option>Magn</option>
+            <option>Effo</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- ALLE FIRMUR -->
+      <div class="breakdown" id="breakdown">
+        <div class="bc"><div class="bc-name">Thomsen</div><div class="bc-price" style="color:var(--muted)">—</div><div class="bc-total">—</div></div>
+        <div class="bc"><div class="bc-name">Magn</div><div class="bc-price" style="color:var(--muted)">—</div><div class="bc-total">—</div></div>
+        <div class="bc"><div class="bc-name">Effo</div><div class="bc-price" style="color:var(--muted)">—</div><div class="bc-total">—</div></div>
+      </div>
+
+      <!-- RESULTAT -->
+      <div class="result-box">
+        <div class="result-main same" id="r-main">—</div>
+        <div class="result-sub" id="r-sub">Vel slag og litar yvir</div>
+      </div>
+      <div class="result-tip" id="r-tip" style="display:none"></div>
+    </div>
+
+    <div class="cards" id="cards-container">
+      <div class="loading"><div class="spinner"></div>Lesur prísir...</div>
+    </div>
+    <div class="last-updated" id="last-updated-main"></div>
+  </div>
+
+  <!-- PRÍSÚTVÍKLING -->
+  <div class="page" id="page-history">
+    <button class="back-btn" onclick="showPage('page-main')">← Aftur til dagsprísir</button>
+    <div class="page-title">Prísútvíkling</div>
+    <div class="page-sub">Gassolja frá 1. mars 2026 · Dagligar prísir</div>
+    <div class="fuel-tabs">
+      <button class="fuel-tab active" onclick="setFuelTab('gassoil',this)">Gassolja</button>
+      <button class="fuel-tab" onclick="setFuelTab('diesel',this)">Diesel</button>
+      <button class="fuel-tab" onclick="setFuelTab('bensin',this)">Bensin</button>
+    </div>
+    <div class="chart-box">
+      <div class="chart-wrap"><canvas id="priceChart"></canvas></div>
+      <div class="chart-legend">
+        <div class="cl-item"><span class="cl-dot" style="background:#378add"></span>Thomsen</div>
+        <div class="cl-item"><span class="cl-dot" style="background:#10b981"></span>Magn</div>
+        <div class="cl-item"><span class="cl-dot" style="background:#f59e0b"></span>Effo</div>
+      </div>
+    </div>
+    <div class="hist-table-wrap">
+      <table class="hist-table">
+        <thead><tr><th>Dagur</th><th>Thomsen</th><th>Magn</th><th>Effo</th></tr></thead>
+        <tbody id="hist-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script>
+const STORAGE_KEY = "fpv3";
+const COLORS = {Thomsen:"#378add", Magn:"#10b981", Effo:"#f59e0b"};
+let chartInst = null;
+let activeFuelTab = "gassoil";
+let currentPrices = null;
+
+// ── FRØSØGA FRÁ MARS ─────────────────────────────
+const SEED = [
+  {date:"2026-03-01",sources:[{source:"Thomsen",gassoil:"7.840",diesel:null,bensin:null,updatedAt:""},{source:"Magn",gassoil:"8.550",diesel:null,bensin:null,updatedAt:""},{source:"Effo",gassoil:null,diesel:null,bensin:null,updatedAt:""}]},
+  {date:"2026-03-03",sources:[{source:"Thomsen",gassoil:"8.060",diesel:null,bensin:null,updatedAt:""},{source:"Magn",gassoil:"8.800",diesel:null,bensin:null,updatedAt:""},{source:"Effo",gassoil:null,diesel:null,bensin:null,updatedAt:""}]},
+  {date:"2026-03-05",sources:[{source:"Thomsen",gassoil:"8.060",diesel:null,bensin:null,updatedAt:""},{source:"Magn",gassoil:"9.425",diesel:null,bensin:null,updatedAt:""},{source:"Effo",gassoil:null,diesel:null,bensin:null,updatedAt:""}]},
+  {date:"2026-03-07",sources:[{source:"Thomsen",gassoil:"8.060",diesel:null,bensin:null,updatedAt:""},{source:"Magn",gassoil:"9.738",diesel:null,bensin:null,updatedAt:""},{source:"Effo",gassoil:"9.738",diesel:null,bensin:null,updatedAt:""}]},
+  {date:"2026-03-09",sources:[{source:"Thomsen",gassoil:"8.840",diesel:null,bensin:null,updatedAt:""},{source:"Magn",gassoil:"9.738",diesel:null,bensin:null,updatedAt:""},{source:"Effo",gassoil:"10.238",diesel:null,bensin:null,updatedAt:""}]},
+  {date:"2026-03-10",sources:[{source:"Thomsen",gassoil:"8.840",diesel:null,bensin:null,updatedAt:""},{source:"Magn",gassoil:"10.363",diesel:null,bensin:null,updatedAt:""},{source:"Effo",gassoil:"10.238",diesel:null,bensin:null,updatedAt:""}]},
+  {date:"2026-03-11",sources:[{source:"Thomsen",gassoil:"8.840",diesel:null,bensin:null,updatedAt:""},{source:"Magn",gassoil:"10.800",diesel:null,bensin:null,updatedAt:""},{source:"Effo",gassoil:"10.800",diesel:null,bensin:null,updatedAt:""}]},
+  {date:"2026-03-13",sources:[{source:"Thomsen",gassoil:"8.840",diesel:null,bensin:null,updatedAt:""},{source:"Magn",gassoil:"11.150",diesel:null,bensin:null,updatedAt:""},{source:"Effo",gassoil:"10.800",diesel:null,bensin:null,updatedAt:""}]},
+  {date:"2026-03-16",sources:[{source:"Thomsen",gassoil:"8.840",diesel:null,bensin:null,updatedAt:""},{source:"Magn",gassoil:"11.150",diesel:null,bensin:null,updatedAt:""},{source:"Effo",gassoil:"11.250",diesel:null,bensin:null,updatedAt:""}]},
+  {date:"2026-03-17",sources:[{source:"Thomsen",gassoil:"10.100",diesel:null,bensin:null,updatedAt:""},{source:"Magn",gassoil:"11.250",diesel:null,bensin:null,updatedAt:""},{source:"Effo",gassoil:"11.250",diesel:null,bensin:null,updatedAt:""}]},
+  {date:"2026-03-19",sources:[{source:"Thomsen",gassoil:"10.100",diesel:null,bensin:null,updatedAt:""},{source:"Magn",gassoil:"11.438",diesel:null,bensin:null,updatedAt:""},{source:"Effo",gassoil:"11.875",diesel:null,bensin:null,updatedAt:""}]},
+  {date:"2026-03-20",sources:[{source:"Thomsen",gassoil:"10.100",diesel:null,bensin:null,updatedAt:""},{source:"Magn",gassoil:"11.875",diesel:null,bensin:null,updatedAt:""},{source:"Effo",gassoil:"11.875",diesel:null,bensin:null,updatedAt:""}]},
+  {date:"2026-03-24",sources:[{source:"Thomsen",gassoil:"10.100",diesel:null,bensin:null,updatedAt:""},{source:"Magn",gassoil:"12.125",diesel:null,bensin:null,updatedAt:""},{source:"Effo",gassoil:"11.875",diesel:null,bensin:null,updatedAt:""}]},
+  {date:"2026-03-26",sources:[{source:"Thomsen",gassoil:"10.350",diesel:null,bensin:null,updatedAt:"26/03/2026"},{source:"Magn",gassoil:"12.125",diesel:"14.180",bensin:"14.640",updatedAt:"25 March 2026"},{source:"Effo",gassoil:"12.125",diesel:"14.18",bensin:"14.64",updatedAt:"2026-03-26"}]},
+];
+
+// ── INIT ─────────────────────────────────────────
+window.addEventListener("DOMContentLoaded", () => {
+  initHistory();
+  fetchPrices();
+});
+
+function initHistory() {
+  let stored = loadHistory();
+  const storedDates = new Set(stored.map(e => e.date));
+  SEED.forEach(e => { if (!storedDates.has(e.date)) stored.push(e); });
+  stored = stored.sort((a,b) => b.date.localeCompare(a.date)).slice(0,90);
+  saveHistory(stored);
+}
+
+async function fetchPrices() {
+  try {
+    const res = await fetch("/api/fuel-prices");
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const data = await res.json();
+    currentPrices = data;
+    const today = data.fetchedAt.slice(0,10);
+    const entry = {
+      date: today,
+      capturedAt: data.fetchedAt,
+      sources: data.sources.map(s => ({source:s.source,updatedAt:s.updatedAt||"",gassoil:s.gassoil,diesel:s.diesel,bensin:s.bensin}))
+    };
+    let stored = loadHistory();
+    stored = [entry, ...stored.filter(h => h.date !== today)].slice(0,90);
+    saveHistory(stored);
+    renderMain(data);
+    renderHistory();
+  } catch(e) {
+    const stored = loadHistory();
+    if (stored.length > 0) {
+      const l = stored[0];
+      currentPrices = {fetchedAt: l.capturedAt || l.date+"T12:00:00Z", sources: l.sources};
+      renderMain(currentPrices);
+      renderHistory();
+    } else {
+      document.getElementById("cards-container").innerHTML =
+        '<div class="err-box">Kundi ikki heinta prísir: ' + e.message + '</div>';
+    }
+  }
+}
+
+function pp(val) {
+  if (!val || val === "N/A") return null;
+  const m = String(val).replace(",",".").match(/[\d.]+/);
+  return m ? parseFloat(m[0]) : null;
+}
+function fmt(val) {
+  const p = pp(val); if (!p) return "N/A";
+  return p.toFixed(3).replace(".",",") + " kr/l";
+}
+
+function renderMain(data) {
+  const sources = data.sources || [];
+  const gP = sources.map(s=>({name:s.source,p:pp(s.gassoil)})).filter(x=>x.p);
+  const dP = sources.map(s=>({name:s.source,p:pp(s.diesel)})).filter(x=>x.p);
+  const bP = sources.map(s=>({name:s.source,p:pp(s.bensin)})).filter(x=>x.p);
+  updateBanner(gP, dP, bP);
+  const ranks = {};
+  [["gassoil",gP],["diesel",dP],["bensin",bP]].forEach(([k,arr]) => {
+    const s=[...arr].sort((a,b)=>a.p-b.p); ranks[k]={};
+    s.forEach((x,i)=>ranks[k][x.name]=i===0?"cheap":i===s.length-1&&s.length>1?"exp":"mid");
+  });
+  const c = document.getElementById("cards-container");
+  if (!sources.length) { c.innerHTML='<div class="err-box">Eingin prísir</div>'; return; }
+  const cf = gP.length ? [...gP].sort((a,b)=>a.p-b.p)[0].name : null;
+  c.innerHTML = sources.map(s => {
+    const isW = s.source===cf && gP.length>0;
+    const g=pp(s.gassoil),d=pp(s.diesel),b=pp(s.bensin);
+    return `<div class="card ${isW?"winner":""}">
+      <div class="card-name">${s.source}${isW?'<span class="winner-badge">✓ BILLIGASTUR</span>':''}</div>
+      <div class="price-row"><span class="pr-label">Gassolja</span><span class="pr-val ${g?(ranks.gassoil[s.source]||"na"):"na"}">${fmt(s.gassoil)}</span></div>
+      <div class="price-row"><span class="pr-label">Diesel</span><span class="pr-val ${d?(ranks.diesel[s.source]||"na"):"na"}">${fmt(s.diesel)}</span></div>
+      <div class="price-row"><span class="pr-label">Bensin</span><span class="pr-val ${b?(ranks.bensin[s.source]||"na"):"na"}">${fmt(s.bensin)}</span></div>
+      <div class="card-updated">Dagført: ${s.updatedAt||""}</div>
+    </div>`;
+  }).join("");
+  const dt = new Date(data.fetchedAt);
+  document.getElementById("last-updated-main").textContent =
+    "Seinast kannað: " + dt.toLocaleDateString("fo-FO") + " " + dt.toLocaleTimeString("fo-FO",{hour:"2-digit",minute:"2-digit"});
+  calcResult();
+}
+
+function updateBanner(gas,diesel,bensin) {
+  const cands=[];
+  [["Gassolja",gas],["Diesel",diesel],["Bensin",bensin]].forEach(([slag,arr])=>{
+    if(arr.length<2)return;
+    const s=[...arr].sort((a,b)=>a.p-b.p);
+    cands.push({name:s[0].name,p:s[0].p,slag,diff:s[s.length-1].p-s[0].p});
+  });
+  if(!cands.length)return;
+  const best=cands.sort((a,b)=>b.diff-a.diff)[0];
+  document.getElementById("cb-main").textContent=best.name+" · "+best.p.toFixed(3).replace(".",",")+" kr/l · "+best.slag;
+  document.getElementById("cb-save").textContent="Spara upp til "+best.diff.toFixed(3).replace(".",",")+" kr/l samanborið við dýrastu á "+best.slag;
+}
+
+// ── BEREGNER ─────────────────────────────────────
+window.toggleCalc = function() {
+  const p=document.getElementById("calc-panel"),b=document.getElementById("btn-calc");
+  const open=p.classList.toggle("open"); b.classList.toggle("active",open);
+  if(open) calcResult();
+};
+
+window.calcResult = function() {
+  if (!currentPrices) return;
+  const firma = document.getElementById("c-firma").value;
+  const slag  = document.getElementById("c-slag").value;
+  const litar = parseFloat(document.getElementById("c-litar").value)||0;
+  const slagName = {gassoil:"Gassolja",diesel:"Diesel",bensin:"Bensin"}[slag];
+  const firms = ["Thomsen","Magn","Effo"];
+
+  // Breakdown
+  const prices = {};
+  firms.forEach(f => {
+    const src = currentPrices.sources.find(s=>s.source===f);
+    prices[f] = src ? pp(src[slag]) : null;
+  });
+  const valid = firms.map(f=>({name:f,p:prices[f]})).filter(x=>x.p);
+  const cheapest = valid.length ? [...valid].sort((a,b)=>a.p-b.p)[0] : null;
+  const mostExp  = valid.length > 1 ? [...valid].sort((a,b)=>b.p-a.p)[0] : null;
+
+  document.getElementById("breakdown").innerHTML = firms.map(f => {
+    const p = prices[f];
+    const isCheap = cheapest && f===cheapest.name;
+    return `<div class="bc ${isCheap?"bc-cheapest":""}">
+      <div class="bc-name ${isCheap?"cheapest-label":""}">${f}${isCheap?" ✓":""}</div>
+      <div class="bc-price" style="color:${p?(isCheap?"#10b981":"var(--text)"):"var(--muted)"}">
+        ${p ? p.toFixed(3).replace(".",",")+" kr/l" : "N/A"}
+      </div>
+      <div class="bc-total">${p&&litar>0 ? Math.round(p*litar)+" kr" : "—"}</div>
+    </div>`;
+  }).join("");
+
+  const rMain = document.getElementById("r-main");
+  const rSub  = document.getElementById("r-sub");
+  const rTip  = document.getElementById("r-tip");
+  const chosen = prices[firma];
+
+  if (!chosen) {
+    rMain.className="result-main same"; rMain.textContent="N/A";
+    rSub.textContent=firma+" hefur ongar prísir fyri "+slagName;
+    rTip.style.display="none"; return;
+  }
+  if (!cheapest || valid.length < 2) {
+    rMain.className="result-main same";
+    rMain.textContent=chosen.toFixed(3).replace(".",",")+" kr/l";
+    rSub.textContent=litar>0?Math.round(chosen*litar)+" kr fyri "+litar+" l":"Einasta firma";
+    rTip.style.display="none"; return;
+  }
+
+  const dvc = chosen - cheapest.p;
+  const dve = mostExp ? chosen - mostExp.p : 0;
+
+  if (dvc > 0.001) {
+    const save = Math.round(dvc*litar);
+    const totalChosen = Math.round(chosen*litar);
+    const totalCheap  = Math.round(cheapest.p*litar);
+    rMain.className="result-main waste";
+    rMain.textContent = litar>0 ? "+"+save+" kr" : "Dýrari";
+    rSub.textContent = firma+": "+chosen.toFixed(3).replace(".",",")+" kr/l"+(litar>0?" · "+totalChosen+" kr fyri "+litar+" l":"");
+    rTip.style.display="block";
+    rTip.textContent = "Sparast hjá "+cheapest.name+": "+cheapest.p.toFixed(3).replace(".",",")+" kr/l"+(litar>0?" · "+totalCheap+" kr — tú sparir "+save+" kr":"");
+  } else if (dve < -0.001) {
+    const save = Math.round(Math.abs(dve)*litar);
+    rMain.className="result-main save";
+    rMain.textContent = litar>0 ? "Sparir "+save+" kr" : "Billigastur";
+    rSub.textContent = firma+" er billigastur á "+slagName+(litar>0?" · "+Math.round(chosen*litar)+" kr fyri "+litar+" l":"");
+    rTip.style.display="block";
+    rTip.textContent = "Samanborið við "+mostExp.name+" ("+mostExp.p.toFixed(3).replace(".",",")+" kr/l) sparir tú "+(litar>0?save+" kr fyri "+litar+" l":Math.abs(dve).toFixed(3).replace(".",",")+" kr/l");
+  } else {
+    rMain.className="result-main same"; rMain.textContent="Sama prísur";
+    rSub.textContent=firma+" og "+cheapest.name+" hava sama prís á "+slagName;
+    rTip.style.display="none";
+  }
+};
+
+// ── SÍDUR ─────────────────────────────────────────
+window.showPage = function(id) {
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  if(id==="page-history") renderHistory();
+  window.scrollTo(0,0);
+};
+window.setFuelTab = function(fuel,el) {
+  activeFuelTab=fuel;
+  document.querySelectorAll(".fuel-tab").forEach(t=>t.classList.remove("active"));
+  el.classList.add("active"); buildChart(); buildHistTable();
+};
+function renderHistory(){buildChart();buildHistTable();}
+
+function getV(entry,source,fuel){
+  const s=entry.sources.find(x=>x.source===source);
+  return s?pp(s[fuel]):null;
+}
+
+function buildChart() {
+  const canvas = document.getElementById("priceChart");
+  if (!canvas) return;
+  const history = loadHistory();
+  if (!history.length) return;
+
+  const sorted = [...history].sort((a,b)=>a.date.localeCompare(b.date));
+  const labels = sorted.map(e => {
+    const d = new Date(e.date+"T12:00:00");
+    return d.toLocaleDateString("fo-FO",{day:"numeric",month:"numeric"});
+  });
+
+  const datasets = ["Thomsen","Magn","Effo"].map(f => ({
+    label: f,
+    data: sorted.map(e => getV(e,f,activeFuelTab)),
+    borderColor: COLORS[f],
+    backgroundColor: COLORS[f]+"22",
+    borderWidth: 2,
+    pointRadius: sorted.length > 20 ? 2 : 4,
+    pointHoverRadius: 6,
+    pointBackgroundColor: COLORS[f],
+    tension: 0.3,
+    fill: false,
+    spanGaps: true
+  }));
+
+  if (chartInst) { chartInst.destroy(); chartInst = null; }
+
+  chartInst = new Chart(canvas, {
+    type: "line",
+    data: {labels, datasets},
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: {mode:"index", intersect:false},
+      plugins: {
+        legend: {display:false},
+        tooltip: {
+          backgroundColor:"rgba(2,6,23,0.95)",
+          borderColor:"rgba(34,211,238,0.3)",
+          borderWidth:1,
+          titleColor:"#94a3b8",
+          bodyColor:"#e2e8f0",
+          padding:12,
+          callbacks: {
+            label: ctx => {
+              const v = ctx.parsed.y;
+              return " "+ctx.dataset.label+": "+(v!=null ? v.toFixed(3).replace(".",",")+" kr/l" : "N/A");
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid:{color:"rgba(148,163,184,0.06)"},
+          ticks:{color:"#64748b",font:{size:10},maxTicksLimit:10,maxRotation:0}
+        },
+        y: {
+          grid:{color:"rgba(148,163,184,0.06)"},
+          ticks:{color:"#64748b",font:{size:10},callback:v=>v.toFixed(2).replace(".",",")+" kr"}
+        }
+      }
+    }
+  });
+}
+
+function buildHistTable() {
+  const tbody = document.getElementById("hist-body");
+  const history = loadHistory();
+  if (!history.length) {
+    tbody.innerHTML='<tr><td colspan="4" style="padding:16px;color:var(--muted);font-size:.7rem">Eingin søga</td></tr>';
+    return;
+  }
+  const sorted = [...history].sort((a,b)=>b.date.localeCompare(a.date));
+  tbody.innerHTML = sorted.map(entry => {
+    const vals = ["Thomsen","Magn","Effo"].map(f=>({name:f,p:getV(entry,f,activeFuelTab)}));
+    const valid = vals.filter(x=>x.p);
+    const minP = valid.length ? Math.min(...valid.map(x=>x.p)) : null;
+    const maxP = valid.length>1 ? Math.max(...valid.map(x=>x.p)) : null;
+    const d = new Date(entry.date+"T12:00:00");
+    const dateStr = d.toLocaleDateString("fo-FO",{day:"numeric",month:"numeric",year:"numeric"});
+    const cells = ["Thomsen","Magn","Effo"].map(f => {
+      const v = getV(entry,f,activeFuelTab);
+      if (!v) return '<td class="td-na">N/A</td>';
+      const cls = v===minP?"td-cheap":v===maxP?"td-exp":"td-mid";
+      return `<td class="${cls}">${v.toFixed(3).replace(".",",")} kr/l</td>`;
+    }).join("");
+    return `<tr><td class="td-date">${dateStr}</td>${cells}</tr>`;
+  }).join("");
+}
+
+function loadHistory(){
+  try{const r=localStorage.getItem(STORAGE_KEY);if(!r)return[];const a=JSON.parse(r);return Array.isArray(a)?a:[];}catch{return[];}
+}
+function saveHistory(d){
+  try{localStorage.setItem(STORAGE_KEY,JSON.stringify(d));}catch{}
+}
+</script>
+</body>
+</html>
