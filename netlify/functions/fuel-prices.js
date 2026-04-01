@@ -6,7 +6,7 @@ const http = require("http");
 const KNOWN_PRICES = {
   Thomsen: { gassoil: "10.350", diesel: null,    bensin: null,    updatedAt: "26/03/2026" },
   Magn:    { gassoil: "12.313", diesel: "14.360", bensin: "14.700", updatedAt: "31/03/2026" },
-  Effo:    { gassoil: "12.125", diesel: "14.180", bensin: "14.640", updatedAt: "26/03/2026" }
+  Effo:    { gassoil: "12.313", diesel: "14.360", bensin: "14.700", updatedAt: "26/03/2026" }
 };
 
 function fetchUrl(url, redirectCount = 0) {
