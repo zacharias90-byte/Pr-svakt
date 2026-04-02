@@ -182,34 +182,10 @@ body{font-family:'DM Sans',sans-serif;background:#e8edf5;min-height:100vh;paddin
     <button onclick="nextMonth()" style="background:#eef2f9;border:none;border-radius:6px;padding:5px 14px;cursor:pointer;color:#003580;font-size:16px">&#9654;</button>
   </div>
   <div class="chart-wrap"><canvas id="priceChart"></canvas></div>
-  <div style="display:flex;gap:14px;margin-top:8px;flex-wrap:wrap">
-    <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:#555"><span style="width:12px;height:3px;background:#2c6e49;display:inline-block;border-radius:2px"></span>Thomsen</span>
-    <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:#555"><span style="width:12px;height:3px;background:#003580;display:inline-block;border-radius:2px"></span>Magn</span>
-    <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:#555"><span style="width:12px;height:3px;background:#c8102e;display:inline-block;border-radius:2px"></span>Effo</span>
-  </div>
-  <div style="font-size:10px;color:#aaa;margin-top:6px;margin-bottom:2px">Prísbroytingar henda mánaðin — grønur=lækkar · reyður=hækkar:</div>
-  <div class="changes-list">
-    <div class="change-item">
-      <div class="logo-pill logo-effo" style="width:46px;height:20px;font-size:9px">EFFO</div>
-      <span class="change-badge dn">−0,05</span>
-      <span class="change-who">Diesel</span>
-      <span class="change-what">lækkað til 9,45 kr/L</span>
-      <span class="change-date">í dag</span>
-    </div>
-    <div class="change-item">
-      <div class="logo-pill logo-thomsen" style="width:46px;height:20px;font-size:9px">THOM</div>
-      <span class="change-badge up">+0,10</span>
-      <span class="change-who">Gassolja</span>
-      <span class="change-what">hækkað til 8,35 kr/L</span>
-      <span class="change-date">í gjár</span>
-    </div>
-    <div class="change-item">
-      <div class="logo-pill logo-magn" style="width:46px;height:20px;font-size:9px">MAGN</div>
-      <span class="change-badge dn">−0,08</span>
-      <span class="change-who">Bensin</span>
-      <span class="change-what">lækkað til 12,10 kr/L</span>
-      <span class="change-date">3 dagar síðan</span>
-    </div>
+  <div style="display:flex;gap:14px;margin-top:10px;flex-wrap:wrap">
+    <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:#555"><span style="width:16px;height:3px;background:#b8860b;display:inline-block;border-radius:2px"></span>Thomsen</span>
+    <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:#555"><span style="width:16px;height:3px;background:#c8102e;display:inline-block;border-radius:2px"></span>Magn</span>
+    <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:#555"><span style="width:16px;height:3px;background:#4a9fd4;display:inline-block;border-radius:2px"></span>Effo</span>
   </div>
 </div>
 
@@ -218,17 +194,29 @@ body{font-family:'DM Sans',sans-serif;background:#e8edf5;min-height:100vh;paddin
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
-function fmt(v){if(v===null||v===undefined||isNaN(v))return'—';var s=v.toFixed(3).replace('.',',');return s.endsWith('0')?s.slice(0,-1):s;}
-function parseP(s){if(!s||s===null||s==='null')return null;var n=parseFloat(String(s).replace(',','.'));return isNaN(n)?null:n;}
+function fmt(v){
+  if(v===null||v===undefined||isNaN(v))return'—';
+  var s=v.toFixed(3).replace('.',',');
+  // Fjern unødvendige trailing nuller: 10,350 -> 10,35 men 12,313 bevares
+  return s.replace(/(\,\d*?)0+$/,'$1').replace(/\,$/,'');
+}
+
+function parseP(s){
+  if(!s||s===null||s==='null')return null;
+  var n=parseFloat(String(s).replace(',','.'));
+  return isNaN(n)?null:n;
+}
+
+// Farver: Thomsen=mørk gul, Magn=rød, Effo=lys blå
+var COLORS={thomsen:'#b8860b', magn:'#c8102e', effo:'#4a9fd4'};
 
 var pData={gassoil:{},diesel:{},bensin:{}};
 var allHistory=[];
 var filteredHistory=[];
 var chart=null;
 var currentFuel='gassoil';
-var currentMonthOffset=0; // 0=nyeste, -1=forrige osv.
+var currentMonthOffset=0;
 
-// ── Måneds-filter ───────────────────────────────────────────────
 function getMonthLabel(offset){
   var now=new Date();
   var d=new Date(now.getFullYear(),now.getMonth()+offset,1);
@@ -243,109 +231,102 @@ function filterByMonth(offset){
   var y=target.getFullYear(), m=target.getMonth();
   filteredHistory=allHistory.filter(function(e){
     var d=new Date(e.date);
-    return d.getFullYear()===y && d.getMonth()===m;
+    return d.getFullYear()===y&&d.getMonth()===m;
   });
-  // Hvis ingen data for den måned, brug alle
-  if(!filteredHistory.length) filteredHistory=allHistory;
-  document.getElementById('month-label').textContent=getMonthLabel(offset);
+  if(!filteredHistory.length)filteredHistory=allHistory;
+  var lbl=document.getElementById('month-label');
+  if(lbl)lbl.textContent=getMonthLabel(offset);
   resetCanvas();
   buildChart(currentFuel);
-  buildChangesList();
 }
 
 function prevMonth(){
-  // Find tidligste dato
   if(!allHistory.length)return;
   var earliest=new Date(allHistory[0].date);
   var now=new Date();
-  var minOffset=Math.floor((earliest-now)/(1000*60*60*24*30));
-  if(currentMonthOffset>minOffset){
-    currentMonthOffset--;
-    filterByMonth(currentMonthOffset);
-  }
+  var minOffset=-(now.getFullYear()*12+now.getMonth()-(earliest.getFullYear()*12+earliest.getMonth()));
+  if(currentMonthOffset>minOffset){currentMonthOffset--;filterByMonth(currentMonthOffset);}
 }
 
 function nextMonth(){
-  if(currentMonthOffset<0){
-    currentMonthOffset++;
-    filterByMonth(currentMonthOffset);
-  }
+  if(currentMonthOffset<0){currentMonthOffset++;filterByMonth(currentMonthOffset);}
 }
 
-// ── Canvas reset ────────────────────────────────────────────────
 function resetCanvas(){
   if(chart){try{chart.destroy();}catch(e){}chart=null;}
   var wrap=document.querySelector('.chart-wrap');
   if(wrap)wrap.innerHTML='<canvas id="priceChart"></canvas>';
 }
 
-// ── Graf ────────────────────────────────────────────────────────
 function buildChart(fuel){
   resetCanvas();
-  var colors={thomsen:'#2c6e49',magn:'#003580',effo:'#c8102e'};
   var canvas=document.getElementById('priceChart');
   if(!canvas)return;
 
-  var histData=filteredHistory.length>=2?filteredHistory:null;
+  var hist=filteredHistory.length>=2?filteredHistory:null;
 
-  if(!histData){
-    // Bar chart - dagens priser
+  if(!hist){
+    // Ingen historik — simpel bar chart
     var keys=['thomsen','magn','effo'].filter(function(k){return pData[fuel][k]!==null&&pData[fuel][k]!==undefined;});
     if(!keys.length)return;
     chart=new Chart(canvas,{
       type:'bar',
       data:{
         labels:keys.map(function(k){return k.charAt(0).toUpperCase()+k.slice(1);}),
-        datasets:[{
-          data:keys.map(function(k){return pData[fuel][k];}),
-          backgroundColor:keys.map(function(k){return colors[k];}),
-          borderRadius:6,borderSkipped:false
-        }]
+        datasets:[{data:keys.map(function(k){return pData[fuel][k];}),backgroundColor:keys.map(function(k){return COLORS[k];}),borderRadius:6,borderSkipped:false}]
       },
       options:{
         responsive:true,maintainAspectRatio:false,
         plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return fmt(c.parsed.y)+' kr/L';}}}},
-        scales:{
-          y:{ticks:{callback:function(v){return fmt(v);},font:{size:10}},grid:{color:'rgba(0,0,0,0.05)'},beginAtZero:false},
-          x:{grid:{display:false}}
-        }
+        scales:{y:{ticks:{callback:function(v){return fmt(v);},font:{size:10}},grid:{color:'rgba(0,0,0,0.05)'},beginAtZero:false},x:{grid:{display:false}}}
       }
     });
     return;
   }
 
-  // Linjegraf
-  var labels=histData.map(function(e){
+  var labels=hist.map(function(e){
     var d=new Date(e.date);
     return d.getDate()+'/'+(d.getMonth()+1);
   });
 
+  var allVals=[];
   var datasets=['magn','effo','thomsen'].map(function(key){
-    var data=histData.map(function(e){
+    var data=hist.map(function(e){
       return e.prices[key]?parseP(e.prices[key][fuel]):null;
     });
+    data.forEach(function(v){if(v!==null)allVals.push(v);});
+
+    // Prikker kun ved prisændringer
     var ptR=data.map(function(v,i){
       if(i===0||v===null)return 0;
-      return data[i-1]!==null&&v!==data[i-1]?5:0;
+      var prev=data[i-1];
+      return prev!==null&&Math.abs(v-prev)>0.001?6:0;
     });
     var ptC=data.map(function(v,i){
-      if(i===0||v===null||data[i-1]===null||v===data[i-1])return'transparent';
-      return v>data[i-1]?'#c0392b':'#1a7a3c';
+      if(i===0||v===null)return'transparent';
+      var prev=data[i-1];
+      if(prev===null||Math.abs(v-prev)<0.001)return'transparent';
+      return v>prev?'#c0392b':'#1a7a3c';
     });
+
     return{
       label:key.charAt(0).toUpperCase()+key.slice(1),
-      data:data,borderColor:colors[key],borderWidth:2,
-      pointRadius:ptR,pointBackgroundColor:ptC,
-      pointBorderColor:'white',pointBorderWidth:2,
-      borderWidth:2.5,tension:0.3,fill:false,spanGaps:true
+      data:data,
+      borderColor:COLORS[key],
+      borderWidth:2.5,
+      pointRadius:ptR,
+      pointBackgroundColor:ptC,
+      pointBorderColor:'white',
+      pointBorderWidth:2,
+      tension:0.3,
+      fill:false,
+      spanGaps:true
     };
   });
 
-  // Beregn y-akse min/max
-  var allVals=[];
-  datasets.forEach(function(ds){ds.data.forEach(function(v){if(v!==null)allVals.push(v);});});
-  var minV=Math.min.apply(null,allVals)-0.3;
-  var maxV=Math.max.apply(null,allVals)+0.3;
+  var pad=allVals.length?(Math.max.apply(null,allVals)-Math.min.apply(null,allVals))*0.15:0.5;
+  var minV=allVals.length?Math.min.apply(null,allVals)-pad:0;
+  var maxV=allVals.length?Math.max.apply(null,allVals)+pad:20;
 
   chart=new Chart(canvas,{
     type:'line',
@@ -354,7 +335,7 @@ function buildChart(fuel){
       responsive:true,maintainAspectRatio:false,
       plugins:{
         legend:{display:false},
-        tooltip:{callbacks:{label:function(c){return c.dataset.label+': '+fmt(c.parsed.y)+' kr/L';}}}
+        tooltip:{callbacks:{label:function(c){return c.dataset.label+': '+(c.parsed.y!==null?fmt(c.parsed.y):'—')+' kr/L';}}}
       },
       scales:{
         y:{min:minV,max:maxV,ticks:{callback:function(v){return fmt(v);},font:{size:10}},grid:{color:'rgba(0,0,0,0.05)'}},
@@ -371,42 +352,6 @@ function setTab(f,btn){
   buildChart(f);
 }
 
-// ── Ændrings-liste ──────────────────────────────────────────────
-function buildChangesList(){
-  var hist=filteredHistory.length>=2?filteredHistory:allHistory;
-  if(hist.length<2)return;
-  var fL={gassoil:'Gassolja',diesel:'Diesel',bensin:'Bensin'};
-  var cL={thomsen:'THOM',magn:'MAGN',effo:'EFFO'};
-  var cC={thomsen:'logo-thomsen',magn:'logo-magn',effo:'logo-effo'};
-  var changes=[];
-  for(var i=hist.length-1;i>=1&&changes.length<5;i--){
-    var cur=hist[i],prev=hist[i-1];
-    var d=new Date(cur.date);
-    var dl=d.getDate()+'/'+(d.getMonth()+1);
-    ['thomsen','magn','effo'].forEach(function(co){
-      ['gassoil','diesel','bensin'].forEach(function(fu){
-        var cv=cur.prices[co]?parseP(cur.prices[co][fu]):null;
-        var pv=prev.prices[co]?parseP(prev.prices[co][fu]):null;
-        if(cv!==null&&pv!==null&&Math.abs(cv-pv)>0.001){
-          changes.push({co:co,fuel:fu,cv:cv,diff:cv-pv,dl:dl});
-        }
-      });
-    });
-  }
-  var listEl=document.querySelector('.changes-list');
-  if(!listEl||!changes.length)return;
-  listEl.innerHTML=changes.slice(0,5).map(function(c){
-    return'<div class="change-item">'+
-      '<div class="logo-pill '+cC[c.co]+'" style="width:46px;height:20px;font-size:9px">'+cL[c.co]+'</div>'+
-      '<span class="change-badge '+(c.diff>0?'up':'dn')+'">'+(c.diff>0?'+':'')+c.diff.toFixed(2).replace('.',',')+' </span>'+
-      '<span class="change-who">'+fL[c.fuel]+'</span>'+
-      '<span class="change-what">'+(c.diff>0?'hævet':'sænket')+' til '+fmt(c.cv)+' kr/L</span>'+
-      '<span class="change-date">'+c.dl+'</span>'+
-      '</div>';
-  }).join('');
-}
-
-// ── Live priser ─────────────────────────────────────────────────
 function renderPrices(sources){
   sources.forEach(function(s){
     var key=s.source.toLowerCase();
@@ -428,7 +373,6 @@ function renderPrices(sources){
     var now=new Date();
     updEl.textContent='Síðst uppf.: '+String(now.getDate()).padStart(2,'0')+'/'+String(now.getMonth()+1).padStart(2,'0')+' '+String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
   }
-  colorCheapest();
   if(!allHistory.length)buildChart(currentFuel);
   calcSpar();
 }
@@ -488,9 +432,9 @@ function calcSpar(){
   }else if(Math.abs(diff)<1){
     diffEl.innerHTML='<div style="font-size:10px;color:#6b8ab0;margin-bottom:4px">Sparing</div><span style="font-weight:700;font-size:22px;color:#888">= Sama prísur</span><br><span style="font-size:11px;color:#888">enn '+names[cheapest[0]]+'</span>';
   }else if(diff>0){
-    diffEl.innerHTML='<div style="font-size:10px;color:#6b8ab0;margin-bottom:4px">Sparing</div><span style="color:#c0392b;font-weight:700;font-size:22px">↑ '+Math.round(diff).toLocaleString('da-DK')+' kr dýrari</span><br><span style="font-size:11px;color:#555">enn '+names[cheapest[0]]+' á '+fuelNames[fuel]+'</span>';
+    diffEl.innerHTML='<div style="font-size:10px;color:#6b8ab0;margin-bottom:4px">Sparing</div><span style="color:#c0392b;font-weight:700;font-size:22px">↑ '+Math.round(diff).toLocaleString("da-DK")+' kr dýrari</span><br><span style="font-size:11px;color:#555">enn '+names[cheapest[0]]+' á '+fuelNames[fuel]+'</span>';
   }else{
-    diffEl.innerHTML='<div style="font-size:10px;color:#6b8ab0;margin-bottom:4px">Sparing</div><span style="color:#1a7a3c;font-weight:700;font-size:22px">↓ '+Math.round(Math.abs(diff)).toLocaleString('da-DK')+' kr</span><br><span style="font-size:11px;color:#555">billigari enn '+names[cheapest[0]]+' á '+fuelNames[fuel]+'</span>';
+    diffEl.innerHTML='<div style="font-size:10px;color:#6b8ab0;margin-bottom:4px">Sparing</div><span style="color:#1a7a3c;font-weight:700;font-size:22px">↓ '+Math.round(Math.abs(diff)).toLocaleString("da-DK")+' kr</span><br><span style="font-size:11px;color:#555">billigari enn '+names[cheapest[0]]+' á '+fuelNames[fuel]+'</span>';
   }
 }
 
@@ -500,7 +444,6 @@ async function loadPrices(){
     var data=await res.json();
     if(data.sources&&data.sources.length)renderPrices(data.sources);
   }catch(e){
-    console.error('Priser fejl:',e);
     var updEl=document.getElementById('last-updated');
     if(updEl)updEl.textContent='Kunne ikke hente priser';
   }
@@ -513,16 +456,17 @@ async function loadHistory(){
     var data=await res.json();
     if(Array.isArray(data)&&data.length>=2){
       allHistory=data;
-      // Start med den måned der har mest data
+      // Find nyeste måned med data
+      var last=new Date(data[data.length-1].date);
       var now=new Date();
-      var thisMonth=allHistory.filter(function(e){var d=new Date(e.date);return d.getFullYear()===now.getFullYear()&&d.getMonth()===now.getMonth();});
-      currentMonthOffset=thisMonth.length>=5?0:-1;
+      currentMonthOffset=(last.getFullYear()-now.getFullYear())*12+(last.getMonth()-now.getMonth());
       filterByMonth(currentMonthOffset);
     }
   }catch(e){console.log('Ingen historik:',e.message);}
 }
 
-document.getElementById('month-label').textContent=getMonthLabel(-1);
+var lbl=document.getElementById('month-label');
+if(lbl)lbl.textContent=getMonthLabel(0);
 loadPrices();
 loadHistory();
 </script>
