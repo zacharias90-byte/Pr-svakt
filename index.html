@@ -331,7 +331,6 @@ function colorCheapest() {
 let priceHistory = [];
 
 function buildChart(fuel) {
-  if (chart) chart.destroy();
   const colors = { thomsen: '#1a1a2e', magn: '#003580', effo: '#c8102e' };
   const companies = ['thomsen', 'magn', 'effo'];
 
@@ -421,6 +420,12 @@ function setTab(f, btn) {
   currentFuel = f;
   document.querySelectorAll('.chart-tab').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
+  // Genskab canvas for at undgå Chart.js context fejl
+  const wrap = document.querySelector('.chart-wrap');
+  if (wrap) {
+    if (chart) { chart.destroy(); chart = null; }
+    wrap.innerHTML = '<canvas id="priceChart"></canvas>';
+  }
   buildChart(f);
 }
 
