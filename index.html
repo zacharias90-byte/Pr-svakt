@@ -329,51 +329,90 @@ function colorCheapest() {
   });
 }
 
-function buildChart(fuel) {
-  const lbls = ['Thomsen','Magn','Effo'];
-  const colors = { thomsen: '#1a1a2e', magn: '#003580', effo: '#c8102e' };
-  const datasets = Object.entries(pData[fuel])
-    .filter(([k,v]) => v !== null)
-    .map(([key, val]) => ({
-      label: key.charAt(0).toUpperCase()+key.slice(1),
-      data: [{ x: key.charAt(0).toUpperCase()+key.slice(1), y: val }],
-      backgroundColor: colors[key],
-      borderColor: colors[key],
-      borderWidth: 2
-    }));
+let priceHistory = [];
 
-  // Bar chart showing current prices per company
+function buildChart(fuel) {
   if (chart) chart.destroy();
-  chart = new Chart(document.getElementById('priceChart'), {
-    type: 'bar',
-    data: {
-      labels: Object.keys(pData[fuel])
-        .filter(k => pData[fuel][k] !== null)
-        .map(k => k.charAt(0).toUpperCase()+k.slice(1)),
-      datasets: [{
-        label: fuel === 'gassoil' ? 'Gassolja' : fuel === 'diesel' ? 'Diesel' : 'Bensin',
-        data: Object.entries(pData[fuel])
-          .filter(([k,v]) => v !== null)
-          .map(([k,v]) => v),
-        backgroundColor: Object.keys(pData[fuel])
+  const colors = { thomsen: '#1a1a2e', magn: '#003580', effo: '#c8102e' };
+  const companies = ['thomsen', 'magn', 'effo'];
+
+  if (priceHistory.length < 2) {
+    // Ingen historik endnu — vis bar chart med dagens priser
+    chart = new Chart(document.getElementById('priceChart'), {
+      type: 'bar',
+      data: {
+        labels: companies
           .filter(k => pData[fuel][k] !== null)
-          .map(k => colors[k]),
-        borderRadius: 6,
-        borderSkipped: false
-      }]
-    },
+          .map(k => k.charAt(0).toUpperCase()+k.slice(1)),
+        datasets: [{
+          label: fuel === 'gassoil' ? 'Gassolja' : fuel === 'diesel' ? 'Diesel' : 'Bensin',
+          data: companies.filter(k => pData[fuel][k] !== null).map(k => pData[fuel][k]),
+          backgroundColor: companies.filter(k => pData[fuel][k] !== null).map(k => colors[k]),
+          borderRadius: 6, borderSkipped: false
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => fmt(c.parsed.y) + ' kr/L' } } },
+        scales: {
+          y: { ticks: { callback: v => fmt(v), font: { size: 10 } }, grid: { color: 'rgba(0,0,0,0.05)' } },
+          x: { ticks: { font: { size: 11 } }, grid: { display: false } }
+        }
+      }
+    });
+    return;
+  }
+
+  // Historisk linjegraf
+  const labels = priceHistory.map(e => {
+    const d = new Date(e.date);
+    return (d.getDate()) + '/' + (d.getMonth()+1);
+  });
+
+  const datasets = companies.map(key => {
+    const data = priceHistory.map(e => {
+      const val = e.prices[key] ? parsePriceDirect(e.prices[key][fuel]) : null;
+      return val;
+    });
+    // Find prisændringer til prikker
+    const pointRadius = data.map((v, i) => {
+      if (i === 0 || v === null) return 0;
+      const prev = data[i-1];
+      return prev !== null && v !== prev ? 5 : 0;
+    });
+    const pointBgColor = data.map((v, i) => {
+      if (i === 0 || v === null) return 'transparent';
+      const prev = data[i-1];
+      if (prev === null || v === prev) return 'transparent';
+      return v > prev ? '#c0392b' : '#1a7a3c';
+    });
+    return {
+      label: key.charAt(0).toUpperCase()+key.slice(1),
+      data,
+      borderColor: colors[key],
+      borderWidth: 2,
+      pointRadius,
+      pointBackgroundColor: pointBgColor,
+      pointBorderColor: 'white',
+      pointBorderWidth: 2,
+      tension: 0.35,
+      fill: false,
+      spanGaps: true
+    };
+  });
+
+  chart = new Chart(document.getElementById('priceChart'), {
+    type: 'line',
+    data: { labels, datasets },
     options: {
       responsive: true, maintainAspectRatio: false,
       plugins: {
         legend: { display: false },
-        tooltip: { callbacks: { label: c => fmt(c.parsed.y) + ' kr/L' } }
+        tooltip: { callbacks: { label: c => c.dataset.label + ': ' + (c.parsed.y !== null ? fmt(c.parsed.y) : '—') + ' kr/L' } }
       },
       scales: {
-        y: {
-          ticks: { callback: v => fmt(v), font: { size: 10 } },
-          grid: { color: 'rgba(0,0,0,0.05)' }
-        },
-        x: { ticks: { font: { size: 11 } }, grid: { display: false } }
+        y: { ticks: { callback: v => fmt(v), font: { size: 10 } }, grid: { color: 'rgba(0,0,0,0.05)' } },
+        x: { ticks: { font: { size: 10 }, maxTicksLimit: 10, maxRotation: 0 }, grid: { display: false } }
       }
     }
   });
@@ -384,6 +423,62 @@ function setTab(f, btn) {
   document.querySelectorAll('.chart-tab').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   buildChart(f);
+}
+
+// Byg ændrings-liste fra historik
+function buildChangesList() {
+  if (priceHistory.length < 2) return;
+  const companies = ['thomsen', 'magn', 'effo'];
+  const fuels = ['gassoil', 'diesel', 'bensin'];
+  const fuelLabels = { gassoil: 'Gassolja', diesel: 'Diesel', bensin: 'Bensin' };
+  const companyLabels = { thomsen: 'THOM', magn: 'MAGN', effo: 'EFFO' };
+  const companyClasses = { thomsen: 'logo-thomsen', magn: 'logo-magn', effo: 'logo-effo' };
+
+  const changes = [];
+  for (let i = priceHistory.length - 1; i >= 1 && changes.length < 5; i--) {
+    const cur = priceHistory[i];
+    const prev = priceHistory[i-1];
+    const d = new Date(cur.date);
+    const dateLabel = (d.getDate()) + '/' + (d.getMonth()+1);
+    companies.forEach(co => {
+      fuels.forEach(fuel => {
+        const curVal  = cur.prices[co]  ? parsePriceDirect(cur.prices[co][fuel])  : null;
+        const prevVal = prev.prices[co] ? parsePriceDirect(prev.prices[co][fuel]) : null;
+        if (curVal !== null && prevVal !== null && curVal !== prevVal) {
+          const diff = curVal - prevVal;
+          changes.push({ co, fuel, curVal, diff, dateLabel });
+        }
+      });
+    });
+  }
+
+  const listEl = document.querySelector('.changes-list');
+  if (!listEl || changes.length === 0) return;
+  listEl.innerHTML = changes.slice(0,5).map(c => `
+    <div class="change-item">
+      <div class="logo-pill ${companyClasses[c.co]}" style="width:46px;height:20px;font-size:9px">${companyLabels[c.co]}</div>
+      <span class="change-badge ${c.diff > 0 ? 'up' : 'dn'}">${c.diff > 0 ? '+' : ''}${c.diff.toFixed(2).replace('.',',')}</span>
+      <span class="change-who">${fuelLabels[c.fuel]}</span>
+      <span class="change-what">${c.diff > 0 ? 'hævet' : 'sænket'} til ${fmt(c.curVal)} kr/L</span>
+      <span class="change-date">${c.dateLabel}</span>
+    </div>
+  `).join('');
+}
+
+// Hent historisk data
+async function loadHistory() {
+  try {
+    const res = await fetch('/.netlify/functions/get-history');
+    if (!res.ok) return;
+    const data = await res.json();
+    if (Array.isArray(data) && data.length > 0) {
+      priceHistory = data;
+      buildChart(currentFuel);
+      buildChangesList();
+    }
+  } catch(e) {
+    console.log('Ingen historik endnu:', e.message);
+  }
 }
 
 function calcSpar() {
@@ -410,7 +505,7 @@ function calcSpar() {
   }
 }
 
-// Fetch live prices from Netlify Function
+// Hent live priser
 async function loadPrices() {
   try {
     const res = await fetch('/.netlify/functions/get-prices');
@@ -419,12 +514,14 @@ async function loadPrices() {
       renderPrices(data.sources);
     }
   } catch(e) {
-    console.error('Fetti ikki prísir:', e);
-    document.getElementById('last-updated').textContent = 'Fetti ikki prísir — royna seinni';
+    console.error('Kunne ikke hente priser:', e);
+    document.getElementById('last-updated').textContent = 'Kunne ikke hente priser — prøv igen senere';
   }
 }
 
+// Start begge
 loadPrices();
+loadHistory();
 </script>
 </body>
 </html>
