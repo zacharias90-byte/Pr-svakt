@@ -263,13 +263,15 @@ function renderPrices(sources) {
   });
 
   // Update updatedAt
-  const latest = sources.reduce((a, b) => {
-    if (!a.updatedAt) return b;
-    if (!b.updatedAt) return a;
-    return a.updatedAt > b.updatedAt ? a : b;
-  });
   const updEl = document.getElementById('last-updated');
-  if (updEl && latest.updatedAt) updEl.textContent = 'Síðst uppf.: ' + latest.updatedAt;
+  if (updEl) {
+    const now = new Date();
+    const dd = String(now.getDate()).padStart(2,'0');
+    const mm = String(now.getMonth()+1).padStart(2,'0');
+    const hh = String(now.getHours()).padStart(2,'0');
+    const mi = String(now.getMinutes()).padStart(2,'0');
+    updEl.textContent = 'Síðst uppf.: ' + dd + '/' + mm + ' ' + hh + ':' + mi;
+  }
 
   // Color cheapest green in company rows
   colorCheapest();
@@ -280,37 +282,34 @@ function renderPrices(sources) {
 }
 
 function updateBestCards() {
+  // Fjern alle grønne først
+  document.querySelectorAll('.fuel-box').forEach(b => {
+    b.classList.remove('best');
+    const whoEl = b.querySelector('.fuel-who');
+    if (whoEl) whoEl.style.color = '#555';
+  });
+
   ['gassoil','diesel','bensin'].forEach(fuel => {
     const entries = Object.entries(pData[fuel]).filter(([k,v]) => v !== null);
     if (!entries.length) return;
-    const cheapest = entries.reduce((a,b) => a[1] < b[1] ? a : b);
-    const allSame = entries.every(([k,v]) => v === cheapest[1]);
+
+    const minVal = Math.min(...entries.map(([k,v]) => v));
+    const cheapestEntries = entries.filter(([k,v]) => v === minVal);
     const card = document.getElementById('best-' + fuel);
     if (!card) return;
-    card.querySelector('.fuel-price').textContent = fmt(cheapest[1]);
+
+    // Sæt pris og navn
+    card.querySelector('.fuel-price').textContent = fmt(minVal);
     const whoEl = card.querySelector('.fuel-who');
-    if (allSame) {
-      const names = entries.map(([k]) => k.charAt(0).toUpperCase()+k.slice(1));
-      whoEl.textContent = names.join(' & ');
+    if (cheapestEntries.length > 1) {
+      whoEl.textContent = cheapestEntries.map(([k]) => k.charAt(0).toUpperCase()+k.slice(1)).join(' & ');
     } else {
-      whoEl.textContent = cheapest[0].charAt(0).toUpperCase() + cheapest[0].slice(1);
+      whoEl.textContent = cheapestEntries[0][0].charAt(0).toUpperCase() + cheapestEntries[0][0].slice(1);
     }
-    // green border on cheapest
-    document.querySelectorAll('.fuel-box').forEach(b => {
-      b.classList.remove('best');
-      b.querySelector('.fuel-who').style.color = '#555';
-    });
-  });
-  // re-apply best class to cheapest of each fuel
-  ['gassoil','diesel','bensin'].forEach(fuel => {
-    const entries = Object.entries(pData[fuel]).filter(([k,v]) => v !== null);
-    if (!entries.length) return;
-    const cheapest = entries.reduce((a,b) => a[1] < b[1] ? a : b);
-    const card = document.getElementById('best-' + fuel);
-    if (card) {
-      card.classList.add('best');
-      card.querySelector('.fuel-who').style.color = '#1a7a3c';
-    }
+
+    // Grøn kant kun på billigste kort
+    card.classList.add('best');
+    whoEl.style.color = '#1a7a3c';
   });
 }
 
