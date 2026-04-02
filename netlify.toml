@@ -1,11 +1,15 @@
 [build]
   functions = "netlify/functions"
-
+ 
 [[redirects]]
   from = "/api/fuel-prices"
   to = "/.netlify/functions/fuel-prices"
   status = 200
-
+ 
 [functions]
   [functions.fuel-prices]
     schedule = "0 */6 * * *"
+ 
+  [functions.save-history]
+    schedule = "0 */6 * * *"
+ 
