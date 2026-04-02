@@ -183,7 +183,7 @@ body{font-family:'DM Sans',sans-serif;background:#e8edf5;min-height:100vh;paddin
   </div>
   <div class="chart-wrap"><canvas id="priceChart"></canvas></div>
   <div style="display:flex;gap:14px;margin-top:8px;flex-wrap:wrap">
-    <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:#555"><span style="width:12px;height:3px;background:#1a1a2e;display:inline-block;border-radius:2px"></span>Thomsen</span>
+    <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:#555"><span style="width:12px;height:3px;background:#2c6e49;display:inline-block;border-radius:2px"></span>Thomsen</span>
     <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:#555"><span style="width:12px;height:3px;background:#003580;display:inline-block;border-radius:2px"></span>Magn</span>
     <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:#555"><span style="width:12px;height:3px;background:#c8102e;display:inline-block;border-radius:2px"></span>Effo</span>
   </div>
@@ -282,7 +282,7 @@ function resetCanvas(){
 // ── Graf ────────────────────────────────────────────────────────
 function buildChart(fuel){
   resetCanvas();
-  var colors={thomsen:'#1a1a2e',magn:'#003580',effo:'#c8102e'};
+  var colors={thomsen:'#2c6e49',magn:'#003580',effo:'#c8102e'};
   var canvas=document.getElementById('priceChart');
   if(!canvas)return;
 
@@ -320,7 +320,7 @@ function buildChart(fuel){
     return d.getDate()+'/'+(d.getMonth()+1);
   });
 
-  var datasets=['thomsen','magn','effo'].map(function(key){
+  var datasets=['magn','effo','thomsen'].map(function(key){
     var data=histData.map(function(e){
       return e.prices[key]?parseP(e.prices[key][fuel]):null;
     });
@@ -337,7 +337,7 @@ function buildChart(fuel){
       data:data,borderColor:colors[key],borderWidth:2,
       pointRadius:ptR,pointBackgroundColor:ptC,
       pointBorderColor:'white',pointBorderWidth:2,
-      tension:0.3,fill:false,spanGaps:true
+      borderWidth:2.5,tension:0.3,fill:false,spanGaps:true
     };
   });
 
