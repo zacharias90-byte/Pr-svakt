@@ -508,7 +508,7 @@ function calcSpar() {
 // Hent live priser
 async function loadPrices() {
   try {
-    const res = await fetch('/.netlify/functions/get-prices');
+    const res = await fetch('/.netlify/functions/fuel-prices');
     const data = await res.json();
     if (data.sources && data.sources.length) {
       renderPrices(data.sources);
