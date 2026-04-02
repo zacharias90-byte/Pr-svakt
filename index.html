@@ -213,259 +213,304 @@ body{font-family:'DM Sans',sans-serif;background:#e8edf5;min-height:100vh;paddin
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
-function fmt(v) {
-  if (v === null || v === undefined || isNaN(v)) return '—';
-  return v.toFixed(2).replace('.', ',');
+function fmt(v){if(v===null||v===undefined||isNaN(v))return'—';return v.toFixed(2).replace('.',',');}
+function parseP(s){if(!s||s===null||s==='null')return null;var n=parseFloat(String(s).replace(',','.'));return isNaN(n)?null:n;}
+
+var pData={gassoil:{},diesel:{},bensin:{}};
+var allHistory=[];
+var filteredHistory=[];
+var chart=null;
+var currentFuel='gassoil';
+var currentMonthOffset=0; // 0=nyeste, -1=forrige osv.
+
+// ── Måneds-filter ───────────────────────────────────────────────
+function getMonthLabel(offset){
+  var now=new Date();
+  var d=new Date(now.getFullYear(),now.getMonth()+offset,1);
+  var months=['jan','feb','mar','apr','maj','jun','jul','aug','sep','okt','nov','dec'];
+  return months[d.getMonth()]+' '+d.getFullYear();
 }
 
-function parsePriceDirect(s) {
-  if (!s || s === 'null' || s === null) return null;
-  return parseFloat(String(s).replace(',', '.'));
-}
-
-let pData = { gassoil: {}, diesel: {}, bensin: {} };
-let chart = null;
-let currentFuel = 'gassoil';
-let priceHistory = [];
-
-// ── Render live priser ──────────────────────────────────────────
-function renderPrices(sources) {
-  sources.forEach(s => {
-    const key = s.source.toLowerCase();
-    pData.gassoil[key] = parsePriceDirect(s.gassoil);
-    pData.diesel[key]  = parsePriceDirect(s.diesel);
-    pData.bensin[key]  = parsePriceDirect(s.bensin);
+function filterByMonth(offset){
+  if(!allHistory.length)return;
+  var now=new Date();
+  var target=new Date(now.getFullYear(),now.getMonth()+offset,1);
+  var y=target.getFullYear(), m=target.getMonth();
+  filteredHistory=allHistory.filter(function(e){
+    var d=new Date(e.date);
+    return d.getFullYear()===y && d.getMonth()===m;
   });
-  updateBestCards();
-  colorCheapest();
-  sources.forEach(s => {
-    const key = s.source.toLowerCase();
-    ['gassoil','diesel','bensin'].forEach(fuel => {
-      const el = document.getElementById('price-' + key + '-' + fuel);
-      if (el) el.textContent = pData[fuel][key] !== null ? fmt(pData[fuel][key]) : '—';
-    });
-  });
-  const updEl = document.getElementById('last-updated');
-  if (updEl) {
-    const now = new Date();
-    const dd = String(now.getDate()).padStart(2,'0');
-    const mm = String(now.getMonth()+1).padStart(2,'0');
-    const hh = String(now.getHours()).padStart(2,'0');
-    const mi = String(now.getMinutes()).padStart(2,'0');
-    updEl.textContent = 'Síðst uppf.: ' + dd + '/' + mm + ' ' + hh + ':' + mi;
-  }
-  colorCheapest();
+  // Hvis ingen data for den måned, brug alle
+  if(!filteredHistory.length) filteredHistory=allHistory;
+  document.getElementById('month-label').textContent=getMonthLabel(offset);
+  resetCanvas();
   buildChart(currentFuel);
-  calcSpar();
+  buildChangesList();
 }
 
-function updateBestCards() {
-  document.querySelectorAll('.fuel-box').forEach(b => {
-    b.classList.remove('best');
-    const w = b.querySelector('.fuel-who');
-    if (w) w.style.color = '#555';
-  });
-  ['gassoil','diesel','bensin'].forEach(fuel => {
-    const entries = Object.entries(pData[fuel]).filter(([k,v]) => v !== null);
-    if (!entries.length) return;
-    const minVal = Math.min(...entries.map(([k,v]) => v));
-    const cheapest = entries.filter(([k,v]) => v === minVal);
-    const card = document.getElementById('best-' + fuel);
-    if (!card) return;
-    card.querySelector('.fuel-price').textContent = fmt(minVal);
-    const whoEl = card.querySelector('.fuel-who');
-    whoEl.textContent = cheapest.length > 1
-      ? cheapest.map(([k]) => k.charAt(0).toUpperCase()+k.slice(1)).join(' & ')
-      : cheapest[0][0].charAt(0).toUpperCase() + cheapest[0][0].slice(1);
-    card.classList.add('best');
-    whoEl.style.color = '#1a7a3c';
-  });
+function prevMonth(){
+  // Find tidligste dato
+  if(!allHistory.length)return;
+  var earliest=new Date(allHistory[0].date);
+  var now=new Date();
+  var minOffset=Math.floor((earliest-now)/(1000*60*60*24*30));
+  if(currentMonthOffset>minOffset){
+    currentMonthOffset--;
+    filterByMonth(currentMonthOffset);
+  }
 }
 
-function colorCheapest() {
-  ['gassoil','diesel','bensin'].forEach(fuel => {
-    const entries = Object.entries(pData[fuel]).filter(([k,v]) => v !== null);
-    if (!entries.length) return;
-    const minVal = Math.min(...entries.map(([k,v]) => v));
-    ['thomsen','magn','effo'].forEach(key => {
-      const el = document.getElementById('price-' + key + '-' + fuel);
-      if (!el) return;
-      const val = pData[fuel][key];
-      if (val === null) { el.textContent = '—'; el.className = ''; return; }
-      el.className = val <= minVal ? 'lo' : '';
-      el.textContent = fmt(val) + (val <= minVal ? ' ↓' : '');
-    });
-  });
+function nextMonth(){
+  if(currentMonthOffset<0){
+    currentMonthOffset++;
+    filterByMonth(currentMonthOffset);
+  }
+}
+
+// ── Canvas reset ────────────────────────────────────────────────
+function resetCanvas(){
+  if(chart){try{chart.destroy();}catch(e){}chart=null;}
+  var wrap=document.querySelector('.chart-wrap');
+  if(wrap)wrap.innerHTML='<canvas id="priceChart"></canvas>';
 }
 
 // ── Graf ────────────────────────────────────────────────────────
-function resetCanvas() {
-  if (chart) { try { chart.destroy(); } catch(e){} chart = null; }
-  const wrap = document.querySelector('.chart-wrap');
-  if (wrap) wrap.innerHTML = '<canvas id="priceChart"></canvas>';
-}
-
-function buildChart(fuel) {
+function buildChart(fuel){
   resetCanvas();
-  const colors = { thomsen: '#1a1a2e', magn: '#003580', effo: '#c8102e' };
-  const canvas = document.getElementById('priceChart');
-  if (!canvas) return;
+  var colors={thomsen:'#1a1a2e',magn:'#003580',effo:'#c8102e'};
+  var canvas=document.getElementById('priceChart');
+  if(!canvas)return;
 
-  if (priceHistory.length < 2) {
-    // Ingen historik — vis bar chart
-    const keys = ['thomsen','magn','effo'].filter(k => pData[fuel][k] !== null);
-    chart = new Chart(canvas, {
-      type: 'bar',
-      data: {
-        labels: keys.map(k => k.charAt(0).toUpperCase()+k.slice(1)),
-        datasets: [{ data: keys.map(k => pData[fuel][k]), backgroundColor: keys.map(k => colors[k]), borderRadius: 6, borderSkipped: false }]
+  var histData=filteredHistory.length>=2?filteredHistory:null;
+
+  if(!histData){
+    // Bar chart - dagens priser
+    var keys=['thomsen','magn','effo'].filter(function(k){return pData[fuel][k]!==null&&pData[fuel][k]!==undefined;});
+    if(!keys.length)return;
+    chart=new Chart(canvas,{
+      type:'bar',
+      data:{
+        labels:keys.map(function(k){return k.charAt(0).toUpperCase()+k.slice(1);}),
+        datasets:[{
+          data:keys.map(function(k){return pData[fuel][k];}),
+          backgroundColor:keys.map(function(k){return colors[k];}),
+          borderRadius:6,borderSkipped:false
+        }]
       },
-      options: {
-        responsive: true, maintainAspectRatio: false,
-        plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => fmt(c.parsed.y) + ' kr/L' } } },
-        scales: { y: { ticks: { callback: v => fmt(v), font: { size: 10 } }, grid: { color: 'rgba(0,0,0,0.05)' } }, x: { grid: { display: false } } }
+      options:{
+        responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return fmt(c.parsed.y)+' kr/L';}}}},
+        scales:{
+          y:{ticks:{callback:function(v){return fmt(v);},font:{size:10}},grid:{color:'rgba(0,0,0,0.05)'},beginAtZero:false},
+          x:{grid:{display:false}}
+        }
       }
     });
     return;
   }
 
-  // Linjegraf med historik
-  const labels = priceHistory.map(e => {
-    const d = new Date(e.date);
-    return d.getDate() + '/' + (d.getMonth()+1);
+  // Linjegraf
+  var labels=histData.map(function(e){
+    var d=new Date(e.date);
+    return d.getDate()+'/'+(d.getMonth()+1);
   });
 
-  const datasets = ['thomsen','magn','effo'].map(key => {
-    const data = priceHistory.map(e => {
-      const val = e.prices[key] ? parsePriceDirect(e.prices[key][fuel]) : null;
-      return val;
+  var datasets=['thomsen','magn','effo'].map(function(key){
+    var data=histData.map(function(e){
+      return e.prices[key]?parseP(e.prices[key][fuel]):null;
     });
-    const ptRadius = data.map((v,i) => {
-      if (i === 0 || v === null) return 0;
-      return data[i-1] !== null && v !== data[i-1] ? 5 : 0;
+    var ptR=data.map(function(v,i){
+      if(i===0||v===null)return 0;
+      return data[i-1]!==null&&v!==data[i-1]?5:0;
     });
-    const ptColor = data.map((v,i) => {
-      if (i === 0 || v === null || data[i-1] === null || v === data[i-1]) return 'transparent';
-      return v > data[i-1] ? '#c0392b' : '#1a7a3c';
+    var ptC=data.map(function(v,i){
+      if(i===0||v===null||data[i-1]===null||v===data[i-1])return'transparent';
+      return v>data[i-1]?'#c0392b':'#1a7a3c';
     });
-    return {
-      label: key.charAt(0).toUpperCase()+key.slice(1),
-      data, borderColor: colors[key], borderWidth: 2,
-      pointRadius: ptRadius, pointBackgroundColor: ptColor,
-      pointBorderColor: 'white', pointBorderWidth: 2,
-      tension: 0.35, fill: false, spanGaps: true
+    return{
+      label:key.charAt(0).toUpperCase()+key.slice(1),
+      data:data,borderColor:colors[key],borderWidth:2,
+      pointRadius:ptR,pointBackgroundColor:ptC,
+      pointBorderColor:'white',pointBorderWidth:2,
+      tension:0.3,fill:false,spanGaps:true
     };
   });
 
-  chart = new Chart(canvas, {
-    type: 'line',
-    data: { labels, datasets },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: {
-        legend: { display: false },
-        tooltip: { callbacks: { label: c => c.dataset.label + ': ' + fmt(c.parsed.y) + ' kr/L' } }
+  // Beregn y-akse min/max
+  var allVals=[];
+  datasets.forEach(function(ds){ds.data.forEach(function(v){if(v!==null)allVals.push(v);});});
+  var minV=Math.min.apply(null,allVals)-0.3;
+  var maxV=Math.max.apply(null,allVals)+0.3;
+
+  chart=new Chart(canvas,{
+    type:'line',
+    data:{labels:labels,datasets:datasets},
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{
+        legend:{display:false},
+        tooltip:{callbacks:{label:function(c){return c.dataset.label+': '+fmt(c.parsed.y)+' kr/L';}}}
       },
-      scales: {
-        y: { ticks: { callback: v => fmt(v), font: { size: 10 } }, grid: { color: 'rgba(0,0,0,0.05)' } },
-        x: { ticks: { font: { size: 10 }, maxTicksLimit: 12, maxRotation: 0, autoSkip: true }, grid: { display: false } }
+      scales:{
+        y:{min:minV,max:maxV,ticks:{callback:function(v){return fmt(v);},font:{size:10}},grid:{color:'rgba(0,0,0,0.05)'}},
+        x:{ticks:{font:{size:10},maxTicksLimit:12,maxRotation:0,autoSkip:true},grid:{display:false}}
       }
     }
   });
 }
 
-function setTab(f, btn) {
-  currentFuel = f;
-  document.querySelectorAll('.chart-tab').forEach(b => b.classList.remove('active'));
+function setTab(f,btn){
+  currentFuel=f;
+  document.querySelectorAll('.chart-tab').forEach(function(b){b.classList.remove('active');});
   btn.classList.add('active');
   buildChart(f);
 }
 
 // ── Ændrings-liste ──────────────────────────────────────────────
-function buildChangesList() {
-  if (priceHistory.length < 2) return;
-  const fuelLabels = { gassoil: 'Gassolja', diesel: 'Diesel', bensin: 'Bensin' };
-  const coLabels   = { thomsen: 'THOM', magn: 'MAGN', effo: 'EFFO' };
-  const coClass    = { thomsen: 'logo-thomsen', magn: 'logo-magn', effo: 'logo-effo' };
-  const changes = [];
-  for (let i = priceHistory.length - 1; i >= 1 && changes.length < 5; i--) {
-    const cur = priceHistory[i], prev = priceHistory[i-1];
-    const d = new Date(cur.date);
-    const dateLabel = d.getDate() + '/' + (d.getMonth()+1);
-    ['thomsen','magn','effo'].forEach(co => {
-      ['gassoil','diesel','bensin'].forEach(fuel => {
-        const cv = cur.prices[co]  ? parsePriceDirect(cur.prices[co][fuel])  : null;
-        const pv = prev.prices[co] ? parsePriceDirect(prev.prices[co][fuel]) : null;
-        if (cv !== null && pv !== null && cv !== pv) {
-          changes.push({ co, fuel, cv, diff: cv - pv, dateLabel });
+function buildChangesList(){
+  var hist=filteredHistory.length>=2?filteredHistory:allHistory;
+  if(hist.length<2)return;
+  var fL={gassoil:'Gassolja',diesel:'Diesel',bensin:'Bensin'};
+  var cL={thomsen:'THOM',magn:'MAGN',effo:'EFFO'};
+  var cC={thomsen:'logo-thomsen',magn:'logo-magn',effo:'logo-effo'};
+  var changes=[];
+  for(var i=hist.length-1;i>=1&&changes.length<5;i--){
+    var cur=hist[i],prev=hist[i-1];
+    var d=new Date(cur.date);
+    var dl=d.getDate()+'/'+(d.getMonth()+1);
+    ['thomsen','magn','effo'].forEach(function(co){
+      ['gassoil','diesel','bensin'].forEach(function(fu){
+        var cv=cur.prices[co]?parseP(cur.prices[co][fu]):null;
+        var pv=prev.prices[co]?parseP(prev.prices[co][fu]):null;
+        if(cv!==null&&pv!==null&&Math.abs(cv-pv)>0.001){
+          changes.push({co:co,fuel:fu,cv:cv,diff:cv-pv,dl:dl});
         }
       });
     });
   }
-  const listEl = document.querySelector('.changes-list');
-  if (!listEl || !changes.length) return;
-  listEl.innerHTML = changes.slice(0,5).map(c => `
-    <div class="change-item">
-      <div class="logo-pill ${coClass[c.co]}" style="width:46px;height:20px;font-size:9px">${coLabels[c.co]}</div>
-      <span class="change-badge ${c.diff > 0 ? 'up' : 'dn'}">${c.diff > 0 ? '+' : ''}${c.diff.toFixed(2).replace('.',',')}</span>
-      <span class="change-who">${fuelLabels[c.fuel]}</span>
-      <span class="change-what">${c.diff > 0 ? 'hævet' : 'sænket'} til ${fmt(c.cv)} kr/L</span>
-      <span class="change-date">${c.dateLabel}</span>
-    </div>`).join('');
+  var listEl=document.querySelector('.changes-list');
+  if(!listEl||!changes.length)return;
+  listEl.innerHTML=changes.slice(0,5).map(function(c){
+    return'<div class="change-item">'+
+      '<div class="logo-pill '+cC[c.co]+'" style="width:46px;height:20px;font-size:9px">'+cL[c.co]+'</div>'+
+      '<span class="change-badge '+(c.diff>0?'up':'dn')+'">'+(c.diff>0?'+':'')+c.diff.toFixed(2).replace('.',',')+' </span>'+
+      '<span class="change-who">'+fL[c.fuel]+'</span>'+
+      '<span class="change-what">'+(c.diff>0?'hævet':'sænket')+' til '+fmt(c.cv)+' kr/L</span>'+
+      '<span class="change-date">'+c.dl+'</span>'+
+      '</div>';
+  }).join('');
 }
 
-// ── Rokna sparing ───────────────────────────────────────────────
-function calcSpar() {
-  const fuel   = document.getElementById('sp-fuel').value;
-  const co     = document.getElementById('sp-co').value;
-  const liters = parseFloat(document.getElementById('sp-liters').value) || 0;
-  const myPrice = pData[fuel][co];
-  if (myPrice === null || myPrice === undefined) return;
-  const others = Object.entries(pData[fuel]).filter(([k,v]) => k !== co && v !== null);
-  if (!others.length) return;
-  const cheapest = others.reduce((a,b) => a[1] < b[1] ? a : b);
-  const diff = (myPrice - cheapest[1]) * liters;
-  const names = { thomsen: 'Thomsen', magn: 'Magn', effo: 'Effo' };
-  const fuelNames = { gassoil: 'gassolju', diesel: 'diesel', bensin: 'bensin' };
-  const diffEl = document.getElementById('sp-diff');
-  if (liters === 0) {
-    diffEl.innerHTML = '<div style="font-size:10px;color:#6b8ab0;margin-bottom:4px">Sparing</div><span style="color:#888;font-size:16px">skriva lítaratøl</span>';
-  } else if (Math.abs(diff) < 1) {
-    diffEl.innerHTML = '<div style="font-size:10px;color:#6b8ab0;margin-bottom:4px">Sparing</div><span style="color:#888;font-weight:700;font-size:22px">= Sama prísur</span><br><span style="font-size:11px;color:#888">enn ' + names[cheapest[0]] + '</span>';
-  } else if (diff > 0) {
-    diffEl.innerHTML = '<div style="font-size:10px;color:#6b8ab0;margin-bottom:4px">Sparing</div><span style="color:#c0392b;font-weight:700;font-size:22px">↑ ' + Math.round(diff).toLocaleString("da-DK") + ' kr dýrari</span><br><span style="font-size:11px;color:#555">enn ' + names[cheapest[0]] + ' á ' + fuelNames[fuel] + '</span>';
-  } else {
-    diffEl.innerHTML = '<div style="font-size:10px;color:#6b8ab0;margin-bottom:4px">Sparing</div><span style="color:#1a7a3c;font-weight:700;font-size:22px">↓ ' + Math.round(Math.abs(diff)).toLocaleString("da-DK") + ' kr</span><br><span style="font-size:11px;color:#555">billigari enn ' + names[cheapest[0]] + ' á ' + fuelNames[fuel] + '</span>';
+// ── Live priser ─────────────────────────────────────────────────
+function renderPrices(sources){
+  sources.forEach(function(s){
+    var key=s.source.toLowerCase();
+    pData.gassoil[key]=parseP(s.gassoil);
+    pData.diesel[key]=parseP(s.diesel);
+    pData.bensin[key]=parseP(s.bensin);
+  });
+  updateBestCards();
+  colorCheapest();
+  sources.forEach(function(s){
+    var key=s.source.toLowerCase();
+    ['gassoil','diesel','bensin'].forEach(function(fuel){
+      var el=document.getElementById('price-'+key+'-'+fuel);
+      if(el)el.textContent=pData[fuel][key]!==null?fmt(pData[fuel][key]):'—';
+    });
+  });
+  var updEl=document.getElementById('last-updated');
+  if(updEl){
+    var now=new Date();
+    updEl.textContent='Síðst uppf.: '+String(now.getDate()).padStart(2,'0')+'/'+String(now.getMonth()+1).padStart(2,'0')+' '+String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
+  }
+  colorCheapest();
+  if(!allHistory.length)buildChart(currentFuel);
+  calcSpar();
+}
+
+function updateBestCards(){
+  document.querySelectorAll('.fuel-box').forEach(function(b){
+    b.classList.remove('best');
+    var w=b.querySelector('.fuel-who');
+    if(w)w.style.color='#555';
+  });
+  ['gassoil','diesel','bensin'].forEach(function(fuel){
+    var entries=Object.entries(pData[fuel]).filter(function(e){return e[1]!==null;});
+    if(!entries.length)return;
+    var minVal=Math.min.apply(null,entries.map(function(e){return e[1];}));
+    var cheapest=entries.filter(function(e){return e[1]===minVal;});
+    var card=document.getElementById('best-'+fuel);
+    if(!card)return;
+    card.querySelector('.fuel-price').textContent=fmt(minVal);
+    var whoEl=card.querySelector('.fuel-who');
+    whoEl.textContent=cheapest.length>1?cheapest.map(function(e){return e[0].charAt(0).toUpperCase()+e[0].slice(1);}).join(' & '):cheapest[0][0].charAt(0).toUpperCase()+cheapest[0][0].slice(1);
+    card.classList.add('best');
+    whoEl.style.color='#1a7a3c';
+  });
+}
+
+function colorCheapest(){
+  ['gassoil','diesel','bensin'].forEach(function(fuel){
+    var entries=Object.entries(pData[fuel]).filter(function(e){return e[1]!==null;});
+    if(!entries.length)return;
+    var minVal=Math.min.apply(null,entries.map(function(e){return e[1];}));
+    ['thomsen','magn','effo'].forEach(function(key){
+      var el=document.getElementById('price-'+key+'-'+fuel);
+      if(!el)return;
+      var val=pData[fuel][key];
+      if(val===null||val===undefined){el.textContent='—';el.className='';return;}
+      el.className=val<=minVal?'lo':'';
+      el.textContent=fmt(val)+(val<=minVal?' ↓':'');
+    });
+  });
+}
+
+function calcSpar(){
+  var fuel=document.getElementById('sp-fuel').value;
+  var co=document.getElementById('sp-co').value;
+  var liters=parseFloat(document.getElementById('sp-liters').value)||0;
+  var myPrice=pData[fuel][co];
+  if(myPrice===null||myPrice===undefined)return;
+  var others=Object.entries(pData[fuel]).filter(function(e){return e[0]!==co&&e[1]!==null;});
+  if(!others.length)return;
+  var cheapest=others.reduce(function(a,b){return a[1]<b[1]?a:b;});
+  var diff=(myPrice-cheapest[1])*liters;
+  var names={thomsen:'Thomsen',magn:'Magn',effo:'Effo'};
+  var fuelNames={gassoil:'gassolju',diesel:'diesel',bensin:'bensin'};
+  var diffEl=document.getElementById('sp-diff');
+  if(liters===0){
+    diffEl.innerHTML='<div style="font-size:10px;color:#6b8ab0;margin-bottom:4px">Sparing</div><span style="color:#888;font-size:16px">skriva lítaratøl</span>';
+  }else if(Math.abs(diff)<1){
+    diffEl.innerHTML='<div style="font-size:10px;color:#6b8ab0;margin-bottom:4px">Sparing</div><span style="font-weight:700;font-size:22px;color:#888">= Sama prísur</span><br><span style="font-size:11px;color:#888">enn '+names[cheapest[0]]+'</span>';
+  }else if(diff>0){
+    diffEl.innerHTML='<div style="font-size:10px;color:#6b8ab0;margin-bottom:4px">Sparing</div><span style="color:#c0392b;font-weight:700;font-size:22px">↑ '+Math.round(diff).toLocaleString('da-DK')+' kr dýrari</span><br><span style="font-size:11px;color:#555">enn '+names[cheapest[0]]+' á '+fuelNames[fuel]+'</span>';
+  }else{
+    diffEl.innerHTML='<div style="font-size:10px;color:#6b8ab0;margin-bottom:4px">Sparing</div><span style="color:#1a7a3c;font-weight:700;font-size:22px">↓ '+Math.round(Math.abs(diff)).toLocaleString('da-DK')+' kr</span><br><span style="font-size:11px;color:#555">billigari enn '+names[cheapest[0]]+' á '+fuelNames[fuel]+'</span>';
   }
 }
 
-// ── Fetch live priser ───────────────────────────────────────────
-async function loadPrices() {
-  try {
-    const res = await fetch('/.netlify/functions/fuel-prices');
-    const data = await res.json();
-    if (data.sources && data.sources.length) renderPrices(data.sources);
-  } catch(e) {
-    console.error('Kunne ikke hente priser:', e);
-    const updEl = document.getElementById('last-updated');
-    if (updEl) updEl.textContent = 'Kunne ikke hente priser — prøv igen senere';
+async function loadPrices(){
+  try{
+    var res=await fetch('/.netlify/functions/fuel-prices');
+    var data=await res.json();
+    if(data.sources&&data.sources.length)renderPrices(data.sources);
+  }catch(e){
+    console.error('Priser fejl:',e);
+    var updEl=document.getElementById('last-updated');
+    if(updEl)updEl.textContent='Kunne ikke hente priser';
   }
 }
 
-// ── Fetch historik ──────────────────────────────────────────────
-async function loadHistory() {
-  try {
-    const res = await fetch('/.netlify/functions/get-history');
-    if (!res.ok) return;
-    const data = await res.json();
-    if (Array.isArray(data) && data.length >= 2) {
-      priceHistory = data;
-      buildChart(currentFuel);
-      buildChangesList();
+async function loadHistory(){
+  try{
+    var res=await fetch('/.netlify/functions/get-history');
+    if(!res.ok)return;
+    var data=await res.json();
+    if(Array.isArray(data)&&data.length>=2){
+      allHistory=data;
+      filterByMonth(0);
     }
-  } catch(e) {
-    console.log('Ingen historik:', e.message);
-  }
+  }catch(e){console.log('Ingen historik:',e.message);}
 }
 
 loadPrices();
