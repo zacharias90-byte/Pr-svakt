@@ -9,7 +9,7 @@
         "bensin": null
       },
       "magn": {
-        "gassoil": "8.55",
+        "gassoil": null,
         "diesel": null,
         "bensin": null
       },
@@ -30,7 +30,7 @@
         "bensin": null
       },
       "magn": {
-        "gassoil": "8.55",
+        "gassoil": null,
         "diesel": null,
         "bensin": null
       },
@@ -52,8 +52,8 @@
       },
       "magn": {
         "gassoil": "8.8",
-        "diesel": null,
-        "bensin": null
+        "diesel": "10.83",
+        "bensin": "11.8"
       },
       "effo": {
         "gassoil": null,
@@ -73,8 +73,8 @@
       },
       "magn": {
         "gassoil": "8.8",
-        "diesel": null,
-        "bensin": null
+        "diesel": "10.83",
+        "bensin": "11.8"
       },
       "effo": {
         "gassoil": null,
@@ -94,8 +94,8 @@
       },
       "magn": {
         "gassoil": "9.425",
-        "diesel": null,
-        "bensin": null
+        "diesel": "11.41",
+        "bensin": "12.39"
       },
       "effo": {
         "gassoil": null,
@@ -115,8 +115,8 @@
       },
       "magn": {
         "gassoil": "9.425",
-        "diesel": null,
-        "bensin": null
+        "diesel": "11.41",
+        "bensin": "12.39"
       },
       "effo": {
         "gassoil": null,
@@ -136,11 +136,11 @@
       },
       "magn": {
         "gassoil": "9.738",
-        "diesel": null,
-        "bensin": null
+        "diesel": "11.73",
+        "bensin": "12.7"
       },
       "effo": {
-        "gassoil": "9.738",
+        "gassoil": null,
         "diesel": null,
         "bensin": null
       }
@@ -157,11 +157,11 @@
       },
       "magn": {
         "gassoil": "9.738",
-        "diesel": null,
-        "bensin": null
+        "diesel": "11.73",
+        "bensin": "12.7"
       },
       "effo": {
-        "gassoil": "9.738",
+        "gassoil": null,
         "diesel": null,
         "bensin": null
       }
@@ -178,8 +178,8 @@
       },
       "magn": {
         "gassoil": "9.738",
-        "diesel": "12.23",
-        "bensin": "13.2"
+        "diesel": "11.73",
+        "bensin": "12.7"
       },
       "effo": {
         "gassoil": "10.238",
@@ -199,8 +199,8 @@
       },
       "magn": {
         "gassoil": "10.363",
-        "diesel": "12.23",
-        "bensin": "13.2"
+        "diesel": "12.35",
+        "bensin": "13.33"
       },
       "effo": {
         "gassoil": "10.238",
@@ -262,8 +262,8 @@
       },
       "magn": {
         "gassoil": "11.15",
-        "diesel": "12.79",
-        "bensin": "13.76"
+        "diesel": "13.06",
+        "bensin": "14.04"
       },
       "effo": {
         "gassoil": "10.8",
@@ -283,8 +283,8 @@
       },
       "magn": {
         "gassoil": "11.15",
-        "diesel": "12.79",
-        "bensin": "13.76"
+        "diesel": "13.06",
+        "bensin": "14.04"
       },
       "effo": {
         "gassoil": "10.8",
@@ -304,8 +304,8 @@
       },
       "magn": {
         "gassoil": "11.15",
-        "diesel": "12.79",
-        "bensin": "13.76"
+        "diesel": "13.06",
+        "bensin": "14.04"
       },
       "effo": {
         "gassoil": "10.8",
@@ -325,8 +325,8 @@
       },
       "magn": {
         "gassoil": "11.15",
-        "diesel": "13.24",
-        "bensin": "14.06"
+        "diesel": "13.06",
+        "bensin": "14.04"
       },
       "effo": {
         "gassoil": "11.25",
@@ -388,8 +388,8 @@
       },
       "magn": {
         "gassoil": "11.438",
-        "diesel": "13.86",
-        "bensin": "14.69"
+        "diesel": "13.43",
+        "bensin": "14.2"
       },
       "effo": {
         "gassoil": "11.875",
@@ -409,8 +409,8 @@
       },
       "magn": {
         "gassoil": "11.875",
-        "diesel": "13.86",
-        "bensin": "14.69"
+        "diesel": "13.74",
+        "bensin": "14.51"
       },
       "effo": {
         "gassoil": "11.875",
@@ -430,8 +430,8 @@
       },
       "magn": {
         "gassoil": "11.875",
-        "diesel": "13.86",
-        "bensin": "14.69"
+        "diesel": "13.74",
+        "bensin": "14.51"
       },
       "effo": {
         "gassoil": "11.875",
@@ -451,8 +451,8 @@
       },
       "magn": {
         "gassoil": "11.875",
-        "diesel": "13.86",
-        "bensin": "14.69"
+        "diesel": "13.74",
+        "bensin": "14.51"
       },
       "effo": {
         "gassoil": "11.875",
@@ -472,8 +472,8 @@
       },
       "magn": {
         "gassoil": "11.875",
-        "diesel": "13.86",
-        "bensin": "14.69"
+        "diesel": "13.74",
+        "bensin": "14.51"
       },
       "effo": {
         "gassoil": "11.875",
@@ -493,8 +493,8 @@
       },
       "magn": {
         "gassoil": "12.125",
-        "diesel": "13.86",
-        "bensin": "14.69"
+        "diesel": "13.99",
+        "bensin": "14.76"
       },
       "effo": {
         "gassoil": "11.875",
@@ -514,8 +514,8 @@
       },
       "magn": {
         "gassoil": "12.125",
-        "diesel": "13.86",
-        "bensin": "14.69"
+        "diesel": "14.18",
+        "bensin": "14.64"
       },
       "effo": {
         "gassoil": "11.875",
@@ -644,7 +644,7 @@
         "bensin": "14.7"
       },
       "effo": {
-        "gassoil": "12.313",
+        "gassoil": "12.125",
         "diesel": "14.18",
         "bensin": "14.64"
       }
