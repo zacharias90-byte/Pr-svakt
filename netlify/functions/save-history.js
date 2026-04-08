@@ -1,132 +1,154 @@
-const https = require("https");
+// netlify/functions/save-history.js
+const https = require('https');
 
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
-const REPO = "zacharias90-byte/Pr-svakt";
-const FILE_PATH = "price-history.json";
-const RAILWAY_URL = "https://prisvakt-scraper-production.up.railway.app/api/fuel-prices";
+const REPO = 'zacharias90-byte/Pr-svakt';
 
-function fetchJson(url) {
+function githubGet(path) {
   return new Promise((resolve, reject) => {
-    https.get(url, { timeout: 10000 }, (res) => {
-      let data = "";
-      res.on("data", chunk => data += chunk);
-      res.on("end", () => {
-        try { resolve(JSON.parse(data)); }
-        catch(e) { reject(e); }
-      });
-    }).on("error", reject).on("timeout", () => reject(new Error("Timeout")));
-  });
-}
-
-function githubRequest(method, path, body) {
-  return new Promise((resolve, reject) => {
-    const payload = body ? JSON.stringify(body) : null;
-    const options = {
-      hostname: "api.github.com",
+    const req = https.request({
+      hostname: 'api.github.com',
       path,
-      method,
+      method: 'GET',
       headers: {
-        "Authorization": `token ${GITHUB_TOKEN}`,
-        "User-Agent": "prisvakt-history",
-        "Accept": "application/vnd.github.v3+json",
-        "Content-Type": "application/json",
-        ...(payload ? { "Content-Length": Buffer.byteLength(payload) } : {})
+        'Authorization': `token ${GITHUB_TOKEN}`,
+        'User-Agent': 'Prisvakt',
+        'Accept': 'application/vnd.github.v3+json'
       }
-    };
-    const req = https.request(options, (res) => {
-      let data = "";
-      res.on("data", chunk => data += chunk);
-      res.on("end", () => {
-        try { resolve(JSON.parse(data)); }
-        catch(e) { resolve({}); }
-      });
+    }, res => {
+      let data = '';
+      res.on('data', c => data += c);
+      res.on('end', () => { try { resolve(JSON.parse(data)); } catch(e) { reject(e); } });
     });
-    req.on("error", reject);
-    if (payload) req.write(payload);
+    req.on('error', reject);
     req.end();
   });
 }
 
+function githubPut(path, body) {
+  return new Promise((resolve, reject) => {
+    const payload = JSON.stringify(body);
+    const req = https.request({
+      hostname: 'api.github.com',
+      path,
+      method: 'PUT',
+      headers: {
+        'Authorization': `token ${GITHUB_TOKEN}`,
+        'User-Agent': 'Prisvakt',
+        'Accept': 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(payload)
+      }
+    }, res => {
+      let data = '';
+      res.on('data', c => data += c);
+      res.on('end', () => { try { resolve(JSON.parse(data)); } catch(e) { reject(e); } });
+    });
+    req.on('error', reject);
+    req.write(payload);
+    req.end();
+  });
+}
+
+async function getFileWithSha(filename) {
+  try {
+    const r = await githubGet(`/repos/${REPO}/contents/${filename}`);
+    const content = Buffer.from(r.content, 'base64').toString('utf-8');
+    return { data: JSON.parse(content), sha: r.sha };
+  } catch(e) {
+    return { data: null, sha: null };
+  }
+}
+
+async function getCurrentPrices() {
+  // Prøv prices-override.json først (manuel opdatering)
+  try {
+    const { data } = await getFileWithSha('prices-override.json');
+    if (data && data.sources && data.sources.length) {
+      console.log('Nýti prices-override.json');
+      return data.sources;
+    }
+  } catch(e) {}
+
+  // Fallback: Railway
+  try {
+    const data = await new Promise((resolve, reject) => {
+      const req = https.get('https://prisvakt-scraper-production.up.railway.app/api/fuel-prices', {
+        timeout: 8000
+      }, res => {
+        let d = '';
+        res.on('data', c => d += c);
+        res.on('end', () => { try { resolve(JSON.parse(d)); } catch(e) { reject(e); } });
+      });
+      req.on('error', reject);
+      req.on('timeout', () => { req.destroy(); reject(new Error('Timeout')); });
+    });
+    if (data.sources && data.sources.length) {
+      console.log('Nýti Railway');
+      return data.sources;
+    }
+  } catch(e) {
+    console.log('Railway feilst:', e.message);
+  }
+
+  return null;
+}
+
 exports.handler = async () => {
   try {
-    // 1. Hent live priser fra Railway
-    const priceData = await fetchJson(RAILWAY_URL);
-    const sources = priceData.sources || [];
+    const sources = await getCurrentPrices();
+    if (!sources) throw new Error('Eingi prísir fundin');
 
-    // 2. Hent eksisterende price-history.json fra GitHub
-    let existingHistory = [];
-    let fileSha = null;
-    try {
-      const fileRes = await githubRequest("GET", `/repos/${REPO}/contents/${FILE_PATH}`);
-      if (fileRes.content) {
-        fileSha = fileRes.sha;
-        const decoded = Buffer.from(fileRes.content, "base64").toString("utf8");
-        existingHistory = JSON.parse(decoded);
+    // Hent eksisterende historik
+    const { data: history, sha } = await getFileWithSha('price-history.json');
+    const hist = Array.isArray(history) ? history : [];
+
+    // Byg ny entry
+    const today = new Date().toISOString().split('T')[0];
+    const entry = {
+      date: today,
+      time: new Date().toISOString(),
+      prices: {
+        thomsen: { gassoil: null, diesel: null, bensin: null },
+        magn:    { gassoil: null, diesel: null, bensin: null },
+        effo:    { gassoil: null, diesel: null, bensin: null }
       }
-    } catch(e) {
-      console.log("Ingen eksisterende historik — starter frisk");
-    }
-
-    // 3. Byg dagens datapunkt
-    const today = new Date();
-    const dateStr = today.toISOString().split("T")[0]; // "2026-04-02"
-    const timeStr = today.toISOString();
-
-    const todayEntry = {
-      date: dateStr,
-      time: timeStr,
-      prices: {}
     };
 
     sources.forEach(s => {
       const key = s.source.toLowerCase();
-      todayEntry.prices[key] = {
-        gassoil: s.gassoil || null,
-        diesel:  s.diesel  || null,
-        bensin:  s.bensin  || null
-      };
+      if (entry.prices[key] !== undefined) {
+        entry.prices[key] = {
+          gassoil: s.gassoil || null,
+          diesel:  s.diesel  || null,
+          bensin:  s.bensin  || null
+        };
+      }
     });
 
-    // 4. Tjek om vi allerede har en entry for i dag (opdater i så fald)
-    const existingTodayIndex = existingHistory.findIndex(e => e.date === dateStr);
-    if (existingTodayIndex >= 0) {
-      existingHistory[existingTodayIndex] = todayEntry;
-    } else {
-      existingHistory.push(todayEntry);
-    }
+    // Tilføj eller opdater dagens entry
+    const idx = hist.findIndex(e => e.date === today);
+    if (idx >= 0) hist[idx] = entry;
+    else hist.push(entry);
 
-    // 5. Behold kun de seneste 90 dage
-    existingHistory = existingHistory
-      .sort((a, b) => a.date.localeCompare(b.date))
-      .slice(-90);
+    // Behold max 365 dage
+    const trimmed = hist.slice(-365);
 
-    // 6. Gem opdateret historik til GitHub
-    const content = Buffer.from(JSON.stringify(existingHistory, null, 2)).toString("base64");
-    const commitBody = {
-      message: `Opdater prishistorik ${dateStr}`,
+    // Gem til GitHub
+    const content = Buffer.from(JSON.stringify(trimmed, null, 2)).toString('base64');
+    await githubPut(`/repos/${REPO}/contents/price-history.json`, {
+      message: `Uppfær príshistorik ${today}`,
       content,
-      ...(fileSha ? { sha: fileSha } : {})
-    };
+      ...(sha ? { sha } : {})
+    });
 
-    await githubRequest("PUT", `/repos/${REPO}/contents/${FILE_PATH}`, commitBody);
-
-    console.log(`Historik gemt — ${existingHistory.length} dage logget`);
-
+    console.log('Príshistorik goymd:', today);
     return {
       statusCode: 200,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        ok: true,
-        entries: existingHistory.length,
-        latest: todayEntry
-      })
+      body: JSON.stringify({ ok: true, date: today, sources: sources.map(s => s.source) })
     };
-
   } catch(e) {
-    console.error("Fejl i save-history:", e.message);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ ok: false, error: e.message })
-    };
+    console.error('save-history feilst:', e.message);
+    return { statusCode: 500, body: JSON.stringify({ ok: false, error: e.message }) };
   }
 };
