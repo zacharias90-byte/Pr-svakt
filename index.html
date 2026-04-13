@@ -2,7 +2,18 @@
 <html lang="fo">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://prísvakt.fo/">
+  <meta property="og:title" content="Prísvakt.fo – Vísur nýggjastu oljuprísir">
+  <meta property="og:description" content="Samanber oljuprísir hjá Thomsen, Magn og Effo. Fylg við prísútviklingini og rokna hvat tú sparir.">
+  <meta property="og:image" content="https://prísvakt.fo/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="fo_FO">
+  <meta property="og:site_name" content="Prísvakt.fo">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Prísvakt.fo</title>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -141,7 +152,7 @@ html,body{margin:0;padding:0;background:#1a3a6e;font-family:'DM Sans',sans-serif
           <div class="spar-col"><label>Firma</label><select id="sp-co" onchange="calcSpar()"><option value="thomsen">Thomsen</option><option value="magn">Magn</option><option value="effo">Effo</option></select></div>
           <div class="spar-col"><label>Lítrar</label><input type="number" id="sp-liters" value="0" min="0" step="100" oninput="calcSpar()" placeholder="0"></div>
         </div>
-        <div class="spar-result"><div id="sp-diff"><div class="spar-result-label">Sparing</div><div style="color:#888;font-size:13px">skriva lítaratøl</div></div></div>
+        <div class="spar-result"><div id="sp-diff"><div class="spar-result-label">Sparing</div><div style="color:#888;font-size:13px">skriva lítraratøl</div></div></div>
       </div>
     </div>
 
@@ -202,10 +213,19 @@ html,body{margin:0;padding:0;background:#1a3a6e;font-family:'DM Sans',sans-serif
 </div>
 
 <div class="footer-banner">
-  <div class="fb-item"><div class="fb-icon">&#10004;&#65039;</div><div class="fb-title">Billigast í dag</div><div class="fb-sub" id="footer-gas">–</div></div>
+  <div class="fb-item"><div class="fb-icon">&#10004;&#65039;</div><div class="fb-title">Bíligast í dag</div><div class="fb-sub" id="footer-gas">–</div></div>
   <div class="fb-item"><div class="fb-icon">&#9981;</div><div class="fb-title">Diesel &amp; Bensin</div><div class="fb-sub" id="footer-diesel">–</div></div>
-  <div class="fb-item"><div class="fb-icon">&#128183;</div><div class="fb-title">Spar stórt</div><div class="fb-sub">Fylg við – tað loynir seg!</div></div>
+  <div class="fb-item"><div class="fb-icon">&#128183;</div><div class="fb-title">Spar stórt</div><div class="fb-sub">Fylg við – tað loysir seg!</div></div>
 </div>
+
+  <!-- DEL KNAP -->
+  <div style="padding:16px 12px;text-align:center;background:#f0f4f9">
+    <button onclick="sharePage()" style="display:inline-flex;align-items:center;gap:10px;background:#1877f2;color:white;border:none;border-radius:10px;padding:14px 24px;font-size:15px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;box-shadow:0 2px 8px rgba(24,119,242,0.4)">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+      Deil á Facebook
+    </button>
+    <p style="font-size:11px;color:#999;margin-top:8px">Del prísvakt.fo við vinum og familjuni</p>
+  </div>
 
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
@@ -289,7 +309,7 @@ function calcSpar(){
   var cheapest=others.reduce(function(a,b){return a[1]<b[1]?a:b;});var diff=(myPrice-cheapest[1])*liters;
   var names={thomsen:'Thomsen',magn:'Magn',effo:'Effo'};var fuelNames={gassoil:'gassolju',diesel:'diesel',bensin:'bensin'};
   var el=document.getElementById('sp-diff');
-  if(liters===0){el.innerHTML='<div class="spar-result-label">Sparing</div><div style="color:#888;font-size:13px">skriva lítaratøl</div>';}
+  if(liters===0){el.innerHTML='<div class="spar-result-label">Sparing</div><div style="color:#888;font-size:13px">skriva lítraratøl</div>';}
   else if(Math.abs(diff)<1){el.innerHTML='<div class="spar-result-label">Sparing</div><div class="spar-val" style="color:#888">= Sama prísur</div>';}
   else if(diff>0){el.innerHTML='<div class="spar-result-label">Sparing</div><div class="spar-val" style="color:#c0392b">&#8593; '+Math.round(diff).toLocaleString("da-DK")+' kr dýrari</div><div class="spar-desc">enn '+names[cheapest[0]]+' á '+fuelNames[fuel]+'</div>';}
   else{el.innerHTML='<div class="spar-result-label">Sparing</div><div class="spar-val" style="color:#1a7a3c">&#8595; '+Math.round(Math.abs(diff)).toLocaleString("da-DK")+' kr</div><div class="spar-desc">billigari enn '+names[cheapest[0]]+' á '+fuelNames[fuel]+'</div>';}
