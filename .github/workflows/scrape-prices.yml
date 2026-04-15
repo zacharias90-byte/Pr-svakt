@@ -34,5 +34,5 @@ jobs:
           git add prices-override.json
           git diff --staged --quiet && echo "Eingi broytingar" && exit 0
           git commit -m "Uppfær prísir $(date '+%d/%m/%Y %H:%M')"
-          git pull --rebase -X ours origin main
+          git pull --no-rebase origin main
           git push origin main
