@@ -21,16 +21,45 @@ function fetchUrl(url) {
         return fetchUrl(res.headers.location).then(resolve).catch(reject);
       }
       let data = '';
-      res.on('data', c => data += c);
-      res.on('end', () => resolve(data));
-    });
-    req.on('error', reject);
-    req.on('timeout', () => { req.destroy(); reject(new Error('Timeout')); });
-  });
-}
+    : Scrape oljuprísir
 
-async function scrapeThomsen() {
-  try {
+on:
+  schedule:
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Scrape prices
+        run: node .github/scripts/scrape.js
+
+      - name: Commit prices
+        run: |
+          git config user.name "Prísvakt Bot"
+          git config user.email "bot@prisvakt.fo"
+          git add prices-override.json
+          git diff --staged --quiet && echo "Eingi broytingar" && exit 0
+          git commit -m "Uppfær prísir $(date '+%d/%m/%Y %H:%M')"
+          git pull --rebase -X ours origin main || {
+            git rebase --abort
+            git pull origin main
+            git checkout --theirs prices-override.json
+            git add prices-override.json
+            git commit -m "Merge conflict resolved - keeping latest from main"
+          }
+          git push origin main
     const html = await fetchUrl('https://thomsen.fo/oljuprisur');
     const m = html.match(/DAGSPRÍSUR\s+([\d,\.]+)\s*kr/i)
            || html.match(/\b(10\.\d{3}|9\.\d{3}|11\.\d{3})\b/);
