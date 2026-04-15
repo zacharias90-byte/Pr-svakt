@@ -2,8 +2,8 @@ name: Scrape oljuprísir
 
 on:
   schedule:
-    - cron: '0 */6 * * *'  # Hvønn 6. tíma
-  workflow_dispatch:        # Kann eisini keyra handlagt
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
 
 jobs:
   scrape:
@@ -19,13 +19,8 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install Puppeteer
-        run: npm install puppeteer
-
       - name: Scrape prices
         run: node .github/scripts/scrape.js
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Commit prices
         run: |
@@ -34,6 +29,5 @@ jobs:
           git add prices-override.json
           git diff --staged --quiet && echo "Eingi broytingar" && exit 0
           git commit -m "Uppfær prísir $(date '+%d/%m/%Y %H:%M')"
-          git commit -m "Merge conflict resolved"
-          )
+          git pull --rebase origin main
           git push origin main
