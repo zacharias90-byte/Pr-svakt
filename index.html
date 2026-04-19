@@ -64,13 +64,23 @@ html,body{margin:0;padding:0;background:#1a3a6e;font-family:'DM Sans',sans-serif
 .p-effo{background:#c8102e;color:white}
 
 /* SPARING */
-.spar-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-bottom:10px}
+.spar-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:10px}
 .spar-col label{font-size:11px;color:#555;display:block;margin-bottom:4px;font-weight:600}
 .spar-col select,.spar-col input{width:100%;font-size:13px;padding:7px 7px;border:1.5px solid #dde3ef;border-radius:7px;background:white;color:#333;font-family:'DM Sans',sans-serif}
-.spar-result{background:#eef4ff;border-radius:8px;padding:12px;text-align:center}
-.spar-result-label{font-size:10px;color:#6b8ab0;margin-bottom:3px}
+.spar-result{background:#eef4ff;border-radius:8px;padding:10px}
+.spar-result-label{font-size:10px;color:#6b8ab0;margin-bottom:6px;text-align:center;text-transform:uppercase;letter-spacing:0.5px;font-weight:700}
 .spar-val{font-size:22px;font-weight:800}
 .spar-desc{font-size:12px;color:#555;margin-top:2px}
+.spar-rows{display:flex;flex-direction:column;gap:5px}
+.spar-row{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:8px;background:white;border-radius:6px;padding:7px 9px;border:1px solid #e4ecfa}
+.spar-row.best{border-color:#1a7a3c;background:#eafaf0}
+.spar-row .sr-name{font-size:12px;font-weight:700;color:#002060}
+.spar-row .sr-total{font-size:14px;font-weight:700;color:#111;text-align:right}
+.spar-row .sr-diff{font-size:11px;font-weight:600;text-align:right}
+.spar-row .sr-diff.best{color:#1a7a3c}
+.spar-row .sr-diff.worse{color:#c0392b}
+.spar-row .sr-diff.same{color:#888}
+.spar-empty{color:#888;font-size:13px;text-align:center;padding:4px 0}
 
 /* CHARTS */
 .chart-section{padding:0 12px 16px}
@@ -138,10 +148,9 @@ html,body{margin:0;padding:0;background:#1a3a6e;font-family:'DM Sans',sans-serif
         <div class="card-title">Rokna sparing</div>
         <div class="spar-grid">
           <div class="spar-col"><label>Olja</label><select id="sp-fuel" onchange="calcSpar()"><option value="gassoil">Gassolja</option><option value="diesel">Diesel</option><option value="bensin">Bensin</option></select></div>
-          <div class="spar-col"><label>Firma</label><select id="sp-co" onchange="calcSpar()"><option value="thomsen">Thomsen</option><option value="magn">Magn</option><option value="effo">Effo</option></select></div>
           <div class="spar-col"><label>Lítrar</label><input type="number" id="sp-liters" value="0" min="0" step="100" oninput="calcSpar()" placeholder="0"></div>
         </div>
-        <div class="spar-result"><div id="sp-diff"><div class="spar-result-label">Sparing</div><div style="color:#888;font-size:13px">skriva lítaratøl</div></div></div>
+        <div class="spar-result"><div class="spar-result-label">Samanbering</div><div id="sp-diff"><div class="spar-empty">skriva lítaratøl</div></div></div>
       </div>
     </div>
 
@@ -282,17 +291,25 @@ function updateFooter(){
   var fd=document.getElementById('footer-diesel');if(fd&&de.length){var dmin=Math.min.apply(null,de.map(function(e){return e[1];}));var dmax=Math.max.apply(null,de.map(function(e){return e[1];}));fd.textContent=Math.abs(dmax-dmin)<0.01?'Sama prísur hjá øllum':'Prísur eru mismunandi';}
 }
 function calcSpar(){
-  var fuel=document.getElementById('sp-fuel').value;var co=document.getElementById('sp-co').value;
+  var fuel=document.getElementById('sp-fuel').value;
   var liters=parseFloat(document.getElementById('sp-liters').value)||0;
-  var myPrice=pData[fuel][co];if(myPrice==null)return;
-  var others=Object.entries(pData[fuel]).filter(function(e){return e[0]!==co&&e[1]!=null;});if(!others.length)return;
-  var cheapest=others.reduce(function(a,b){return a[1]<b[1]?a:b;});var diff=(myPrice-cheapest[1])*liters;
-  var names={thomsen:'Thomsen',magn:'Magn',effo:'Effo'};var fuelNames={gassoil:'gassolju',diesel:'diesel',bensin:'bensin'};
+  var names={thomsen:'Thomsen',magn:'Magn',effo:'Effo'};
+  var order=['thomsen','magn','effo'];
   var el=document.getElementById('sp-diff');
-  if(liters===0){el.innerHTML='<div class="spar-result-label">Sparing</div><div style="color:#888;font-size:13px">skriva lítaratøl</div>';}
-  else if(Math.abs(diff)<1){el.innerHTML='<div class="spar-result-label">Sparing</div><div class="spar-val" style="color:#888">= Sama prísur</div>';}
-  else if(diff>0){el.innerHTML='<div class="spar-result-label">Sparing</div><div class="spar-val" style="color:#c0392b">&#8593; '+Math.round(diff).toLocaleString("da-DK")+' kr dýrari</div><div class="spar-desc">enn '+names[cheapest[0]]+' á '+fuelNames[fuel]+'</div>';}
-  else{el.innerHTML='<div class="spar-result-label">Sparing</div><div class="spar-val" style="color:#1a7a3c">&#8595; '+Math.round(Math.abs(diff)).toLocaleString("da-DK")+' kr</div><div class="spar-desc">billigari enn '+names[cheapest[0]]+' á '+fuelNames[fuel]+'</div>';}
+  var entries=order.filter(function(k){return pData[fuel][k]!=null;}).map(function(k){return [k,pData[fuel][k]];});
+  if(!entries.length){el.innerHTML='<div class="spar-empty">Ongin prísur</div>';return;}
+  if(liters<=0){el.innerHTML='<div class="spar-empty">skriva lítaratøl</div>';return;}
+  var minVal=Math.min.apply(null,entries.map(function(e){return e[1];}));
+  var html=entries.map(function(e){
+    var total=e[1]*liters;var diff=(e[1]-minVal)*liters;var isBest=e[1]===minVal;
+    var rowCls=isBest?'spar-row best':'spar-row';
+    var diffHtml;
+    if(isBest){diffHtml='<div class="sr-diff best">&#10003; billigast</div>';}
+    else if(Math.abs(diff)<1){diffHtml='<div class="sr-diff same">= sama</div>';}
+    else{diffHtml='<div class="sr-diff worse">+'+Math.round(diff).toLocaleString("da-DK")+' kr</div>';}
+    return '<div class="'+rowCls+'"><div class="sr-name">'+names[e[0]]+'</div><div class="sr-total">'+Math.round(total).toLocaleString("da-DK")+' kr</div>'+diffHtml+'</div>';
+  }).join('');
+  el.innerHTML='<div class="spar-rows">'+html+'</div>';
 }
 async function loadPrices(){try{var res=await fetch('/.netlify/functions/fuel-prices');var data=await res.json();if(data.sources&&data.sources.length)renderPrices(data.sources);}catch(e){var el=document.getElementById('last-updated');if(el)el.textContent='Dagført: –';}}
 async function loadHistory(){
