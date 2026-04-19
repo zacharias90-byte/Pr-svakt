@@ -113,7 +113,7 @@ html,body{margin:0;padding:0;background:#1a3a6e;font-family:'DM Sans',sans-serif
   <div class="hero-content">
     <div class="hero-logo">Prís<em>vakt</em><span>.fo</span></div>
     <div class="hero-sub">Vísur nýggjastu oljuprísir</div>
-    <div class="hero-tagline">Fylg við nyggjastu prísbroytingunum, síggj prísútvíkling og rokna hvat er at spara.</div>
+    <div class="hero-tagline">Fylg við nyggjastu prísbroytingunum, síggj prísútvikling og rokna hvat er at spara.</div>
   </div>
   <div class="hero-updated"><span class="hero-dot"></span><span id="last-updated">Dagført: –</span></div>
   <div class="hero-red-line"></div>
@@ -139,7 +139,7 @@ html,body{margin:0;padding:0;background:#1a3a6e;font-family:'DM Sans',sans-serif
         <div class="spar-grid">
           <div class="spar-col"><label>Olja</label><select id="sp-fuel" onchange="calcSpar()"><option value="gassoil">Gassolja</option><option value="diesel">Diesel</option><option value="bensin">Bensin</option></select></div>
           <div class="spar-col"><label>Firma</label><select id="sp-co" onchange="calcSpar()"><option value="thomsen">Thomsen</option><option value="magn">Magn</option><option value="effo">Effo</option></select></div>
-          <div class="spar-col"><label>Lítrar</label><input type="number" id="sp-liters" value="0" min="0" step="100" oninput="calcSpar()" placeholder="0"></div>
+          <div class="spar-col"><label>Litrar</label><input type="number" id="sp-liters" value="0" min="0" step="100" oninput="calcSpar()" placeholder="0"></div>
         </div>
         <div class="spar-result"><div id="sp-diff"><div class="spar-result-label">Sparing</div><div style="color:#888;font-size:13px">skriva lítaratøl</div></div></div>
       </div>
@@ -147,7 +147,7 @@ html,body{margin:0;padding:0;background:#1a3a6e;font-family:'DM Sans',sans-serif
 
     <!-- HØJRE: BILLIGAST -->
     <div>
-      <div style="font-size:11px;font-weight:700;color:#002060;text-transform:uppercase;letter-spacing:0.7px;margin-bottom:8px">Bíligasti prísir í dag</div>
+      <div style="font-size:11px;font-weight:700;color:#002060;text-transform:uppercase;letter-spacing:0.7px;margin-bottom:8px">Bíligastu prísir í dag</div>
       <div class="ban ban-gas">
         <div class="ban-label">Gassolja</div>
         <div class="ban-row">
@@ -264,15 +264,22 @@ function updateBanners(){
   ['gassoil','diesel','bensin'].forEach(function(fuel){
     var key=fuel==='gassoil'?'gas':fuel;
     var entries=Object.entries(pData[fuel]).filter(function(e){return e[1]!=null;});if(!entries.length)return;
-    var minVal=Math.min.apply(null,entries.map(function(e){return e[1];}));var maxVal=Math.max.apply(null,entries.map(function(e){return e[1];}));
-    var cheapest=entries.filter(function(e){return e[1]===minVal;});var diff=maxVal-minVal;
-    var pe=document.getElementById('ban-'+key+'-price');var we=document.getElementById('ban-'+key+'-who');
-    var de=document.getElementById('ban-'+key+'-diff');var dl=document.getElementById('ban-'+key+'-diff-lbl');
+    var sorted=entries.slice().sort(function(a,b){return a[1]-b[1];});
+    var minVal=sorted[0][1];var cheapestKey=sorted[0][0];
+    var others=sorted.slice(1);
+    var pe=document.getElementById('ban-'+key+'-price');
+    var we=document.getElementById('ban-'+key+'-who');
+    var de=document.getElementById('ban-'+key+'-diff');
+    var dl=document.getElementById('ban-'+key+'-diff-lbl');
     if(pe)pe.textContent=fmt(minVal);
-    if(we){we.textContent=cheapest.length>1?'Sama prísur':names[cheapest[0][0]];we.style.color=cheapest.length>1?'rgba(255,255,255,0.7)':'#7dd3fc';}
-    if(de&&dl){if(diff<0.001){de.textContent='= Sama';de.style.color='rgba(255,255,255,0.6)';dl.textContent='prísur';}else{de.textContent=fmt(diff);de.style.color='#86efac';dl.textContent='kr/L billigari';}}
-  });
-}
+    if(we){we.textContent=names[cheapestKey];we.style.color='#7dd3fc';}
+    if(de&&dl){
+      if(!others.length){de.textContent='—';dl.textContent='';return;}
+      var maxDiff=others[others.length-1][1]-minVal;
+      if(maxDiff<0.001){de.textContent='= Sama';de.style.color='rgba(255,255,255,0.6)';dl.textContent='prísur';}
+      else{de.textContent=fmt(maxDiff);de.style.color='#86efac';
+           dl.textContent='kr/L billigari enn '+others.map(function(e){return names[e[0]];}).join(' & ');}
+    }
 function updateFooter(){
   var entries=Object.entries(pData.gassoil).filter(function(e){return e[1]!=null;});if(!entries.length)return;
   var minVal=Math.min.apply(null,entries.map(function(e){return e[1];}));var cheapest=entries.filter(function(e){return e[1]===minVal;});
@@ -282,17 +289,24 @@ function updateFooter(){
   var fd=document.getElementById('footer-diesel');if(fd&&de.length){var dmin=Math.min.apply(null,de.map(function(e){return e[1];}));var dmax=Math.max.apply(null,de.map(function(e){return e[1];}));fd.textContent=Math.abs(dmax-dmin)<0.01?'Sama prísur hjá øllum':'Prísur eru mismunandi';}
 }
 function calcSpar(){
-  var fuel=document.getElementById('sp-fuel').value;var co=document.getElementById('sp-co').value;
+  var fuel=document.getElementById('sp-fuel').value;
+  var co=document.getElementById('sp-co').value;
   var liters=parseFloat(document.getElementById('sp-liters').value)||0;
   var myPrice=pData[fuel][co];if(myPrice==null)return;
-  var others=Object.entries(pData[fuel]).filter(function(e){return e[0]!==co&&e[1]!=null;});if(!others.length)return;
-  var cheapest=others.reduce(function(a,b){return a[1]<b[1]?a:b;});var diff=(myPrice-cheapest[1])*liters;
-  var names={thomsen:'Thomsen',magn:'Magn',effo:'Effo'};var fuelNames={gassoil:'gassolju',diesel:'diesel',bensin:'bensin'};
+  var names={thomsen:'Thomsen',magn:'Magn',effo:'Effo'};
+  var fuelNames={gassoil:'gassolju',diesel:'diesel',bensin:'bensin'};
   var el=document.getElementById('sp-diff');
-  if(liters===0){el.innerHTML='<div class="spar-result-label">Sparing</div><div style="color:#888;font-size:13px">skriva lítaratøl</div>';}
-  else if(Math.abs(diff)<1){el.innerHTML='<div class="spar-result-label">Sparing</div><div class="spar-val" style="color:#888">= Sama prísur</div>';}
-  else if(diff>0){el.innerHTML='<div class="spar-result-label">Sparing</div><div class="spar-val" style="color:#c0392b">&#8593; '+Math.round(diff).toLocaleString("da-DK")+' kr dýrari</div><div class="spar-desc">enn '+names[cheapest[0]]+' á '+fuelNames[fuel]+'</div>';}
-  else{el.innerHTML='<div class="spar-result-label">Sparing</div><div class="spar-val" style="color:#1a7a3c">&#8595; '+Math.round(Math.abs(diff)).toLocaleString("da-DK")+' kr</div><div class="spar-desc">billigari enn '+names[cheapest[0]]+' á '+fuelNames[fuel]+'</div>';}
+  if(liters===0){el.innerHTML='<div class="spar-result-label">Sparing</div><div style="color:#888;font-size:13px">skriva lítraratøl</div>';return;}
+  var others=Object.entries(pData[fuel]).filter(function(e){return e[0]!==co&&e[1]!=null;});
+  if(!others.length)return;
+  var rows=others.map(function(e){
+    var diff=(myPrice-e[1])*liters;
+    var color=Math.abs(diff)<1?'#888':diff>0?'#c0392b':'#1a7a3c';
+    var arrow=Math.abs(diff)<1?'':diff>0?'&#8593; ':'&#8595; ';
+    var label=Math.abs(diff)<1?'Sama prísur':arrow+Math.round(Math.abs(diff)).toLocaleString('da-DK')+' kr '+(diff>0?'dýrari':'billigari')+' enn '+names[e[0]];
+    return '<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #dde3ef;font-size:13px"><span style="color:#555">vs '+names[e[0]]+'</span><span style="font-weight:700;color:'+color+'">'+label+'</span></div>';
+  });
+  el.innerHTML='<div class="spar-result-label" style="margin-bottom:6px">'+names[co]+' á '+fuelNames[fuel]+'</div>'+rows.join('');
 }
 async function loadPrices(){try{var res=await fetch('/.netlify/functions/fuel-prices');var data=await res.json();if(data.sources&&data.sources.length)renderPrices(data.sources);}catch(e){var el=document.getElementById('last-updated');if(el)el.textContent='Dagført: –';}}
 async function loadHistory(){
