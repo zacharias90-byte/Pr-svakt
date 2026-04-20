@@ -49,7 +49,21 @@ async function scrapeThomsen() {
   }
 }
 
-async function scrapeMagn() {
+async function scrapeMagn() 
+try {
+  const fsRes = await fetchUrl('https://www.magn.fo/oljuprisir?wf_json=1');
+  console.log('MAGN JSON1:', fsRes.substring(0, 500));
+} catch(e) {}
+
+try {
+  const fsRes2 = await fetchUrl('https://www.magn.fo/oljuprisir?format=json&t=' + Date.now());
+  console.log('MAGN JSON2:', fsRes2.substring(0, 500));
+} catch(e) {}
+
+try {
+  const fsRes3 = await fetchUrl('https://www.magn.fo/api/oljuprisir');
+  console.log('MAGN JSON3:', fsRes3.substring(0, 500));
+} catch(e) {}{
   try {
     const html = await fetchUrl('https://www.magn.fo/oljuprisir');
 console.log('MAGN DEBUG:', html.substring(0, 3000));
