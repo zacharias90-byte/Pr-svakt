@@ -50,14 +50,7 @@ async function scrapeThomsen() {
 }
 
 async function scrapeMagn() {
-  tryasync function scrapeMagn() {
   try {
-    const html = await fetchUrl('https://www.magn.fo/oljuprisir');
-    
-    // DEBUG - fjern efter fix
-    console.log('MAGN HTML snippet:', html.substring(0, 3000));
-    
-    // ... resten af koden {
     const html = await fetchUrl('https://www.magn.fo/oljuprisir');
 
     const dateMatch = html.match(/(\d{1,2})\s*\.\s*(january|february|march|april|may|june|july|august|september|october|november|december)\s*(\d{4})/i)
