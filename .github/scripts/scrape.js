@@ -61,6 +61,17 @@ console.log('MAGN DEBUG:', html.substring(0, 3000));
   const colRes = await fetchUrl('https://cdn.prod.website-files.com/638baffb77d1c742949c9568/');
   console.log('MAGN CDN:', colRes.substring(0, 500));
 } catch(e) {}
+    try {
+  const wfRes = await fetchUrl('https://api.webflow.com/v2/sites/638baffb77d1c742949c9568/collections');
+  console.log('MAGN WF API:', wfRes.substring(0, 1000));
+} catch(e) {
+  console.log('WF API fejl:', e.message);
+}try {
+  const cmsRes = await fetchUrl('https://webflow.com/api/v1/sites/638baffb77d1c742949c9568/collections');
+  console.log('MAGN CMS:', cmsRes.substring(0, 1000));
+} catch(e) {
+  console.log('CMS fejl:', e.message);
+}
     const dateMatch = html.match(/(\d{1,2})\s*\.\s*(january|february|march|april|may|june|july|august|september|october|november|december)\s*(\d{4})/i)
       || html.match(/(\d{1,2})\s*\.\s*(apríl|mars|februar|januar|mai|juni|juli|august|september|oktober|november|desember)\s*(\d{4})/i);
 
