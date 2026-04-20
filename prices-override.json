@@ -1,26 +1,26 @@
 {
-  "updatedAt": "2026-04-20T05:19:48.809Z",
+  "updatedAt": "2026-04-20T05:29:19.699Z",
   "sources": [
     {
       "source": "Thomsen",
       "gassoil": "10.250",
       "diesel": null,
       "bensin": null,
-      "updatedAt": "17/04/2026"
+      "updatedAt": "20.4.2026"
     },
     {
       "source": "Magn",
-      "gassoil": "12.125",
-      "diesel": "14.180",
-      "bensin": "13.390",
-      "updatedAt": "17/04/2026"
+      "gassoil": "11.875",
+      "diesel": "13.930",
+      "bensin": "13.140",
+      "updatedAt": "20.4.2026"
     },
     {
       "source": "Effo",
       "gassoil": "11.625",
-      "diesel": "13.30",
-      "bensin": "12.89",
-      "updatedAt": "17/apr/2026"
+      "diesel": "13.300",
+      "bensin": "12.890",
+      "updatedAt": "20.4.2026"
     }
   ]
 }
