@@ -52,7 +52,7 @@ async function scrapeThomsen() {
 async function scrapeMagn() {
   try {
     const html = await fetchUrl('https://www.magn.fo/oljuprisir');
-console.log('MAGN DEBUG:', html.substring(0, 2000));
+
     const dateMatch = html.match(/(\d{1,2})\s*\.\s*(january|february|march|april|may|june|july|august|september|october|november|december)\s*(\d{4})/i)
       || html.match(/(\d{1,2})\s*\.\s*(apríl|mars|februar|januar|mai|juni|juli|august|september|oktober|november|desember)\s*(\d{4})/i);
 
