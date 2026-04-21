@@ -2,9 +2,9 @@ const https = require('https');
 const fs = require('fs');
 
 const KNOWN = {
-  Thomsen: { gassoil: '10.850', diesel: null,     bensin: null,     updatedAt: '15/04/2026' },
-  Magn:    { gassoil: '12.125', diesel: '14.180',  bensin: '13.390', updatedAt: '17/04/2026' },
-  Effo:    { gassoil: '12.125', diesel: '13.800',  bensin: '13.390', updatedAt: '16/04/2026' }
+  Thomsen: { gassoil: '10.250', diesel: null,     bensin: null,     updatedAt: '21/04/2026' },
+  Magn:    { gassoil: '11.625', diesel: '13.300',  bensin: '12.890', updatedAt: '21/04/2026' },
+  Effo:    { gassoil: '11.625', diesel: '13.300',  bensin: '12.890', updatedAt: '21/04/2026' }
 };
 
 function fetchUrl(url) {
