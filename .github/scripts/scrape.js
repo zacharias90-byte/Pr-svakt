@@ -3,7 +3,7 @@ const fs = require('fs');
 
 const KNOWN = {
   Thomsen: { gassoil: '10.850', diesel: null,     bensin: null,     updatedAt: '15/04/2026' },
-  Magn:    { gassoil: '11.875', diesel: '13.930',  bensin: '13.140', updatedAt: '20/04/2026' },
+  Magn:    { gassoil: '12.125', diesel: '14.180',  bensin: '13.390', updatedAt: '17/04/2026' },
   Effo:    { gassoil: '12.125', diesel: '13.800',  bensin: '13.390', updatedAt: '16/04/2026' }
 };
 
@@ -49,10 +49,10 @@ async function scrapeThomsen() {
   }
 }
 
-async function scrapeMagn() 
-try {
-  
-}
+async function scrapeMagn() {
+  try {
+    const html = await fetchUrl('https://www.magn.fo/oljuprisir');
+
     const dateMatch = html.match(/(\d{1,2})\s*\.\s*(january|february|march|april|may|june|july|august|september|october|november|december)\s*(\d{4})/i)
       || html.match(/(\d{1,2})\s*\.\s*(apríl|mars|februar|januar|mai|juni|juli|august|september|oktober|november|desember)\s*(\d{4})/i);
 
@@ -63,8 +63,11 @@ try {
       updatedAt = dateMatch[1] + '/' + (mn[dateMatch[2].toLowerCase()]||'??') + '/' + dateMatch[3];
     }
 
+    // Bensin: "Bensin kr. 13,39" format (komma)
     const bensinMatch = html.match(/Bensin\s*kr\.\s*([\d]+,[\d]+)(?!\s*oktan)/i);
+    // Diesel: "Diesel kr. 14,18" format (komma)
     const dieselMatch = html.match(/(?<!Báta)[Dd]iesel\s*kr\.\s*([\d]+,[\d]+)/);
+    // Gassolja: "Gassolja kr. 12.125" format (punktum = pr. 1000 liter)
     const gasMatch = html.match(/Gassolja\s*kr\.\s*([\d]+\.[\d]+)/i);
 
     const bensin  = bensinMatch ? bensinMatch[1].replace(',', '.') : null;
@@ -92,17 +95,22 @@ async function scrapeEffo() {
   try {
     const html = await fetchUrl('https://www.effo.fo/prisir/');
 
+    // Find første dato på siden
     const dateMatch = html.match(/(\d{1,2})\.\s+(apríl|mars|februar|januar|mai|juni|juli|august|september|oktober|november|desember)\s+(\d{4})/i);
     let updatedAt = '';
     if (dateMatch) {
       updatedAt = dateMatch[1] + '/' + dateMatch[2].substring(0,3) + '/' + dateMatch[3];
     }
 
+    // Klip til kun første prisblok så vi ikke tager gamle priser
     const parts = html.split(/\d{1,2}\.\s+(?:apríl|mars|februar|januar|mai|juni|juli|august|september|oktober|november|desember)\s+\d{4}/i);
     const firstBlock = parts.length > 1 ? parts[1] : html;
 
+    // Bensin: "Blýfrítt  13,39 KR." format (komma)
     const bensinMatch = firstBlock.match(/Blýfrítt[\s\S]{0,50}?([\d]+,[\d]+)\s*KR/i);
+    // Diesel: "Diesel  13,80 KR." format (komma)
     const dieselMatch = firstBlock.match(/(?<!Báta)[Dd]iesel[\s\S]{0,50}?([\d]+,[\d]+)\s*KR/i);
+    // Gassolja: "12.125,00 KR." pr. 1000 liter - divider med 1000
     const gasMatch = firstBlock.match(/Gassolja[\s\S]{0,50}?([\d]+\.[\d]+),[\d]+\s*KR/i);
 
     const bensin = bensinMatch ? bensinMatch[1].replace(',', '.') : null;
@@ -130,26 +138,8 @@ async function main() {
   console.log('Byrjar at sækja prísir...', new Date().toISOString());
 
   const thomsen = await scrapeThomsen();
-  let magn      = await scrapeMagn();
+  const magn    = await scrapeMagn();
   const effo    = await scrapeEffo();
-
-  // Hvis Magn fejler, bevar eksisterende priser fra prices-override.json
-  if (!magn.gassoil || !magn.diesel || !magn.bensin) {
-    try {
-      const existing = JSON.parse(fs.readFileSync('prices-override.json', 'utf8'));
-      const existingMagn = existing.sources.find(s => s.source === 'Magn');
-      if (existingMagn && existingMagn.gassoil) {
-        magn = existingMagn;
-        console.log('Magn: bruger eksisterende priser:', JSON.stringify(magn));
-      } else {
-        console.log('Magn: ingen eksisterende priser, bruger KNOWN');
-        magn = { source: 'Magn', ...KNOWN.Magn };
-      }
-    } catch(e) {
-      console.log('Magn: kunne ikke læse fil, bruger KNOWN');
-      magn = { source: 'Magn', ...KNOWN.Magn };
-    }
-  }
 
   const data = {
     updatedAt: new Date().toISOString(),
