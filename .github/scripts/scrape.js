@@ -3,8 +3,8 @@ const fs = require('fs');
 
 const KNOWN = {
   Thomsen: { gassoil: '10.250', diesel: null,     bensin: null,     updatedAt: '21/04/2026' },
-  Magn:    { gassoil: '11.625', diesel: '13.300',  bensin: '12.890', updatedAt: '21/04/2026' },
-  Effo:    { gassoil: '11.625', diesel: '13.300',  bensin: '12.890', updatedAt: '21/04/2026' }
+  Magn:    { gassoil: '12.063', diesel: '13.300',  bensin: '12.890', updatedAt: '23/04/2026' },
+  Effo:    { gassoil: '12.063', diesel: '13.300',  bensin: '12.890', updatedAt: '23/04/2026' }
 };
 
 function fetchUrl(url) {
