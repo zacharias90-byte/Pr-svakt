@@ -1219,10 +1219,10 @@
   },
   {
     "date": "2026-04-29",
-    "time": "2026-04-29T15:04:00.008Z",
+    "time": "2026-04-29T18:06:22.095Z",
     "prices": {
       "thomsen": {
-        "gassoil": "10.250",
+        "gassoil": "10.500",
         "diesel": null,
         "bensin": null
       },
@@ -1232,9 +1232,9 @@
         "bensin": "13.330"
       },
       "effo": {
-        "gassoil": "12.063",
-        "diesel": "13.61",
-        "bensin": "13.14"
+        "gassoil": "12.313",
+        "diesel": "13.86",
+        "bensin": "13.33"
       }
     }
   }
