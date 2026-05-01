@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-05-01T08:22:05.113Z",
+  "updatedAt": "2026-05-01T10:23:23.784Z",
   "sources": [
     {
       "source": "Thomsen",
@@ -10,10 +10,10 @@
     },
     {
       "source": "Magn",
-      "gassoil": "12.313",
-      "diesel": "13.860",
-      "bensin": "13.330",
-      "updatedAt": "28/04/2026"
+      "gassoil": "12.600",
+      "diesel": "14.130",
+      "bensin": "13.590",
+      "updatedAt": "01/05/2026"
     },
     {
       "source": "Effo",
