@@ -1279,5 +1279,26 @@
         "bensin": "13.33"
       }
     }
+  },
+  {
+    "date": "2026-05-02",
+    "time": "2026-05-02T00:03:53.176Z",
+    "prices": {
+      "thomsen": {
+        "gassoil": "10.500",
+        "diesel": null,
+        "bensin": null
+      },
+      "magn": {
+        "gassoil": "12.600",
+        "diesel": "14.130",
+        "bensin": "13.590"
+      },
+      "effo": {
+        "gassoil": "12.313",
+        "diesel": "13.86",
+        "bensin": "13.33"
+      }
+    }
   }
 ]
