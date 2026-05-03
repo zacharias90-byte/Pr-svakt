@@ -1,9 +1,12 @@
 const https = require('https');
 
+let localOverride = null;
+try { localOverride = require('../../prices-override.json'); } catch (e) {}
+
 const KNOWN_PRICES = [
-  { source: 'Thomsen', gassoil: '10.350', diesel: null,     bensin: null,     updatedAt: '08/04/2026' },
-  { source: 'Magn',    gassoil: '12.313', diesel: '14.360', bensin: '14.700', updatedAt: '08/04/2026' },
-  { source: 'Effo',    gassoil: '12.000', diesel: '14.050', bensin: '14.200', updatedAt: '08/04/2026' }
+  { source: 'Thomsen', gassoil: '10.500', diesel: null,     bensin: null,     updatedAt: '29/04/2026' },
+  { source: 'Magn',    gassoil: '12.600', diesel: '14.130', bensin: '13.590', updatedAt: '01/05/2026' },
+  { source: 'Effo',    gassoil: '12.313', diesel: '13.860', bensin: '13.330', updatedAt: '29/04/2026' }
 ];
 
 function githubGet(path) {
@@ -32,8 +35,17 @@ function githubGet(path) {
 }
 
 exports.handler = async () => {
+  // Foretræk lokala prices-override.json (altíð frískt eftir hvørt deploy)
+  if (localOverride && localOverride.sources && localOverride.sources.length) {
+    return {
+      statusCode: 200,
+      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+      body: JSON.stringify({ fetchedAt: localOverride.updatedAt, sources: localOverride.sources })
+    };
+  }
+
   try {
-    // Prøv at hente prices-override.json fra GitHub
+    // Fallback: hent prices-override.json beinleiðis frá GitHub
     const file = await githubGet('/repos/zacharias90-byte/Pr-svakt/contents/prices-override.json');
     if (file.content) {
       const content = Buffer.from(file.content, 'base64').toString('utf-8');
