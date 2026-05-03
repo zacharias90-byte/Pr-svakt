@@ -228,8 +228,10 @@ var charts=[null,null,null];
 var months=['jan','feb','mar','apr','maj','jun','jul','aug','sep','okt','nov','dec'];
 function fmt(v){if(v===null||v===undefined||isNaN(v))return'—';var s=v.toFixed(3).replace('.',',');return s.replace(/(,\d*?)0+$/,'$1').replace(/,$/,'');}
 function parseP(s){if(!s||s===null||s==='null')return null;var n=parseFloat(String(s).replace(',','.'));return isNaN(n)?null:n;}
+function parseDateLocal(s){var p=String(s||'').split('-');return p.length===3?new Date(+p[0],+p[1]-1,+p[2]):new Date(s);}
+function monthOffsetFromNow(d){var n=new Date();return(d.getFullYear()-n.getFullYear())*12+(d.getMonth()-n.getMonth());}
 function getMonthLabel(o){var now=new Date();var d=new Date(now.getFullYear(),now.getMonth()+o,1);return months[d.getMonth()]+' '+d.getFullYear();}
-function getHist(o){if(!allHistory.length)return[];var now=new Date();var t=new Date(now.getFullYear(),now.getMonth()+o,1);var y=t.getFullYear(),m=t.getMonth();var f=allHistory.filter(function(e){var d=new Date(e.date);return d.getFullYear()===y&&d.getMonth()===m;});return f.length>=2?f:[];}
+function getHist(o){if(!allHistory.length)return[];var now=new Date();var t=new Date(now.getFullYear(),now.getMonth()+o,1);var y=t.getFullYear(),m=t.getMonth();var f=allHistory.filter(function(e){var d=parseDateLocal(e.date);return d.getFullYear()===y&&d.getMonth()===m;});return f.length>=2?f:[];}
 function buildChart(idx){
   var fuel=chartFuels[idx];var hist=getHist(chartOffsets[idx]);
   if(charts[idx]){try{charts[idx].destroy();}catch(e){}charts[idx]=null;}
@@ -241,7 +243,7 @@ function buildChart(idx){
     charts[idx]=new Chart(canvas,{type:'bar',data:{labels:keys.map(function(k){return k.charAt(0).toUpperCase()+k.slice(1);}),datasets:[{data:keys.map(function(k){return pData[fuel][k];}),backgroundColor:keys.map(function(k){return COLORS[k];}),borderRadius:4,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return fmt(c.parsed.y)+' kr/L';}}}},scales:{y:{ticks:{callback:function(v){return fmt(v);},font:{size:9},maxTicksLimit:5},grid:{color:'rgba(0,0,0,0.04)'},beginAtZero:false},x:{grid:{display:false},ticks:{font:{size:10}}}}}});
     return;
   }
-  var labels=hist.map(function(e){var d=new Date(e.date);return d.getDate()+'/'+(d.getMonth()+1);});
+  var labels=hist.map(function(e){var d=parseDateLocal(e.date);return d.getDate()+'/'+(d.getMonth()+1);});
   var allVals=[];
   var datasets=['thomsen','magn','effo'].map(function(key){
     var data=hist.map(function(e){return e.prices[key]?parseP(e.prices[key][fuel]):null;});
@@ -254,7 +256,7 @@ function buildChart(idx){
   var minV=allVals.length?Math.min.apply(null,allVals)-pad:0;var maxV=allVals.length?Math.max.apply(null,allVals)+pad:20;
   charts[idx]=new Chart(canvas,{type:'line',data:{labels:labels,datasets:datasets},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return c.dataset.label+': '+fmt(c.parsed.y)+' kr/L';}}}},scales:{y:{min:minV,max:maxV,ticks:{callback:function(v){return fmt(v);},font:{size:9},maxTicksLimit:6},grid:{color:'rgba(0,0,0,0.04)'}},x:{ticks:{font:{size:9},maxTicksLimit:7,maxRotation:0,autoSkip:true},grid:{display:false}}}}});
 }
-function prevMonth(i){if(!allHistory.length)return;var e=new Date(allHistory[0].date);var n=new Date();var mo=-((n.getFullYear()-e.getFullYear())*12+(n.getMonth()-e.getMonth()));if(chartOffsets[i]>mo){chartOffsets[i]--;buildChart(i);}}
+function prevMonth(i){if(!allHistory.length)return;var mo=monthOffsetFromNow(parseDateLocal(allHistory[0].date));if(chartOffsets[i]>mo){chartOffsets[i]--;buildChart(i);}}
 function nextMonth(i){if(chartOffsets[i]<0){chartOffsets[i]++;buildChart(i);}}
 function renderPrices(sources){
   sources.forEach(function(s){var k=s.source.toLowerCase();pData.gassoil[k]=parseP(s.gassoil);pData.diesel[k]=parseP(s.diesel);pData.bensin[k]=parseP(s.bensin);});
@@ -314,7 +316,7 @@ function calcSpar(){
 async function loadPrices(){try{var res=await fetch('/.netlify/functions/fuel-prices');var data=await res.json();if(data.sources&&data.sources.length)renderPrices(data.sources);}catch(e){var el=document.getElementById('last-updated');if(el)el.textContent='Dagført: –';}}
 async function loadHistory(){
   try{var res=await fetch('/.netlify/functions/get-history');if(!res.ok)return;var data=await res.json();
-    if(Array.isArray(data)&&data.length>=2){allHistory=data;var last=new Date(data[data.length-1].date);var now=new Date();var off=(last.getFullYear()-now.getFullYear())*12+(last.getMonth()-now.getMonth());chartOffsets=[off,off,off];buildChart(0);buildChart(1);buildChart(2);}
+    if(Array.isArray(data)&&data.length>=2){allHistory=data.filter(function(e){return e&&e.date;}).sort(function(a,b){return parseDateLocal(a.date)-parseDateLocal(b.date);});var last=parseDateLocal(allHistory[allHistory.length-1].date);var off=monthOffsetFromNow(last);chartOffsets=[off,off,off];buildChart(0);buildChart(1);buildChart(2);}
   }catch(e){console.log('Ingen historik');}
 }
 for(var i=0;i<3;i++){var lbl=document.getElementById('month-label-'+i);if(lbl)lbl.textContent=getMonthLabel(0);}
