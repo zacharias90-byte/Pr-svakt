@@ -1,8 +1,42 @@
 // netlify/functions/save-history.js
 const https = require('https');
+const localHistory = require('../../price-history.json');
 
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const REPO = 'zacharias90-byte/Pr-svakt';
+
+function countNonNullPrices(entry) {
+  if (!entry || !entry.prices) return 0;
+  let n = 0;
+  Object.values(entry.prices).forEach(p => {
+    if (!p) return;
+    ['gassoil', 'diesel', 'bensin'].forEach(k => {
+      if (p[k] !== null && p[k] !== undefined && p[k] !== '') n++;
+    });
+  });
+  return n;
+}
+
+function mergeHistories(githubHist, localHist) {
+  const map = new Map();
+  const local = Array.isArray(localHist) ? localHist : [];
+  const github = Array.isArray(githubHist) ? githubHist : [];
+  local.forEach(e => { if (e && e.date) map.set(e.date, e); });
+  github.forEach(e => {
+    if (!e || !e.date) return;
+    const existing = map.get(e.date);
+    if (!existing) { map.set(e.date, e); return; }
+    const ghCount = countNonNullPrices(e);
+    const exCount = countNonNullPrices(existing);
+    if (ghCount > exCount) map.set(e.date, e);
+    else if (ghCount === exCount) {
+      const ghTime = e.time ? Date.parse(e.time) : 0;
+      const exTime = existing.time ? Date.parse(existing.time) : 0;
+      if (ghTime >= exTime) map.set(e.date, e);
+    }
+  });
+  return Array.from(map.values()).sort((a, b) => String(a.date).localeCompare(String(b.date)));
+}
 
 function githubGet(path) {
   return new Promise((resolve, reject) => {
@@ -99,9 +133,10 @@ exports.handler = async () => {
     const sources = await getCurrentPrices();
     if (!sources) throw new Error('Eingi prísir fundin');
 
-    // Hent eksisterende historik
+    // Hent eksisterende historik fra GitHub og flet saman við lokala filuni
+    // (so mars/apríl dátur frá lokala filuni ikki hvørva um GitHub-historikkurin er ósamfeldur)
     const { data: history, sha } = await getFileWithSha('price-history.json');
-    const hist = Array.isArray(history) ? history : [];
+    const hist = mergeHistories(history, localHistory);
 
     // Byg ny entry
     const today = new Date().toISOString().split('T')[0];
