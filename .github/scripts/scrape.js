@@ -2,7 +2,7 @@ const https = require('https');
 const fs = require('fs');
 
 const KNOWN = {
-  Thomsen: { gassoil: '10.250', diesel: null,     bensin: null,     updatedAt: '21/04/2026' },
+  Thomsen: { gassoil: '10.800', diesel: null,     bensin: null,     updatedAt: '21/04/2026' },
   Magn:    { gassoil: '12.600', diesel: '14.130',  bensin: '13.590', updatedAt: '01/05/2026' },
   Effo:    { gassoil: '12.313', diesel: '13.860',  bensin: '13.330', updatedAt: '29/04/2026' }
 };
