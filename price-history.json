@@ -1,1325 +1,1325 @@
 [
-  {
-    "date": "2026-03-01",
-    "time": "2026-03-01T06:00:00.000Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "7.84",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": null,
-        "diesel": null,
-        "bensin": null
-      },
-      "effo": {
-        "gassoil": null,
-        "diesel": null,
-        "bensin": null
-      }
-    }
-  },
-  {
-    "date": "2026-03-02",
-    "time": "2026-03-02T06:00:00.000Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "7.84",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": null,
-        "diesel": null,
-        "bensin": null
-      },
-      "effo": {
-        "gassoil": null,
-        "diesel": null,
-        "bensin": null
-      }
-    }
-  },
-  {
-    "date": "2026-03-03",
-    "time": "2026-03-03T06:00:00.000Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "8.06",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "8.8",
-        "diesel": "10.83",
-        "bensin": "11.8"
-      },
-      "effo": {
-        "gassoil": null,
-        "diesel": null,
-        "bensin": null
-      }
-    }
-  },
-  {
-    "date": "2026-03-04",
-    "time": "2026-03-04T06:00:00.000Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "8.06",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "8.8",
-        "diesel": "10.83",
-        "bensin": "11.8"
-      },
-      "effo": {
-        "gassoil": null,
-        "diesel": null,
-        "bensin": null
-      }
-    }
-  },
-  {
-    "date": "2026-03-05",
-    "time": "2026-03-05T06:00:00.000Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "8.06",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "9.425",
-        "diesel": "11.41",
-        "bensin": "12.39"
-      },
-      "effo": {
-        "gassoil": null,
-        "diesel": null,
-        "bensin": null
-      }
-    }
-  },
-  {
-    "date": "2026-03-06",
-    "time": "2026-03-06T06:00:00.000Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "8.06",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "9.425",
-        "diesel": "11.41",
-        "bensin": "12.39"
-      },
-      "effo": {
-        "gassoil": null,
-        "diesel": null,
-        "bensin": null
-      }
-    }
-  },
-  {
-    "date": "2026-03-07",
-    "time": "2026-03-07T06:00:00.000Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "8.06",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "9.738",
-        "diesel": "11.73",
-        "bensin": "12.7"
-      },
-      "effo": {
-        "gassoil": null,
-        "diesel": null,
-        "bensin": null
-      }
-    }
-  },
-  {
-    "date": "2026-03-08",
-    "time": "2026-03-08T06:00:00.000Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "8.06",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "9.738",
-        "diesel": "11.73",
-        "bensin": "12.7"
-      },
-      "effo": {
-        "gassoil": null,
-        "diesel": null,
-        "bensin": null
-      }
-    }
-  },
-  {
-    "date": "2026-03-09",
-    "time": "2026-03-09T06:00:00.000Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "8.84",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "9.738",
-        "diesel": "11.73",
-        "bensin": "12.7"
-      },
-      "effo": {
-        "gassoil": "10.238",
-        "diesel": "12.23",
-        "bensin": "13.2"
-      }
-    }
-  },
-  {
-    "date": "2026-03-10",
-    "time": "2026-03-10T06:00:00.000Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "8.84",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "10.363",
-        "diesel": "12.35",
-        "bensin": "13.33"
-      },
-      "effo": {
-        "gassoil": "10.238",
-        "diesel": "12.23",
-        "bensin": "13.2"
-      }
-    }
-  },
-  {
-    "date": "2026-03-11",
-    "time": "2026-03-11T06:00:00.000Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "8.84",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "10.8",
-        "diesel": "12.79",
-        "bensin": "13.76"
-      },
-      "effo": {
-        "gassoil": "10.8",
-        "diesel": "12.79",
-        "bensin": "13.76"
-      }
-    }
-  },
-  {
-    "date": "2026-03-12",
-    "time": "2026-03-12T06:00:00.000Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "8.84",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "10.8",
-        "diesel": "12.79",
-        "bensin": "13.76"
-      },
-      "effo": {
-        "gassoil": "10.8",
-        "diesel": "12.79",
-        "bensin": "13.76"
-      }
-    }
-  },
-  {
-    "date": "2026-03-13",
-    "time": "2026-03-13T06:00:00.000Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "8.84",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "11.15",
-        "diesel": "13.06",
-        "bensin": "14.04"
-      },
-      "effo": {
-        "gassoil": "10.8",
-        "diesel": "12.79",
-        "bensin": "13.76"
-      }
-    }
-  },
-  {
-    "date": "2026-03-14",
-    "time": "2026-03-14T06:00:00.000Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "8.84",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "11.15",
-        "diesel": "13.06",
-        "bensin": "14.04"
-      },
-      "effo": {
-        "gassoil": "10.8",
-        "diesel": "12.79",
-        "bensin": "13.76"
-      }
-    }
-  },
-  {
-    "date": "2026-03-15",
-    "time": "2026-03-15T06:00:00.000Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "8.84",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "11.15",
-        "diesel": "13.06",
-        "bensin": "14.04"
-      },
-      "effo": {
-        "gassoil": "10.8",
-        "diesel": "12.79",
-        "bensin": "13.76"
-      }
-    }
-  },
-  {
-    "date": "2026-03-16",
-    "time": "2026-03-16T06:00:00.000Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "8.84",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "11.15",
-        "diesel": "13.06",
-        "bensin": "14.04"
-      },
-      "effo": {
-        "gassoil": "11.25",
-        "diesel": "13.24",
-        "bensin": "14.06"
-      }
-    }
-  },
-  {
-    "date": "2026-03-17",
-    "time": "2026-03-17T06:00:00.000Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "10.1",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "11.25",
-        "diesel": "13.24",
-        "bensin": "14.06"
-      },
-      "effo": {
-        "gassoil": "11.25",
-        "diesel": "13.24",
-        "bensin": "14.06"
-      }
-    }
-  },
-  {
-    "date": "2026-03-18",
-    "time": "2026-03-18T06:00:00.000Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "10.1",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "11.25",
-        "diesel": "13.24",
-        "bensin": "14.06"
-      },
-      "effo": {
-        "gassoil": "11.25",
-        "diesel": "13.24",
-        "bensin": "14.06"
-      }
-    }
-  },
-  {
-    "date": "2026-03-19",
-    "time": "2026-03-19T06:00:00.000Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "10.1",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "11.438",
-        "diesel": "13.43",
-        "bensin": "14.2"
-      },
-      "effo": {
-        "gassoil": "11.875",
-        "diesel": "13.86",
-        "bensin": "14.69"
-      }
-    }
-  },
-  {
-    "date": "2026-03-20",
-    "time": "2026-03-20T06:00:00.000Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "10.1",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "11.875",
-        "diesel": "13.74",
-        "bensin": "14.51"
-      },
-      "effo": {
-        "gassoil": "11.875",
-        "diesel": "13.86",
-        "bensin": "14.69"
-      }
-    }
-  },
-  {
-    "date": "2026-03-21",
-    "time": "2026-03-21T06:00:00.000Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "10.1",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "11.875",
-        "diesel": "13.74",
-        "bensin": "14.51"
-      },
-      "effo": {
-        "gassoil": "11.875",
-        "diesel": "13.86",
-        "bensin": "14.69"
-      }
-    }
-  },
-  {
-    "date": "2026-03-22",
-    "time": "2026-03-22T06:00:00.000Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "10.1",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "11.875",
-        "diesel": "13.74",
-        "bensin": "14.51"
-      },
-      "effo": {
-        "gassoil": "11.875",
-        "diesel": "13.86",
-        "bensin": "14.69"
-      }
-    }
-  },
-  {
-    "date": "2026-03-23",
-    "time": "2026-03-23T06:00:00.000Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "10.1",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "11.875",
-        "diesel": "13.74",
-        "bensin": "14.51"
-      },
-      "effo": {
-        "gassoil": "11.875",
-        "diesel": "13.86",
-        "bensin": "14.69"
-      }
-    }
-  },
-  {
-    "date": "2026-03-24",
-    "time": "2026-03-24T06:00:00.000Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "10.1",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "12.125",
-        "diesel": "13.99",
-        "bensin": "14.76"
-      },
-      "effo": {
-        "gassoil": "11.875",
-        "diesel": "13.86",
-        "bensin": "14.69"
-      }
-    }
-  },
-  {
-    "date": "2026-03-25",
-    "time": "2026-03-25T06:00:00.000Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "10.1",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "12.125",
-        "diesel": "14.18",
-        "bensin": "14.64"
-      },
-      "effo": {
-        "gassoil": "11.875",
-        "diesel": "13.86",
-        "bensin": "14.69"
-      }
-    }
-  },
-  {
-    "date": "2026-03-26",
-    "time": "2026-03-26T06:00:00.000Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "10.35",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "12.125",
-        "diesel": "14.18",
-        "bensin": "14.64"
-      },
-      "effo": {
-        "gassoil": "12.125",
-        "diesel": "14.18",
-        "bensin": "14.64"
-      }
-    }
-  },
-  {
-    "date": "2026-03-27",
-    "time": "2026-03-27T06:00:00.000Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "10.35",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "12.125",
-        "diesel": "14.18",
-        "bensin": "14.64"
-      },
-      "effo": {
-        "gassoil": "12.125",
-        "diesel": "14.18",
-        "bensin": "14.64"
-      }
-    }
-  },
-  {
-    "date": "2026-03-28",
-    "time": "2026-03-28T06:00:00.000Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "10.35",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "12.125",
-        "diesel": "14.18",
-        "bensin": "14.64"
-      },
-      "effo": {
-        "gassoil": "12.125",
-        "diesel": "14.18",
-        "bensin": "14.64"
-      }
-    }
-  },
-  {
-    "date": "2026-03-29",
-    "time": "2026-03-29T06:00:00.000Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "10.35",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "12.125",
-        "diesel": "14.18",
-        "bensin": "14.64"
-      },
-      "effo": {
-        "gassoil": "12.125",
-        "diesel": "14.18",
-        "bensin": "14.64"
-      }
-    }
-  },
-  {
-    "date": "2026-03-30",
-    "time": "2026-03-30T06:00:00.000Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "10.35",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "12.125",
-        "diesel": "14.18",
-        "bensin": "14.64"
-      },
-      "effo": {
-        "gassoil": "12.125",
-        "diesel": "14.18",
-        "bensin": "14.64"
-      }
-    }
-  },
-  {
-    "date": "2026-03-31",
-    "time": "2026-03-31T06:00:00.000Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "10.35",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "12.313",
-        "diesel": "14.36",
-        "bensin": "14.7"
-      },
-      "effo": {
-        "gassoil": "12.125",
-        "diesel": "14.18",
-        "bensin": "14.64"
-      }
-    }
-  },
-  {
-    "date": "2026-04-01",
-    "time": "2026-04-01T06:00:00.000Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "10.35",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "12.313",
-        "diesel": "14.36",
-        "bensin": "14.7"
-      },
-      "effo": {
-        "gassoil": "12.313",
-        "diesel": "14.36",
-        "bensin": "14.7"
-      }
-    }
-  },
-  {
-    "date": "2026-04-02",
-    "time": "2026-04-02T06:00:00.000Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "10.35",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "12.313",
-        "diesel": "14.36",
-        "bensin": "14.7"
-      },
-      "effo": {
-        "gassoil": "12.313",
-        "diesel": "14.36",
-        "bensin": "14.7"
-      }
-    }
-  },
-  {
-    "date": "2026-04-03",
-    "time": "2026-04-03T06:00:00.000Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "10.35",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "12.313",
-        "diesel": "14.36",
-        "bensin": "14.7"
-      },
-      "effo": {
-        "gassoil": "12.313",
-        "diesel": "14.36",
-        "bensin": "14.7"
-      }
-    }
-  },
-  {
-    "date": "2026-04-04",
-    "time": "2026-04-04T06:00:00.000Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "10.35",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "12.313",
-        "diesel": "14.36",
-        "bensin": "14.7"
-      },
-      "effo": {
-        "gassoil": "12.313",
-        "diesel": "14.36",
-        "bensin": "14.7"
-      }
-    }
-  },
-  {
-    "date": "2026-04-05",
-    "time": "2026-04-05T18:02:33.378Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "10.350",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "12.313",
-        "diesel": "14.360",
-        "bensin": "14.700"
-      },
-      "effo": {
-        "gassoil": "12.313",
-        "diesel": "14.360",
-        "bensin": "14.700"
-      }
-    }
-  },
-  {
-    "date": "2026-04-06",
-    "time": "2026-04-06T18:02:29.719Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "10.350",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "12.313",
-        "diesel": "14.360",
-        "bensin": "14.700"
-      },
-      "effo": {
-        "gassoil": "12.313",
-        "diesel": "14.360",
-        "bensin": "14.700"
-      }
-    }
-  },
-  {
-    "date": "2026-04-07",
-    "time": "2026-04-07T18:01:05.905Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "10.350",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "12.313",
-        "diesel": "14.360",
-        "bensin": "14.700"
-      },
-      "effo": {
-        "gassoil": "12.313",
-        "diesel": "14.360",
-        "bensin": "14.700"
-      }
-    }
-  },
-  {
-    "date": "2026-04-08",
-    "time": "2026-04-08T21:01:40.974Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "10.350",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "12.310",
-        "diesel": "14.360",
-        "bensin": "14.700"
-      },
-      "effo": {
-        "gassoil": "12.000",
-        "diesel": "14.050",
-        "bensin": "14.200"
-      }
-    }
-  },
-  {
-    "date": "2026-04-09",
-    "time": "2026-04-09T21:01:28.124Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "10.350",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "12.313",
-        "diesel": "14.360",
-        "bensin": "14.390"
-      },
-      "effo": {
-        "gassoil": "12.000",
-        "diesel": "14.050",
-        "bensin": "14.200"
-      }
-    }
-  },
-  {
-    "date": "2026-04-10",
-    "time": "2026-04-10T21:01:17.821Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "10.350",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "12.313",
-        "diesel": "14.360",
-        "bensin": "14.390"
-      },
-      "effo": {
-        "gassoil": "12.000",
-        "diesel": "14.050",
-        "bensin": "13.890"
-      }
-    }
-  },
-  {
-    "date": "2026-04-11",
-    "time": "2026-04-11T21:02:10.220Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "10.350",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "12.313",
-        "diesel": "14.360",
-        "bensin": "14.080"
-      },
-      "effo": {
-        "gassoil": "12.000",
-        "diesel": "14.050",
-        "bensin": "13.890"
-      }
-    }
-  },
-  {
-    "date": "2026-04-13",
-    "time": "2026-04-13T21:02:44.983Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "10.350",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "12.313",
-        "diesel": "14.360",
-        "bensin": "14.800"
-      },
-      "effo": {
-        "gassoil": "12.313",
-        "diesel": "13.930",
-        "bensin": "13.580"
-      }
-    }
-  },
-  {
-    "date": "2026-04-14",
-    "time": "2026-04-14T21:00:24.140Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "10.850",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "12.313",
-        "diesel": "14.360",
-        "bensin": "14.700"
-      },
-      "effo": {
-        "gassoil": "12.313",
-        "diesel": "13.93",
-        "bensin": "13.58"
-      }
-    }
-  },
-  {
-    "date": "2026-04-15",
-    "time": "2026-04-15T21:00:18.822Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "10.850",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "12.313",
-        "diesel": "14.180",
-        "bensin": "13.760"
-      },
-      "effo": {
-        "gassoil": "12.313",
-        "diesel": "13.930",
-        "bensin": "13.580"
-      }
-    }
-  },
-  {
-    "date": "2026-04-16",
-    "time": "2026-04-16T21:02:56.896Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "10.850",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "11.000",
-        "diesel": "14.180",
-        "bensin": "13.580"
-      },
-      "effo": {
-        "gassoil": "12.313",
-        "diesel": "13.930",
-        "bensin": "13.580"
-      }
-    }
-  },
-  {
-    "date": "2026-04-17",
-    "time": "2026-04-17T21:03:49.091Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "10.250",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "12.125",
-        "diesel": "14.180",
-        "bensin": "13.390"
-      },
-      "effo": {
-        "gassoil": "11.625",
-        "diesel": "13.30",
-        "bensin": "12.89"
-      }
-    }
-  },
-  {
-    "date": "2026-04-18",
-    "time": "2026-04-18T21:00:21.659Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "10.250",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "12.125",
-        "diesel": "14.180",
-        "bensin": "13.390"
-      },
-      "effo": {
-        "gassoil": "11.625",
-        "diesel": "13.30",
-        "bensin": "12.89"
-      }
-    }
-  },
-  {
-    "date": "2026-04-19",
-    "time": "2026-04-19T21:00:58.098Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "10.250",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "12.125",
-        "diesel": "14.180",
-        "bensin": "13.390"
-      },
-      "effo": {
-        "gassoil": "11.625",
-        "diesel": "13.30",
-        "bensin": "12.89"
-      }
-    }
-  },
-  {
-    "date": "2026-04-20",
-    "time": "2026-04-20T21:00:16.838Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "10.250",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "11.875",
-        "diesel": "13.930",
-        "bensin": "13.140"
-      },
-      "effo": {
-        "gassoil": "11.625",
-        "diesel": "13.30",
-        "bensin": "12.89"
-      }
-    }
-  },
-  {
-    "date": "2026-04-21",
-    "time": "2026-04-21T21:04:43.517Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "10.250",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "11.625",
-        "diesel": "13.300",
-        "bensin": "12.890"
-      },
-      "effo": {
-        "gassoil": "11.625",
-        "diesel": "13.30",
-        "bensin": "12.89"
-      }
-    }
-  },
-  {
-    "date": "2026-04-22",
-    "time": "2026-04-22T21:01:23.682Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "10.250",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "11.625",
-        "diesel": "13.300",
-        "bensin": "12.890"
-      },
-      "effo": {
-        "gassoil": "12.063",
-        "diesel": "13.30",
-        "bensin": "12.89"
-      }
-    }
-  },
-  {
-    "date": "2026-04-23",
-    "time": "2026-04-23T21:04:42.146Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "10.250",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "12.063",
-        "diesel": "13.300",
-        "bensin": "12.890"
-      },
-      "effo": {
-        "gassoil": "12.063",
-        "diesel": "13.30",
-        "bensin": "12.89"
-      }
-    }
-  },
-  {
-    "date": "2026-04-24",
-    "time": "2026-04-24T21:03:04.261Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "10.250",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "12.063",
-        "diesel": "13.610",
-        "bensin": "13.140"
-      },
-      "effo": {
-        "gassoil": "12.063",
-        "diesel": "13.61",
-        "bensin": "13.14"
-      }
-    }
-  },
-  {
-    "date": "2026-04-25",
-    "time": "2026-04-25T21:04:22.147Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "10.250",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "12.063",
-        "diesel": "13.610",
-        "bensin": "13.140"
-      },
-      "effo": {
-        "gassoil": "12.063",
-        "diesel": "13.61",
-        "bensin": "13.14"
-      }
-    }
-  },
-  {
-    "date": "2026-04-26",
-    "time": "2026-04-26T21:03:58.211Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "10.250",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "12.063",
-        "diesel": "13.610",
-        "bensin": "13.140"
-      },
-      "effo": {
-        "gassoil": "12.063",
-        "diesel": "13.61",
-        "bensin": "13.14"
-      }
-    }
-  },
-  {
-    "date": "2026-04-27",
-    "time": "2026-04-27T21:04:19.985Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "10.250",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "12.063",
-        "diesel": "13.610",
-        "bensin": "13.140"
-      },
-      "effo": {
-        "gassoil": "12.063",
-        "diesel": "13.61",
-        "bensin": "13.14"
-      }
-    }
-  },
-  {
-    "date": "2026-04-28",
-    "time": "2026-04-28T21:01:11.713Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "10.250",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "12.313",
-        "diesel": "13.860",
-        "bensin": "13.330"
-      },
-      "effo": {
-        "gassoil": "12.063",
-        "diesel": "13.61",
-        "bensin": "13.14"
-      }
-    }
-  },
-  {
-    "date": "2026-04-29",
-    "time": "2026-04-29T21:01:36.908Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "10.500",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "12.313",
-        "diesel": "13.860",
-        "bensin": "13.330"
-      },
-      "effo": {
-        "gassoil": "12.313",
-        "diesel": "13.86",
-        "bensin": "13.33"
-      }
-    }
-  },
-  {
-    "date": "2026-04-30",
-    "time": "2026-04-30T21:04:20.387Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "10.500",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "12.313",
-        "diesel": "13.860",
-        "bensin": "13.330"
-      },
-      "effo": {
-        "gassoil": "12.313",
-        "diesel": "13.86",
-        "bensin": "13.33"
-      }
-    }
-  },
-  {
-    "date": "2026-05-01",
-    "time": "2026-05-01T21:03:01.807Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "10.500",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "12.600",
-        "diesel": "14.130",
-        "bensin": "13.590"
-      },
-      "effo": {
-        "gassoil": "12.313",
-        "diesel": "13.86",
-        "bensin": "13.33"
-      }
-    }
-  },
-  {
-    "date": "2026-05-02",
-    "time": "2026-05-02T18:03:42.037Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "10.500",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "12.600",
-        "diesel": "14.130",
-        "bensin": "13.590"
-      },
-      "effo": {
-        "gassoil": "12.313",
-        "diesel": "13.86",
-        "bensin": "13.33"
-      }
-    }
-  },
-  {
-    "date": "2026-06-17",
-    "time": "2026-06-17T20:45:00.000Z",
-    "prices": {
-      "thomsen": {
-        "gassoil": "10.500",
-        "diesel": null,
-        "bensin": null
-      },
-      "magn": {
-        "gassoil": "11.075",
-        "diesel": "10.520",
-        "bensin": "9.380"
-      },
-      "effo": {
-        "gassoil": "11.075",
-        "diesel": "10.520",
-        "bensin": "9.380"
-      }
-    }
-  }
+{
+"date": "2026-03-01",
+"time": "2026-03-01T06:00:00.000Z",
+"prices": {
+"thomsen": {
+"gassoil": "7.84",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": null,
+"diesel": null,
+"bensin": null
+},
+"effo": {
+"gassoil": null,
+"diesel": null,
+"bensin": null
+}
+}
+},
+{
+"date": "2026-03-02",
+"time": "2026-03-02T06:00:00.000Z",
+"prices": {
+"thomsen": {
+"gassoil": "7.84",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": null,
+"diesel": null,
+"bensin": null
+},
+"effo": {
+"gassoil": null,
+"diesel": null,
+"bensin": null
+}
+}
+},
+{
+"date": "2026-03-03",
+"time": "2026-03-03T06:00:00.000Z",
+"prices": {
+"thomsen": {
+"gassoil": "8.06",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "8.8",
+"diesel": "10.83",
+"bensin": "11.8"
+},
+"effo": {
+"gassoil": null,
+"diesel": null,
+"bensin": null
+}
+}
+},
+{
+"date": "2026-03-04",
+"time": "2026-03-04T06:00:00.000Z",
+"prices": {
+"thomsen": {
+"gassoil": "8.06",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "8.8",
+"diesel": "10.83",
+"bensin": "11.8"
+},
+"effo": {
+"gassoil": null,
+"diesel": null,
+"bensin": null
+}
+}
+},
+{
+"date": "2026-03-05",
+"time": "2026-03-05T06:00:00.000Z",
+"prices": {
+"thomsen": {
+"gassoil": "8.06",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "9.425",
+"diesel": "11.41",
+"bensin": "12.39"
+},
+"effo": {
+"gassoil": null,
+"diesel": null,
+"bensin": null
+}
+}
+},
+{
+"date": "2026-03-06",
+"time": "2026-03-06T06:00:00.000Z",
+"prices": {
+"thomsen": {
+"gassoil": "8.06",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "9.425",
+"diesel": "11.41",
+"bensin": "12.39"
+},
+"effo": {
+"gassoil": null,
+"diesel": null,
+"bensin": null
+}
+}
+},
+{
+"date": "2026-03-07",
+"time": "2026-03-07T06:00:00.000Z",
+"prices": {
+"thomsen": {
+"gassoil": "8.06",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "9.738",
+"diesel": "11.73",
+"bensin": "12.7"
+},
+"effo": {
+"gassoil": null,
+"diesel": null,
+"bensin": null
+}
+}
+},
+{
+"date": "2026-03-08",
+"time": "2026-03-08T06:00:00.000Z",
+"prices": {
+"thomsen": {
+"gassoil": "8.06",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "9.738",
+"diesel": "11.73",
+"bensin": "12.7"
+},
+"effo": {
+"gassoil": null,
+"diesel": null,
+"bensin": null
+}
+}
+},
+{
+"date": "2026-03-09",
+"time": "2026-03-09T06:00:00.000Z",
+"prices": {
+"thomsen": {
+"gassoil": "8.84",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "9.738",
+"diesel": "11.73",
+"bensin": "12.7"
+},
+"effo": {
+"gassoil": "10.238",
+"diesel": "12.23",
+"bensin": "13.2"
+}
+}
+},
+{
+"date": "2026-03-10",
+"time": "2026-03-10T06:00:00.000Z",
+"prices": {
+"thomsen": {
+"gassoil": "8.84",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "10.363",
+"diesel": "12.35",
+"bensin": "13.33"
+},
+"effo": {
+"gassoil": "10.238",
+"diesel": "12.23",
+"bensin": "13.2"
+}
+}
+},
+{
+"date": "2026-03-11",
+"time": "2026-03-11T06:00:00.000Z",
+"prices": {
+"thomsen": {
+"gassoil": "8.84",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "10.8",
+"diesel": "12.79",
+"bensin": "13.76"
+},
+"effo": {
+"gassoil": "10.8",
+"diesel": "12.79",
+"bensin": "13.76"
+}
+}
+},
+{
+"date": "2026-03-12",
+"time": "2026-03-12T06:00:00.000Z",
+"prices": {
+"thomsen": {
+"gassoil": "8.84",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "10.8",
+"diesel": "12.79",
+"bensin": "13.76"
+},
+"effo": {
+"gassoil": "10.8",
+"diesel": "12.79",
+"bensin": "13.76"
+}
+}
+},
+{
+"date": "2026-03-13",
+"time": "2026-03-13T06:00:00.000Z",
+"prices": {
+"thomsen": {
+"gassoil": "8.84",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "11.15",
+"diesel": "13.06",
+"bensin": "14.04"
+},
+"effo": {
+"gassoil": "10.8",
+"diesel": "12.79",
+"bensin": "13.76"
+}
+}
+},
+{
+"date": "2026-03-14",
+"time": "2026-03-14T06:00:00.000Z",
+"prices": {
+"thomsen": {
+"gassoil": "8.84",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "11.15",
+"diesel": "13.06",
+"bensin": "14.04"
+},
+"effo": {
+"gassoil": "10.8",
+"diesel": "12.79",
+"bensin": "13.76"
+}
+}
+},
+{
+"date": "2026-03-15",
+"time": "2026-03-15T06:00:00.000Z",
+"prices": {
+"thomsen": {
+"gassoil": "8.84",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "11.15",
+"diesel": "13.06",
+"bensin": "14.04"
+},
+"effo": {
+"gassoil": "10.8",
+"diesel": "12.79",
+"bensin": "13.76"
+}
+}
+},
+{
+"date": "2026-03-16",
+"time": "2026-03-16T06:00:00.000Z",
+"prices": {
+"thomsen": {
+"gassoil": "8.84",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "11.15",
+"diesel": "13.06",
+"bensin": "14.04"
+},
+"effo": {
+"gassoil": "11.25",
+"diesel": "13.24",
+"bensin": "14.06"
+}
+}
+},
+{
+"date": "2026-03-17",
+"time": "2026-03-17T06:00:00.000Z",
+"prices": {
+"thomsen": {
+"gassoil": "10.1",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "11.25",
+"diesel": "13.24",
+"bensin": "14.06"
+},
+"effo": {
+"gassoil": "11.25",
+"diesel": "13.24",
+"bensin": "14.06"
+}
+}
+},
+{
+"date": "2026-03-18",
+"time": "2026-03-18T06:00:00.000Z",
+"prices": {
+"thomsen": {
+"gassoil": "10.1",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "11.25",
+"diesel": "13.24",
+"bensin": "14.06"
+},
+"effo": {
+"gassoil": "11.25",
+"diesel": "13.24",
+"bensin": "14.06"
+}
+}
+},
+{
+"date": "2026-03-19",
+"time": "2026-03-19T06:00:00.000Z",
+"prices": {
+"thomsen": {
+"gassoil": "10.1",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "11.438",
+"diesel": "13.43",
+"bensin": "14.2"
+},
+"effo": {
+"gassoil": "11.875",
+"diesel": "13.86",
+"bensin": "14.69"
+}
+}
+},
+{
+"date": "2026-03-20",
+"time": "2026-03-20T06:00:00.000Z",
+"prices": {
+"thomsen": {
+"gassoil": "10.1",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "11.875",
+"diesel": "13.74",
+"bensin": "14.51"
+},
+"effo": {
+"gassoil": "11.875",
+"diesel": "13.86",
+"bensin": "14.69"
+}
+}
+},
+{
+"date": "2026-03-21",
+"time": "2026-03-21T06:00:00.000Z",
+"prices": {
+"thomsen": {
+"gassoil": "10.1",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "11.875",
+"diesel": "13.74",
+"bensin": "14.51"
+},
+"effo": {
+"gassoil": "11.875",
+"diesel": "13.86",
+"bensin": "14.69"
+}
+}
+},
+{
+"date": "2026-03-22",
+"time": "2026-03-22T06:00:00.000Z",
+"prices": {
+"thomsen": {
+"gassoil": "10.1",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "11.875",
+"diesel": "13.74",
+"bensin": "14.51"
+},
+"effo": {
+"gassoil": "11.875",
+"diesel": "13.86",
+"bensin": "14.69"
+}
+}
+},
+{
+"date": "2026-03-23",
+"time": "2026-03-23T06:00:00.000Z",
+"prices": {
+"thomsen": {
+"gassoil": "10.1",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "11.875",
+"diesel": "13.74",
+"bensin": "14.51"
+},
+"effo": {
+"gassoil": "11.875",
+"diesel": "13.86",
+"bensin": "14.69"
+}
+}
+},
+{
+"date": "2026-03-24",
+"time": "2026-03-24T06:00:00.000Z",
+"prices": {
+"thomsen": {
+"gassoil": "10.1",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "12.125",
+"diesel": "13.99",
+"bensin": "14.76"
+},
+"effo": {
+"gassoil": "11.875",
+"diesel": "13.86",
+"bensin": "14.69"
+}
+}
+},
+{
+"date": "2026-03-25",
+"time": "2026-03-25T06:00:00.000Z",
+"prices": {
+"thomsen": {
+"gassoil": "10.1",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "12.125",
+"diesel": "14.18",
+"bensin": "14.64"
+},
+"effo": {
+"gassoil": "11.875",
+"diesel": "13.86",
+"bensin": "14.69"
+}
+}
+},
+{
+"date": "2026-03-26",
+"time": "2026-03-26T06:00:00.000Z",
+"prices": {
+"thomsen": {
+"gassoil": "10.35",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "12.125",
+"diesel": "14.18",
+"bensin": "14.64"
+},
+"effo": {
+"gassoil": "12.125",
+"diesel": "14.18",
+"bensin": "14.64"
+}
+}
+},
+{
+"date": "2026-03-27",
+"time": "2026-03-27T06:00:00.000Z",
+"prices": {
+"thomsen": {
+"gassoil": "10.35",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "12.125",
+"diesel": "14.18",
+"bensin": "14.64"
+},
+"effo": {
+"gassoil": "12.125",
+"diesel": "14.18",
+"bensin": "14.64"
+}
+}
+},
+{
+"date": "2026-03-28",
+"time": "2026-03-28T06:00:00.000Z",
+"prices": {
+"thomsen": {
+"gassoil": "10.35",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "12.125",
+"diesel": "14.18",
+"bensin": "14.64"
+},
+"effo": {
+"gassoil": "12.125",
+"diesel": "14.18",
+"bensin": "14.64"
+}
+}
+},
+{
+"date": "2026-03-29",
+"time": "2026-03-29T06:00:00.000Z",
+"prices": {
+"thomsen": {
+"gassoil": "10.35",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "12.125",
+"diesel": "14.18",
+"bensin": "14.64"
+},
+"effo": {
+"gassoil": "12.125",
+"diesel": "14.18",
+"bensin": "14.64"
+}
+}
+},
+{
+"date": "2026-03-30",
+"time": "2026-03-30T06:00:00.000Z",
+"prices": {
+"thomsen": {
+"gassoil": "10.35",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "12.125",
+"diesel": "14.18",
+"bensin": "14.64"
+},
+"effo": {
+"gassoil": "12.125",
+"diesel": "14.18",
+"bensin": "14.64"
+}
+}
+},
+{
+"date": "2026-03-31",
+"time": "2026-03-31T06:00:00.000Z",
+"prices": {
+"thomsen": {
+"gassoil": "10.35",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "12.313",
+"diesel": "14.36",
+"bensin": "14.7"
+},
+"effo": {
+"gassoil": "12.125",
+"diesel": "14.18",
+"bensin": "14.64"
+}
+}
+},
+{
+"date": "2026-04-01",
+"time": "2026-04-01T06:00:00.000Z",
+"prices": {
+"thomsen": {
+"gassoil": "10.35",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "12.313",
+"diesel": "14.36",
+"bensin": "14.7"
+},
+"effo": {
+"gassoil": "12.313",
+"diesel": "14.36",
+"bensin": "14.7"
+}
+}
+},
+{
+"date": "2026-04-02",
+"time": "2026-04-02T06:00:00.000Z",
+"prices": {
+"thomsen": {
+"gassoil": "10.35",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "12.313",
+"diesel": "14.36",
+"bensin": "14.7"
+},
+"effo": {
+"gassoil": "12.313",
+"diesel": "14.36",
+"bensin": "14.7"
+}
+}
+},
+{
+"date": "2026-04-03",
+"time": "2026-04-03T06:00:00.000Z",
+"prices": {
+"thomsen": {
+"gassoil": "10.35",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "12.313",
+"diesel": "14.36",
+"bensin": "14.7"
+},
+"effo": {
+"gassoil": "12.313",
+"diesel": "14.36",
+"bensin": "14.7"
+}
+}
+},
+{
+"date": "2026-04-04",
+"time": "2026-04-04T06:00:00.000Z",
+"prices": {
+"thomsen": {
+"gassoil": "10.35",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "12.313",
+"diesel": "14.36",
+"bensin": "14.7"
+},
+"effo": {
+"gassoil": "12.313",
+"diesel": "14.36",
+"bensin": "14.7"
+}
+}
+},
+{
+"date": "2026-04-05",
+"time": "2026-04-05T18:02:33.378Z",
+"prices": {
+"thomsen": {
+"gassoil": "10.350",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "12.313",
+"diesel": "14.360",
+"bensin": "14.700"
+},
+"effo": {
+"gassoil": "12.313",
+"diesel": "14.360",
+"bensin": "14.700"
+}
+}
+},
+{
+"date": "2026-04-06",
+"time": "2026-04-06T18:02:29.719Z",
+"prices": {
+"thomsen": {
+"gassoil": "10.350",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "12.313",
+"diesel": "14.360",
+"bensin": "14.700"
+},
+"effo": {
+"gassoil": "12.313",
+"diesel": "14.360",
+"bensin": "14.700"
+}
+}
+},
+{
+"date": "2026-04-07",
+"time": "2026-04-07T18:01:05.905Z",
+"prices": {
+"thomsen": {
+"gassoil": "10.350",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "12.313",
+"diesel": "14.360",
+"bensin": "14.700"
+},
+"effo": {
+"gassoil": "12.313",
+"diesel": "14.360",
+"bensin": "14.700"
+}
+}
+},
+{
+"date": "2026-04-08",
+"time": "2026-04-08T21:01:40.974Z",
+"prices": {
+"thomsen": {
+"gassoil": "10.350",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "12.310",
+"diesel": "14.360",
+"bensin": "14.700"
+},
+"effo": {
+"gassoil": "12.000",
+"diesel": "14.050",
+"bensin": "14.200"
+}
+}
+},
+{
+"date": "2026-04-09",
+"time": "2026-04-09T21:01:28.124Z",
+"prices": {
+"thomsen": {
+"gassoil": "10.350",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "12.313",
+"diesel": "14.360",
+"bensin": "14.390"
+},
+"effo": {
+"gassoil": "12.000",
+"diesel": "14.050",
+"bensin": "14.200"
+}
+}
+},
+{
+"date": "2026-04-10",
+"time": "2026-04-10T21:01:17.821Z",
+"prices": {
+"thomsen": {
+"gassoil": "10.350",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "12.313",
+"diesel": "14.360",
+"bensin": "14.390"
+},
+"effo": {
+"gassoil": "12.000",
+"diesel": "14.050",
+"bensin": "13.890"
+}
+}
+},
+{
+"date": "2026-04-11",
+"time": "2026-04-11T21:02:10.220Z",
+"prices": {
+"thomsen": {
+"gassoil": "10.350",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "12.313",
+"diesel": "14.360",
+"bensin": "14.080"
+},
+"effo": {
+"gassoil": "12.000",
+"diesel": "14.050",
+"bensin": "13.890"
+}
+}
+},
+{
+"date": "2026-04-13",
+"time": "2026-04-13T21:02:44.983Z",
+"prices": {
+"thomsen": {
+"gassoil": "10.350",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "12.313",
+"diesel": "14.360",
+"bensin": "14.800"
+},
+"effo": {
+"gassoil": "12.313",
+"diesel": "13.930",
+"bensin": "13.580"
+}
+}
+},
+{
+"date": "2026-04-14",
+"time": "2026-04-14T21:00:24.140Z",
+"prices": {
+"thomsen": {
+"gassoil": "10.850",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "12.313",
+"diesel": "14.360",
+"bensin": "14.700"
+},
+"effo": {
+"gassoil": "12.313",
+"diesel": "13.93",
+"bensin": "13.58"
+}
+}
+},
+{
+"date": "2026-04-15",
+"time": "2026-04-15T21:00:18.822Z",
+"prices": {
+"thomsen": {
+"gassoil": "10.850",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "12.313",
+"diesel": "14.180",
+"bensin": "13.760"
+},
+"effo": {
+"gassoil": "12.313",
+"diesel": "13.930",
+"bensin": "13.580"
+}
+}
+},
+{
+"date": "2026-04-16",
+"time": "2026-04-16T21:02:56.896Z",
+"prices": {
+"thomsen": {
+"gassoil": "10.850",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "11.000",
+"diesel": "14.180",
+"bensin": "13.580"
+},
+"effo": {
+"gassoil": "12.313",
+"diesel": "13.930",
+"bensin": "13.580"
+}
+}
+},
+{
+"date": "2026-04-17",
+"time": "2026-04-17T21:03:49.091Z",
+"prices": {
+"thomsen": {
+"gassoil": "10.250",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "12.125",
+"diesel": "14.180",
+"bensin": "13.390"
+},
+"effo": {
+"gassoil": "11.625",
+"diesel": "13.30",
+"bensin": "12.89"
+}
+}
+},
+{
+"date": "2026-04-18",
+"time": "2026-04-18T21:00:21.659Z",
+"prices": {
+"thomsen": {
+"gassoil": "10.250",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "12.125",
+"diesel": "14.180",
+"bensin": "13.390"
+},
+"effo": {
+"gassoil": "11.625",
+"diesel": "13.30",
+"bensin": "12.89"
+}
+}
+},
+{
+"date": "2026-04-19",
+"time": "2026-04-19T21:00:58.098Z",
+"prices": {
+"thomsen": {
+"gassoil": "10.250",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "12.125",
+"diesel": "14.180",
+"bensin": "13.390"
+},
+"effo": {
+"gassoil": "11.625",
+"diesel": "13.30",
+"bensin": "12.89"
+}
+}
+},
+{
+"date": "2026-04-20",
+"time": "2026-04-20T21:00:16.838Z",
+"prices": {
+"thomsen": {
+"gassoil": "10.250",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "11.875",
+"diesel": "13.930",
+"bensin": "13.140"
+},
+"effo": {
+"gassoil": "11.625",
+"diesel": "13.30",
+"bensin": "12.89"
+}
+}
+},
+{
+"date": "2026-04-21",
+"time": "2026-04-21T21:04:43.517Z",
+"prices": {
+"thomsen": {
+"gassoil": "10.250",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "11.625",
+"diesel": "13.300",
+"bensin": "12.890"
+},
+"effo": {
+"gassoil": "11.625",
+"diesel": "13.30",
+"bensin": "12.89"
+}
+}
+},
+{
+"date": "2026-04-22",
+"time": "2026-04-22T21:01:23.682Z",
+"prices": {
+"thomsen": {
+"gassoil": "10.250",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "11.625",
+"diesel": "13.300",
+"bensin": "12.890"
+},
+"effo": {
+"gassoil": "12.063",
+"diesel": "13.30",
+"bensin": "12.89"
+}
+}
+},
+{
+"date": "2026-04-23",
+"time": "2026-04-23T21:04:42.146Z",
+"prices": {
+"thomsen": {
+"gassoil": "10.250",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "12.063",
+"diesel": "13.300",
+"bensin": "12.890"
+},
+"effo": {
+"gassoil": "12.063",
+"diesel": "13.30",
+"bensin": "12.89"
+}
+}
+},
+{
+"date": "2026-04-24",
+"time": "2026-04-24T21:03:04.261Z",
+"prices": {
+"thomsen": {
+"gassoil": "10.250",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "12.063",
+"diesel": "13.610",
+"bensin": "13.140"
+},
+"effo": {
+"gassoil": "12.063",
+"diesel": "13.61",
+"bensin": "13.14"
+}
+}
+},
+{
+"date": "2026-04-25",
+"time": "2026-04-25T21:04:22.147Z",
+"prices": {
+"thomsen": {
+"gassoil": "10.250",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "12.063",
+"diesel": "13.610",
+"bensin": "13.140"
+},
+"effo": {
+"gassoil": "12.063",
+"diesel": "13.61",
+"bensin": "13.14"
+}
+}
+},
+{
+"date": "2026-04-26",
+"time": "2026-04-26T21:03:58.211Z",
+"prices": {
+"thomsen": {
+"gassoil": "10.250",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "12.063",
+"diesel": "13.610",
+"bensin": "13.140"
+},
+"effo": {
+"gassoil": "12.063",
+"diesel": "13.61",
+"bensin": "13.14"
+}
+}
+},
+{
+"date": "2026-04-27",
+"time": "2026-04-27T21:04:19.985Z",
+"prices": {
+"thomsen": {
+"gassoil": "10.250",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "12.063",
+"diesel": "13.610",
+"bensin": "13.140"
+},
+"effo": {
+"gassoil": "12.063",
+"diesel": "13.61",
+"bensin": "13.14"
+}
+}
+},
+{
+"date": "2026-04-28",
+"time": "2026-04-28T21:01:11.713Z",
+"prices": {
+"thomsen": {
+"gassoil": "10.250",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "12.313",
+"diesel": "13.860",
+"bensin": "13.330"
+},
+"effo": {
+"gassoil": "12.063",
+"diesel": "13.61",
+"bensin": "13.14"
+}
+}
+},
+{
+"date": "2026-04-29",
+"time": "2026-04-29T21:01:36.908Z",
+"prices": {
+"thomsen": {
+"gassoil": "10.500",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "12.313",
+"diesel": "13.860",
+"bensin": "13.330"
+},
+"effo": {
+"gassoil": "12.313",
+"diesel": "13.86",
+"bensin": "13.33"
+}
+}
+},
+{
+"date": "2026-04-30",
+"time": "2026-04-30T21:04:20.387Z",
+"prices": {
+"thomsen": {
+"gassoil": "10.500",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "12.313",
+"diesel": "13.860",
+"bensin": "13.330"
+},
+"effo": {
+"gassoil": "12.313",
+"diesel": "13.86",
+"bensin": "13.33"
+}
+}
+},
+{
+"date": "2026-05-01",
+"time": "2026-05-01T21:03:01.807Z",
+"prices": {
+"thomsen": {
+"gassoil": "10.500",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "12.600",
+"diesel": "14.130",
+"bensin": "13.590"
+},
+"effo": {
+"gassoil": "12.313",
+"diesel": "13.86",
+"bensin": "13.33"
+}
+}
+},
+{
+"date": "2026-05-02",
+"time": "2026-05-02T18:03:42.037Z",
+"prices": {
+"thomsen": {
+"gassoil": "10.500",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "12.600",
+"diesel": "14.130",
+"bensin": "13.590"
+},
+"effo": {
+"gassoil": "12.313",
+"diesel": "13.86",
+"bensin": "13.33"
+}
+}
+},
+{
+"date": "2026-06-17",
+"time": "2026-06-17T20:45:00.000Z",
+"prices": {
+"thomsen": {
+"gassoil": "10.500",
+"diesel": null,
+"bensin": null
+},
+"magn": {
+"gassoil": "11.075",
+"diesel": "10.520",
+"bensin": "9.380"
+},
+"effo": {
+"gassoil": "11.075",
+"diesel": "10.520",
+"bensin": "9.380"
+}
+}
+}
 ]
