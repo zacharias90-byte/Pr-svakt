@@ -2,16 +2,16 @@ const https = require('https');
 const fs = require('fs');
 
 const KNOWN = {
-  Thomsen: { gassoil: '10.800', diesel: null,     bensin: null,     updatedAt: '21/04/2026' },
-  Magn:    { gassoil: '11.700', diesel: '11.040',  bensin: '10.130', updatedAt: '28/05/2026' },
-  Effo:    { gassoil: '12.313', diesel: '13.860',  bensin: '13.330', updatedAt: '29/04/2026' }
+  Thomsen: { gassoil: '10.500', diesel: null,    bensin: null,    updatedAt: '12/06/2026' },
+  Magn:    { gassoil: '11.075', diesel: '10.520', bensin: '9.380', updatedAt: '17/06/2026' },
+  Effo:    { gassoil: '11.075', diesel: '10.520', bensin: '9.380', updatedAt: '17/06/2026' }
 };
 
 function fetchUrl(url) {
   return new Promise((resolve, reject) => {
     const req = https.get(url, {
       headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120',
+        'User-Agent': 'FaroePriceScraper/1.0',
         'Accept': 'text/html,*/*',
         'Accept-Language': 'fo,da;q=0.9'
       },
@@ -32,8 +32,8 @@ function fetchUrl(url) {
 async function scrapeThomsen() {
   try {
     const html = await fetchUrl('https://thomsen.fo/oljuprisur');
-    const m = html.match(/DAGSPRÍSUR\s+([\d,\.]+)\s*kr/i)
-           || html.match(/\b(10\.\d{3}|9\.\d{3}|11\.\d{3})\b/);
+    const m = html.match(/DAGSPRISUR\s+([\d,\.]+)\s*kr/i)
+               || html.match(/\b(10\.\d{3}|9\.\d{3}|11\.\d{3})\b/);
     const d = html.match(/(\d{1,2}[\.\-\/]\d{1,2}[\.\-\/]\d{4})/);
     if (m) {
       const val = parseFloat(m[1].replace(',', '.'));
@@ -42,7 +42,7 @@ async function scrapeThomsen() {
         return { source: 'Thomsen', gassoil: val.toFixed(3), diesel: null, bensin: null, updatedAt: d ? d[1] : '' };
       }
     }
-    throw new Error('Fann ikki prís');
+    throw new Error('Fann ikki pris');
   } catch(e) {
     console.log('Thomsen feilst:', e.message);
     return { source: 'Thomsen', ...KNOWN.Thomsen };
@@ -53,29 +53,30 @@ async function scrapeMagn() {
   try {
     const html = await fetchUrl('https://www.magn.fo/oljuprisir');
 
-    const dateMatch = html.match(/(\d{1,2})\s*\.\s*(january|february|march|april|may|june|july|august|september|october|november|december)\s*(\d{4})/i)
-      || html.match(/(\d{1,2})\s*\.\s*(apríl|mars|februar|januar|mai|juni|juli|august|september|oktober|november|desember)\s*(\d{4})/i);
-
+    const dateMatch = html.match(/(\d{1,2})\s*\.\s*(january|february|march|april|may|june|july|august|september|october|november|december|januar|februar|mars|mai|juni|juli|september|oktober|november|desember)\s*(\d{4})/i);
     let updatedAt = '';
     if (dateMatch) {
       const mn = {january:'01',february:'02',march:'03',april:'04',may:'05',june:'06',july:'07',august:'08',september:'09',october:'10',november:'11',december:'12',
-                  januar:'01',februar:'02',mars:'03',apríl:'04',mai:'05',juni:'06',juli:'07',august:'08',september:'09',oktober:'10',november:'11',desember:'12'};
+                  januar:'01',februar:'02',mars:'03',mai:'05',juni:'06',juli:'07',august:'08',september:'09',oktober:'10',november:'11',desember:'12'};
       updatedAt = dateMatch[1] + '/' + (mn[dateMatch[2].toLowerCase()]||'??') + '/' + dateMatch[3];
     }
 
-    // Bensin: "Bensin kr. 13,39" format (komma)
-    const bensinMatch = html.match(/Bensin\s*kr\.\s*([\d]+,[\d]+)(?!\s*oktan)/i);
-    // Diesel: "Diesel kr. 14,18" format (komma)
-    const dieselMatch = html.match(/(?<!Báta)[Dd]iesel\s*kr\.\s*([\d]+,[\d]+)/);
-    // Gassolja: "Gassolja kr. 12.125" format (punktum = pr. 1000 liter)
-    const gasMatch = html.match(/Gassolja\s*kr\.\s*([\d]+\.[\d]+)/i);
+    const nums = [];
+    const re = /pricing_number[^>]*>([\d.]+)</g;
+    let m;
+    while ((m = re.exec(html)) !== null) {
+      nums.push(parseFloat(m[1]));
+    }
 
-    const bensin  = bensinMatch ? bensinMatch[1].replace(',', '.') : null;
-    const diesel  = dieselMatch ? dieselMatch[1].replace(',', '.') : null;
+    const bensin = nums.length > 0 ? nums[0].toFixed(3) : null;
+    const diesel = nums.length > 6 ? nums[6].toFixed(3) : null;
+
     let gassoil = null;
-    if (gasMatch) {
-      const raw = parseFloat(gasMatch[1].replace('.', ''));
-      gassoil = (raw / 1000).toFixed(3);
+    const gasIdx = html.search(/>Gassolja</i);
+    if (gasIdx > -1) {
+      const gasSec = html.substring(gasIdx, gasIdx + 800);
+      const gm = gasSec.match(/pricing_number[^>]*>([\d.]+)</);
+      if (gm) gassoil = parseFloat(gm[1]).toFixed(3);
     }
 
     console.log('Magn:', { gassoil, diesel, bensin, updatedAt });
@@ -84,7 +85,7 @@ async function scrapeMagn() {
         parseFloat(gassoil) > 5 && parseFloat(diesel) > 5 && parseFloat(bensin) > 5) {
       return { source: 'Magn', gassoil, diesel, bensin, updatedAt };
     }
-    throw new Error('Ógildur prísur: ' + JSON.stringify({gassoil, diesel, bensin}));
+    throw new Error('Ogildur prisur: ' + JSON.stringify({gassoil, diesel, bensin}));
   } catch(e) {
     console.log('Magn feilst:', e.message);
     return { source: 'Magn', ...KNOWN.Magn };
@@ -95,23 +96,18 @@ async function scrapeEffo() {
   try {
     const html = await fetchUrl('https://www.effo.fo/prisir/');
 
-    // Find første dato på siden
     const dateMatch = html.match(/(\d{1,2})\.\s+(apríl|mars|februar|januar|mai|juni|juli|august|september|oktober|november|desember)\s+(\d{4})/i);
     let updatedAt = '';
     if (dateMatch) {
       updatedAt = dateMatch[1] + '/' + dateMatch[2].substring(0,3) + '/' + dateMatch[3];
     }
 
-    // Klip til kun første prisblok så vi ikke tager gamle priser
     const parts = html.split(/\d{1,2}\.\s+(?:apríl|mars|februar|januar|mai|juni|juli|august|september|oktober|november|desember)\s+\d{4}/i);
     const firstBlock = parts.length > 1 ? parts[1] : html;
 
-    // Bensin: "Blýfrítt  13,39 KR." format (komma)
-    const bensinMatch = firstBlock.match(/Blýfrítt[\s\S]{0,50}?([\d]+,[\d]+)\s*KR/i);
-    // Diesel: "Diesel  13,80 KR." format (komma)
-    const dieselMatch = firstBlock.match(/(?<!Báta)[Dd]iesel[\s\S]{0,50}?([\d]+,[\d]+)\s*KR/i);
-    // Gassolja: "12.125,00 KR." pr. 1000 liter - divider med 1000
-    const gasMatch = firstBlock.match(/Gassolja[\s\S]{0,50}?([\d]+\.[\d]+),[\d]+\s*KR/i);
+    const bensinMatch = firstBlock.match(/(?:Blyfritt|Blyfridt|Bensin\s*95)[\s\S]{0,80}?([\d]+,[\d]+)\s*KR/i);
+    const dieselMatch = firstBlock.match(/(?<!Bata)[Dd]iesel[\s\S]{0,50}?([\d]+,[\d]+)\s*KR/i);
+    const gasMatch = firstBlock.match(/Gassolja[\s\S]{0,80}?([\d]+\.[\d]+),[\d]+\s*KR/i);
 
     const bensin = bensinMatch ? bensinMatch[1].replace(',', '.') : null;
     const diesel = dieselMatch ? dieselMatch[1].replace(',', '.') : null;
@@ -127,7 +123,7 @@ async function scrapeEffo() {
         parseFloat(gassoil) > 5 && parseFloat(diesel) > 5 && parseFloat(bensin) > 5) {
       return { source: 'Effo', gassoil, diesel, bensin, updatedAt };
     }
-    throw new Error('Ógildur prísur: ' + JSON.stringify({gassoil, diesel, bensin}));
+    throw new Error('Ogildur prisur: ' + JSON.stringify({gassoil, diesel, bensin}));
   } catch(e) {
     console.log('Effo feilst:', e.message);
     return { source: 'Effo', ...KNOWN.Effo };
@@ -135,7 +131,7 @@ async function scrapeEffo() {
 }
 
 async function main() {
-  console.log('Byrjar at sækja prísir...', new Date().toISOString());
+  console.log('Byrjar at saekja prisir...', new Date().toISOString());
 
   const thomsen = await scrapeThomsen();
   const magn    = await scrapeMagn();
@@ -147,7 +143,7 @@ async function main() {
   };
 
   fs.writeFileSync('prices-override.json', JSON.stringify(data, null, 2));
-  console.log('Prísir goymdar:', JSON.stringify(data, null, 2));
+  console.log('Prisir goymdar:', JSON.stringify(data, null, 2));
 }
 
 main().catch(e => {
