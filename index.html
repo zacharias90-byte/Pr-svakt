@@ -231,7 +231,7 @@ function parseP(s){if(!s||s===null||s==='null')return null;var n=parseFloat(Stri
 function parseDateLocal(s){var p=String(s||'').split('-');return p.length===3?new Date(+p[0],+p[1]-1,+p[2]):new Date(s);}
 function monthOffsetFromNow(d){var n=new Date();return(d.getFullYear()-n.getFullYear())*12+(d.getMonth()-n.getMonth());}
 function getMonthLabel(o){var now=new Date();var d=new Date(now.getFullYear(),now.getMonth()+o,1);return months[d.getMonth()]+' '+d.getFullYear();}
-function getHist(o){if(!allHistory.length)return[];var now=new Date();var t=new Date(now.getFullYear(),now.getMonth()+o,1);var y=t.getFullYear(),m=t.getMonth();var f=allHistory.filter(function(e){var d=parseDateLocal(e.date);return d.getFullYear()===y&&d.getMonth()===m;});return f.length>=2?f:[];}
+function getHist(o){if(!allHistory.length)return[];var now=new Date();var t=new Date(now.getFullYear(),now.getMonth()+o+1,0);var s=new Date(now.getFullYear(),now.getMonth()+o-1,1);return allHistory.filter(function(e){var d=parseDateLocal(e.date);return d>=s&&d<=t;});}
 function buildChart(idx){
   var fuel=chartFuels[idx];var hist=getHist(chartOffsets[idx]);
   if(charts[idx]){try{charts[idx].destroy();}catch(e){}charts[idx]=null;}
