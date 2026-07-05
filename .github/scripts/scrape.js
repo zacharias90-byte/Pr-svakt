@@ -187,6 +187,28 @@ async function main() {
 
   fs.writeFileSync('prices-override.json', JSON.stringify(data, null, 2));
   console.log('Prisir goymdar:', JSON.stringify(data, null, 2));
+
+  // Uppfær príshistorik (dagligt punkt til grafirnar á prísvakt.fo)
+  try {
+    const hist = JSON.parse(fs.readFileSync('price-history.json', 'utf8'));
+    const today = new Date().toISOString().substring(0, 10);
+    const entry = {
+      date: today,
+      time: new Date().toISOString(),
+      prices: {
+        thomsen: { gassoil: thomsen.gassoil, diesel: thomsen.diesel, bensin: thomsen.bensin },
+        magn: { gassoil: magn.gassoil, diesel: magn.diesel, bensin: magn.bensin },
+        effo: { gassoil: effo.gassoil, diesel: effo.diesel, bensin: effo.bensin }
+      }
+    };
+    const idx = hist.findIndex(h => h.date === today);
+    if (idx > -1) hist[idx] = entry; else hist.push(entry);
+    hist.sort((a, b) => a.date.localeCompare(b.date));
+    fs.writeFileSync('price-history.json', JSON.stringify(hist, null, 2));
+    console.log('Príshistorikur uppførdur:', today);
+  } catch (e) {
+    console.error('Príshistorikur feilst:', e.message);
+  }
 }
 
 main().catch(e => {
