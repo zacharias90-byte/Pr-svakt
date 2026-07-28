@@ -2164,10 +2164,10 @@
   },
   {
     "date": "2026-07-28",
-    "time": "2026-07-28T08:45:53.268Z",
+    "time": "2026-07-28T14:25:32.812Z",
     "prices": {
       "thomsen": {
-        "gassoil": "10.650",
+        "gassoil": "11.000",
         "diesel": null,
         "bensin": null
       },
