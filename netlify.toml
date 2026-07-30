@@ -7,8 +7,9 @@
   status = 200
 
 [functions]
-  [functions.fuel-prices]
-    schedule = "0 */3 * * *"
-
+  # NB: fuel-prices má ikki hava "schedule" — Netlify blokerar HTTP-kall
+  # (403) til scheduled functions, og fronturin kallar hana við fetch().
+  # Prísirnir verða dagførdir av .github/workflows/scrape-prices.yml, sum
+  # committar prices-override.json og útløysir eitt nýtt deploy.
   [functions.save-history]
     schedule = "0 */3 * * *"
