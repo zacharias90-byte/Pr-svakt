@@ -313,7 +313,7 @@ function calcSpar(){
   }).join('');
   el.innerHTML='<div class="spar-rows">'+html+'</div>';
 }
-async function loadPrices(){try{var res=await fetch('/.netlify/functions/fuel-prices');var data=await res.json();if(data.sources&&data.sources.length)renderPrices(data.sources);}catch(e){var el=document.getElementById('last-updated');if(el)el.textContent='Dagført: –';}}
+async function loadPrices(){try{var res=await fetch('/.netlify/functions/fuel-prices');if(!res.ok)throw new Error('HTTP '+res.status);var data=await res.json();if(!data.sources||!data.sources.length)throw new Error('Ongin prísur í svarinum');renderPrices(data.sources);}catch(e){console.error('Prísir kundu ikki heintast:',e.message);var el=document.getElementById('last-updated');if(el)el.textContent='Dagført: –';}}
 async function loadHistory(){
   try{var res=await fetch('/.netlify/functions/get-history');if(!res.ok)return;var data=await res.json();
     if(Array.isArray(data)&&data.length>=2){allHistory=data.filter(function(e){return e&&e.date;}).sort(function(a,b){return parseDateLocal(a.date)-parseDateLocal(b.date);});var last=parseDateLocal(allHistory[allHistory.length-1].date);var off=monthOffsetFromNow(last);chartOffsets=[off,off,off];buildChart(0);buildChart(1);buildChart(2);}
