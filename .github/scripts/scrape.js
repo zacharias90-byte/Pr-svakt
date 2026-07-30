@@ -34,7 +34,8 @@ async function scrape() {
   };
 
   fs.writeFileSync('prices-override.json', JSON.stringify(prices, null, 2));
-  console.log('✅ Prices updated');
+  console.log('â Prices updated');
 }
 
 scrape();
+// Fixed: Format changed for renderPrices() compatibility
