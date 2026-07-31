@@ -9,18 +9,18 @@
     },
     {
       "source": "Magn",
-      "gassoil": "11.513",
-      "diesel": "11.530",
-      "bensin": "11.350",
-      "updatedAt": "30/07/2026"
+      "gassoil": "11.763",
+      "diesel": "11.73",
+      "bensin": "11.55",
+      "updatedAt": "31/07/2026"
     },
     {
       "source": "Effo",
       "gassoil": "11.513",
       "diesel": "11.53",
       "bensin": "11.35",
-      "updatedAt": "30/07/2026"
+      "updatedAt": "27/07/2026"
     }
   ],
-  "updatedAt": "2026-07-31T14:23:49.247Z"
+  "updatedAt": "2026-07-31T17:30:58.495Z"
 }
