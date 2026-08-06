@@ -5,11 +5,11 @@ const fs = require('fs');
 const KNOWN = {
   thomsen: { gassoil: '11.00', diesel: null, bensin: null, date: '28/07/2026' },
   magn: { gassoil: '11.763', diesel: '11.73', bensin: '11.55', date: '31/07/2026' },
-  effo: { gassoil: '11.513', diesel: '11.53', bensin: '11.35', date: '27/07/2026' }
+  effo: { gassoil: '11.763', diesel: '14.41', bensin: '14.44', date: '03/08/2026' }
 };
 
 const EN_MONTHS = ['january','february','march','april','may','june','july','august','september','october','november','december'];
-const FO_MONTHS = ['januar','februar','mars','apríl','mai','juni','juli','august','september','oktober','november','desember'];
+const FO_MONTHS = ['januar','februar','mars','aprÃ­l','mai','juni','juli','august','september','oktober','november','desember'];
 
 function pad(n) { return String(n).padStart(2, '0'); }
 function sane(v) { return typeof v === 'number' && isFinite(v) && v >= 5 && v <= 25; }
@@ -70,31 +70,29 @@ async function scrapeMagn() {
   return { gassoil: g.toFixed(3), diesel: d.toFixed(2), bensin: b.toFixed(2), date: date || KNOWN.magn.date };
 }
 
-// Effo: gassolja er skrivað sum kr fyri 1000 L.
+// Effo: gassolja er skrivaÃ° sum kr fyri 1000 L.
 async function scrapeEffo() {
   const html = await get('https://www.effo.fo/prisir/');
   if (!html) return null;
-  const t = stripTags(html);
-  function num(rx) {
-    const mm = t.match(rx);
-    if (!mm) return null;
-    return parseFloat(mm[1].replace(/\./g, '').replace(',', '.'));
-  }
-  const b = num(/Bensin 95 E10\s+([\d.]+,\d+)/);
-  const d = num(/\sDiesel\s+([\d.]+,\d+)/);
-  let g = num(/Gassolja\s+([\d.]+,\d+)/);
-  if (g && g > 1000) g = g / 1000;
+  const grab = (label) => {
+    const i = html.indexOf(label);
+    if (i < 0) return null;
+    const m = html.slice(i, i + 500).match(/(\d[\d.]*(?:,\d+)?)\s*(?:kr|KR)/i);
+    return m ? m[1] : null;
+  };
+  const toNum = (s) => { if (s == null) return null; s = String(s).replace(/\./g, '').replace(',', '.'); const n = parseFloat(s); return isNaN(n) ? null : n; };
+  let b = toNum(grab('Bensin 95 E10'));
+  let d = toNum(grab('>Diesel<'));
+  let g = toNum(grab('>Gassolja<'));
+  if (g != null && g > 1000) g = g / 1000; // Effo skrivar gassolju sum kr fyri 1000 L
   if (!sane(g) || !sane(d) || !sane(b)) return null;
-  let date = null;
-  const dm = t.match(/(\d{1,2})\.\s*([A-Za-z\u00c0-\u017e]+)\s*(20\d\d)/);
-  if (dm) {
-    const mi = FO_MONTHS.indexOf(dm[2].toLowerCase());
-    if (mi >= 0) date = pad(dm[1]) + '/' + pad(mi + 1) + '/' + dm[3];
-  }
-  return { gassoil: g.toFixed(3), diesel: d.toFixed(2), bensin: b.toFixed(2), date: date || KNOWN.effo.date };
+  let date = KNOWN.effo.date;
+  const months = { januar: '01', februar: '02', mars: '03', apríl: '04', april: '04', mai: '05', juni: '06', juli: '07', august: '08', septembur: '09', september: '09', oktober: '10', november: '11', desembur: '12', desember: '12' };
+  const dm = html.match(/(\d{1,2})\.\s*(januar|februar|mars|apr[ií]l|mai|juni|juli|august|septemb[eu]r|oktober|november|desemb[eu]r)\s*(\d{4})/i);
+  if (dm) { const mo = months[dm[2].toLowerCase()]; if (mo) date = String(dm[1]).padStart(2, '0') + '/' + mo + '/' + dm[3]; }
+  return { gassoil: g.toFixed(3), diesel: d.toFixed(2), bensin: b.toFixed(2), date: date };
 }
 
-// Thomsen: bert gassolja, ovasta rað í talvuni.
 async function scrapeThomsen() {
   const html = await get('https://thomsen.fo/oljuprisur');
   if (!html) return null;
