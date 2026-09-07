@@ -2,10 +2,10 @@
   "sources": [
     {
       "source": "Thomsen",
-      "gassoil": "11.75",
+      "gassoil": "11.95",
       "diesel": null,
       "bensin": null,
-      "updatedAt": "01/09/2026"
+      "updatedAt": "07/09/2026"
     },
     {
       "source": "Magn",
@@ -22,5 +22,5 @@
       "updatedAt": "01/09/2026"
     }
   ],
-  "updatedAt": "2026-09-07T06:40:24.788Z"
+  "updatedAt": "2026-09-07T12:28:10.082Z"
 }
