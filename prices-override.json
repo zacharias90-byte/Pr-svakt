@@ -9,10 +9,10 @@
     },
     {
       "source": "Magn",
-      "gassoil": "12.538",
-      "diesel": "15.16",
-      "bensin": "14.94",
-      "updatedAt": "15/09/2026"
+      "gassoil": "12.850",
+      "diesel": "15.50",
+      "bensin": "15.25",
+      "updatedAt": "17/09/2026"
     },
     {
       "source": "Effo",
@@ -22,5 +22,5 @@
       "updatedAt": "07/09/2026"
     }
   ],
-  "updatedAt": "2026-09-16T18:21:02.788Z"
+  "updatedAt": "2026-09-17T00:49:39.094Z"
 }
