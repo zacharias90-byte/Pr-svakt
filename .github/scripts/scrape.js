@@ -1,11 +1,11 @@
 const https = require('https');
 const fs = require('fs');
 
-// Fallback-prisir um ein kelda ikki svarar (dagford 31/07/2026)
+// Fallback-prisir um ein kelda ikki svarar (dagford 22/09/2026)
 const KNOWN = {
-  thomsen: { gassoil: '11.00', diesel: null, bensin: null, date: '28/07/2026' },
-  magn: { gassoil: '11.763', diesel: '11.73', bensin: '11.55', date: '31/07/2026' },
-  effo: { gassoil: '11.763', diesel: '14.41', bensin: '14.44', date: '03/08/2026' }
+  thomsen: { gassoil: '12.50', diesel: null, bensin: null, date: '21/09/2026' },
+  magn: { gassoil: '13.225', diesel: '15.88', bensin: '15.44', date: '22/09/2026' },
+  effo: { gassoil: '13.225', diesel: '15.88', bensin: '15.44', date: '22/09/2026' }
 };
 
 const EN_MONTHS = ['january','february','march','april','may','june','july','august','september','october','november','december'];
@@ -54,9 +54,11 @@ async function scrapeMagn() {
   if (!idx.length) return null;
   const block = html.slice(idx[0], idx.length > 1 ? idx[1] : idx[0] + 9000);
   function num(label) {
-    const i = block.indexOf('>' + label + '<');
-    if (i < 0) return null;
-    const mm = block.slice(i).match(/(?:pricing_number|text-size-small)[^>]*>([\d.]+)</);
+    // Label matchar sum forskoytan: Magn skrivar "Bensin 95 E10", ikki bert "Bensin".
+    const re = new RegExp('>\\s*' + label + '[^<]*<');
+    const ml = re.exec(block);
+    if (!ml) return null;
+    const mm = block.slice(ml.index).match(/(?:pricing_number|text-size-small)[^>]*>([\d.]+)</);
     return mm ? parseFloat(mm[1]) : null;
   }
   const g = num('Gassolja'), d = num('Diesel'), b = num('Bensin');
