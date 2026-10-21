@@ -1,11 +1,11 @@
 const https = require('https');
 const fs = require('fs');
 
-// Fallback-prisir um ein kelda ikki svarar (dagford 22/09/2026)
+// Fallback-prisir um ein kelda ikki svarar (dagford 21/10/2026)
 const KNOWN = {
-  thomsen: { gassoil: '12.50', diesel: null, bensin: null, date: '21/09/2026' },
-  magn: { gassoil: '13.225', diesel: '15.88', bensin: '15.44', date: '22/09/2026' },
-  effo: { gassoil: '13.225', diesel: '15.88', bensin: '15.44', date: '22/09/2026' }
+  thomsen: { gassoil: '13.20', diesel: null, bensin: null, date: '29/09/2026' },
+  magn: { gassoil: '13.725', diesel: '16.38', bensin: '15.56', date: '02/10/2026' },
+  effo: { gassoil: '13.988', diesel: '16.61', bensin: '15.75', date: '19/10/2026' }
 };
 
 const EN_MONTHS = ['january','february','march','april','may','june','july','august','september','october','november','december'];
@@ -17,7 +17,7 @@ function sane(v) { return typeof v === 'number' && isFinite(v) && v >= 5 && v <=
 function get(url, depth) {
   depth = depth || 0;
   return new Promise(function (resolve) {
-    const opts = { headers: { 'User-Agent': 'Mozilla/5.0 (compatible; PrisvaktBot/1.0)', 'Accept': 'text/html,application/xhtml+xml' } };
+    const opts = { headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36', 'Accept': 'text/html,application/xhtml+xml' } };
     const req = https.get(url, opts, function (res) {
       if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location && depth < 5) {
         res.resume();
