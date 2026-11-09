@@ -4345,5 +4345,26 @@
       }
     },
     "time": "2026-11-08T21:54:36.372Z"
+  },
+  {
+    "date": "2026-11-09",
+    "prices": {
+      "effo": {
+        "bensin": "15.63",
+        "diesel": "16.49",
+        "gassoil": "13.838"
+      },
+      "magn": {
+        "bensin": "15.63",
+        "diesel": "16.49",
+        "gassoil": "13.838"
+      },
+      "thomsen": {
+        "bensin": null,
+        "diesel": null,
+        "gassoil": "13.05"
+      }
+    },
+    "time": "2026-11-09T05:50:54.197Z"
   }
 ]
