@@ -1,6 +1,19 @@
 [build]
   functions = "netlify/functions"
 
+# Send prísvakt.fo (punycode xn--prsvakt-8ya.fo) to the main domain
+[[redirects]]
+  from = "https://xn--prsvakt-8ya.fo/*"
+  to = "https://www.prisvakt.fo/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://www.xn--prsvakt-8ya.fo/*"
+  to = "https://www.prisvakt.fo/:splat"
+  status = 301
+  force = true
+
 [[redirects]]
   from = "/api/fuel-prices"
   to = "/.netlify/functions/fuel-prices"
