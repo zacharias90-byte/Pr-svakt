@@ -1,11 +1,11 @@
 const https = require('https');
 const fs = require('fs');
 
-// Fallback-prisir um ein kelda ikki svarar (dagford 21/10/2026)
+// Fallback-prisir um ein kelda ikki svarar (dagford 27/11/2026)
 const KNOWN = {
-  thomsen: { gassoil: '13.20', diesel: null, bensin: null, date: '29/09/2026' },
-  magn: { gassoil: '13.725', diesel: '16.38', bensin: '15.56', date: '02/10/2026' },
-  effo: { gassoil: '13.988', diesel: '16.61', bensin: '15.75', date: '19/10/2026' }
+  thomsen: { gassoil: '12.20', diesel: null, bensin: null, date: '27/11/2026' },
+  magn: { gassoil: '13.213', diesel: '15.86', bensin: '15.00', date: '21/11/2026' },
+  effo: { gassoil: '12.900', diesel: '15.56', bensin: '14.69', date: '27/11/2026' }
 };
 
 const EN_MONTHS = ['january','february','march','april','may','june','july','august','september','october','november','december'];
