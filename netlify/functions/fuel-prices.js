@@ -43,7 +43,7 @@ exports.handler = async () => {
     headers: {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
-      'Cache-Control': 'public, max-age=300'
+      'Cache-Control': 'no-cache'
     },
     body: JSON.stringify(data)
   };
